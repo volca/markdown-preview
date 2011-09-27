@@ -16,6 +16,6 @@ preview.
 Thanks to Kevin Burke for his [markdown-friendly stylesheet][style], and
 to John Fraser for his [JavaScript markdown processor][showdown].
 
-[webstore]: 
+[webstore]: https://chrome.google.com/webstore/detail/jmchmkecamhbiokiopfpnfgbidieafmd
 [style]: http://kevinburke.bitbucket.org/markdowncss
 [showdown]: https://github.com/coreyti/showdown
