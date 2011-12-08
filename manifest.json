@@ -10,8 +10,9 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*/*.md*", "file://*/*.md", 
-        "http://*/*.markdown*", "file://*/*.markdown"
+        "http://*/*.md*"      , "file://*/*.md", 
+        "http://*/*.markdown*", "file://*/*.markdown",
+        "http://*/*.text"     , "file://*/*.text"
       ],
       "js": ["showdown.js", "markdownify.js"]
     }
