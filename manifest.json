@@ -15,7 +15,7 @@
         "http://*/*.mdown*", 	"file://*/*.mdown",
         "http://*/*.text"     , "file://*/*.text"
       ],
-      "js": ["showdown.js", "markdownify.js"]
+      "js": ["jquery.js", "showdown.js", "markdownify.js"]
     }
   ],
   "permissions": ["tabs", "<all_urls>"]
