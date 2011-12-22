@@ -12,6 +12,7 @@
       "matches": [
         "http://*/*.md*"      , "file://*/*.md", 
         "http://*/*.markdown*", "file://*/*.markdown",
+        "http://*/*.mdown*", 	"file://*/*.mdown",
         "http://*/*.text"     , "file://*/*.text"
       ],
       "js": ["showdown.js", "markdownify.js"]

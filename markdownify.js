@@ -11,4 +11,8 @@
 	ss.href = chrome.extension.getURL('markdown.css');
 	document.head.appendChild(ss);
 
+	setTimeout(function() {
+		location.reload();
+	}, 3000);
+
 }(document));
