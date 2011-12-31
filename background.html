@@ -1,0 +1,13 @@
+<html>
+<head>
+<script>
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+	if (request.localstorage == 'markdown_preview_auto_reload') {
+	    sendResponse({'markdown_preview_auto_reload': localStorage[keyAutoReload]});
+	} else {
+		sendResponse({});
+	}
+});
+</script>
+</head>
+</html>
