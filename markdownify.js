@@ -17,12 +17,14 @@
 
 	var href = location.href;
 
-	setInterval(function() {
-		$.ajax({
-			url : href, 
-			cache : false,
-			success : function(data) { makeHtml(data); }
-		});
-	}, 3000);
+	if(!!localStorage['markdown_preview_auto_reload']) {
+		setInterval(function() {
+			$.ajax({
+				url : href, 
+				cache : false,
+				success : function(data) { makeHtml(data); }
+			});
+		}, 3000);
+	}
 
 }(document));
