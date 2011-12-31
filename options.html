@@ -22,10 +22,24 @@
 			</p>
 			</form>
 		</div>
+
 		<script>
-		$('#auto-reload').attr('checked', localStorage['auto-reload-enabled']);
+		var keyAutoReload = 'markdown_preview_auto_reload';
+		if(localStorage[keyAutoReload] != undefined) {
+			if(localStorage[keyAutoReload]) {
+				$('#auto-reload').attr('checked', 'checked');
+			} else {
+				$('#auto-reload').removeAttr('checked');
+			}
+		}
+
 		$('#settings-form').submit(function() {
-			localStorage['auto-reload-enabled'] = $('#auto-reload').attr('checked');
+			if(!!$('#auto-reload').attr('checked')) {
+				localStorage[keyAutoReload] = 1;
+			} else {
+				localStorage.removeItem(keyAutoReload);
+			}
+			return false;
 		});
 		</script>
 	</body>
