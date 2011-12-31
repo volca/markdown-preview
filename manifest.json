@@ -18,5 +18,6 @@
       "js": ["jquery.js", "showdown.js", "markdownify.js"]
     }
   ],
-  "permissions": ["tabs", "<all_urls>"]
+  "permissions": ["tabs", "<all_urls>"],
+  "options_page": "options.html"
 }

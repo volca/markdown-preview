@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="utf-8">
+		<title>Settings for Markdown-preview</title>
+		<style type='text/css'>
+		body { font-size: 13px; font-family: Helvetica, FreeSans, Arial, sans-serif; }
+		#bucket { margin: 0 auto; width: 480px; }
+		</style>
+		<script src="jquery.js"></script>
+    </head>
+    <body>
+		<div id="bucket">
+			<h1>Settings for Markdown-preview</h1>
+
+			<form id="settings-form">
+			<p>
+			  <label><input type="checkbox" id="auto-reload" name="auto-reload-enabled">Enable auto-reload</label>
+			</p>
+			<p>
+			  <input type='submit' value='Save' />
+			</p>
+			</form>
+		</div>
+		<script>
+		$('#auto-reload').attr('checked', localStorage['auto-reload-enabled']);
+		$('#settings-form').submit(function() {
+			localStorage['auto-reload-enabled'] = $('#auto-reload').attr('checked');
+		});
+		</script>
+	</body>
+</html>
