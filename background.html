@@ -1,8 +1,9 @@
 <html>
 <head>
 <script>
+var keyAutoReload = 'markdown_preview_auto_reload';
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-	if (request.localstorage == 'markdown_preview_auto_reload') {
+	if (request.localstorage == keyAutoReload) {
 	    sendResponse({'markdown_preview_auto_reload': localStorage[keyAutoReload]});
 	} else {
 		sendResponse({});
