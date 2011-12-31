@@ -19,5 +19,6 @@
     }
   ],
   "permissions": ["tabs", "<all_urls>"],
+  "background_page": "background.html",
   "options_page": "options.html"
 }

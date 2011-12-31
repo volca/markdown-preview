@@ -17,14 +17,18 @@
 
 	var href = location.href;
 
-	if(!!localStorage['markdown_preview_auto_reload']) {
-		setInterval(function() {
-			$.ajax({
-				url : href, 
-				cache : false,
-				success : function(data) { makeHtml(data); }
-			});
-		}, 3000);
-	}
+
+	var keyAutoReload = 'markdown_preview_auto_reload';
+	chrome.extension.sendRequest({localstorage: keyAutoReload}, function(response) {
+		if(!!response[keyAutoReload]) {
+			setInterval(function() {
+				$.ajax({
+					url : href, 
+					cache : false,
+					success : function(data) { makeHtml(data); }
+				});
+			}, 3000);
+		}
+	});
 
 }(document));
