@@ -25,8 +25,9 @@
 
 		<script>
 		var keyAutoReload = 'markdown_preview_auto_reload';
-		if(localStorage[keyAutoReload] != undefined) {
-			if(localStorage[keyAutoReload]) {
+        var storage = chrome.storage.local;
+		if(storage.get(keyAutoReload) != undefined) {
+			if(storage.get(keyAutoReload)) {
 				$('#auto-reload').attr('checked', 'checked');
 			} else {
 				$('#auto-reload').removeAttr('checked');
@@ -35,9 +36,9 @@
 
 		$('#settings-form').submit(function() {
 			if(!!$('#auto-reload').attr('checked')) {
-				localStorage[keyAutoReload] = 1;
-			} else {
-				localStorage.removeItem(keyAutoReload);
+                storage.set({keyAutoReload : 1});
+            } else {
+				storage.remove(keyAutoReload);
 			}
 			return false;
 		});
