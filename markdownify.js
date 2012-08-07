@@ -17,18 +17,22 @@
 
 	var href = location.href;
 
-
-	var keyAutoReload = 'markdown_preview_auto_reload';
-	chrome.extension.sendRequest({localstorage: keyAutoReload}, function(response) {
-		if(!!response[keyAutoReload]) {
-			setInterval(function() {
-				$.ajax({
-					url : href, 
-					cache : false,
-					success : function(data) { makeHtml(data); }
-				});
-			}, 3000);
-		}
+	var keyAutoReload = 'mp_auto_reload';
+    chrome.storage.local.get(keyAutoReload, function(response) {
+        console.log(response[keyAutoReload]);
+        if(response[keyAutoReload]) {
+            console.log('here1');
+            setInterval(function() {
+            console.log('here2');
+                $.ajax({
+                    url : href, 
+                    cache : false,
+                    success : function(data) { 
+                        makeHtml(data); 
+                    }
+                });
+            }, 3000);
+        }
 	});
 
 }(document));

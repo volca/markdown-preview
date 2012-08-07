@@ -23,25 +23,6 @@
 			</form>
 		</div>
 
-		<script>
-		var keyAutoReload = 'markdown_preview_auto_reload';
-        var storage = chrome.storage.local;
-		if(storage.get(keyAutoReload) != undefined) {
-			if(storage.get(keyAutoReload)) {
-				$('#auto-reload').attr('checked', 'checked');
-			} else {
-				$('#auto-reload').removeAttr('checked');
-			}
-		}
-
-		$('#settings-form').submit(function() {
-			if(!!$('#auto-reload').attr('checked')) {
-                storage.set({keyAutoReload : 1});
-            } else {
-				storage.remove(keyAutoReload);
-			}
-			return false;
-		});
-		</script>
+		<script src="options.js"></script>
 	</body>
 </html>
