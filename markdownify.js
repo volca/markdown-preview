@@ -17,7 +17,7 @@
 
 	var href = location.href;
 
-	var keyAutoReload = 'mp_auto_reload';
+	var keyAutoReload = 'auto_reload';
     chrome.storage.local.get(keyAutoReload, function(response) {
         console.log(response[keyAutoReload]);
         if(response[keyAutoReload]) {
