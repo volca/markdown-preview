@@ -15,15 +15,12 @@
 	ss.href = chrome.extension.getURL('markdown.css');
 	document.head.appendChild(ss);
 
-	var href = location.href;
+	var href = location.href,
+        storage = chrome.storage.local;
 
-	var keyAutoReload = 'auto_reload';
-    chrome.storage.local.get(keyAutoReload, function(response) {
-        console.log(response[keyAutoReload]);
-        if(response[keyAutoReload]) {
-            console.log('here1');
+    storage.get('auto_reload', function(items) {
+        if(items.auto_reload) {
             setInterval(function() {
-            console.log('here2');
                 $.ajax({
                     url : href, 
                     cache : false,
