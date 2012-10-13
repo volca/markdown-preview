@@ -8,15 +8,33 @@
     "48": "images/icon.png",
     "16": "images/icon.png"
   },
+  "browser_action": {
+      "default_title": "Markdown Preview Plus",
+      "popup": "popup.html",
+      "default_icon": "images/icon.png"
+  },
   "content_scripts": [
     {
       "matches": [
-        "http://*/*.md*"      , "file://*/*.md", 
-        "http://*/*.markdown*", "file://*/*.markdown",
-        "http://*/*.mdown*", 	"file://*/*.mdown",
-        "http://*/*.text"     , "file://*/*.text"
+        "http://*/*.md*", 
+        "http://*/*.text", 
+        "http://*/*.markdown*", 
+        "http://*/*.mdown*", 	
+        "https://*/*.md*", 
+        "https://*/*.text", 
+        "https://*/*.markdown*", 
+        "https://*/*.mdown*", 	
+        "file://*/*.md", 
+        "file://*/*.markdown",
+        "file://*/*.mdown",
+        "file://*/*.text"
       ],
-      "js": ["jquery.js", "showdown.js", "markdownify.js", "options.js"]
+      "js": [
+          "jquery.js", 
+          "showdown.js", 
+          "markdownify.js", 
+          "options.js"
+      ]
     }
   ],
   "permissions": [
