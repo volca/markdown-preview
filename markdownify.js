@@ -61,10 +61,11 @@
 
     chrome.storage.onChanged.addListener(function(changes, namespace) {
         for (key in changes) {
+            var value = changes[key];
             if(key == 'theme') {
-                setTheme(changes[key].newValue);
+                setTheme(value.newValue);
             } else if(key == 'auto_reload') {
-                if(items.auto_reload) {
+                if(value.newValue) {
                     startAutoReload();
                 } else {
                     stopAutoReload();
