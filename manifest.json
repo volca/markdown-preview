@@ -40,7 +40,10 @@
       "<all_urls>"
   ],
   "web_accessible_resources": [
-      "markdown.css"
+      "theme/Clearness.css",
+      "theme/ClearnessDark.css",
+      "theme/Github.css",
+      "theme/TopMarks.css"
   ],
   "sandbox" : {
   },

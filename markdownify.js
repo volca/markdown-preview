@@ -12,7 +12,7 @@
 	// Also inject a reference to the default stylesheet to make things look nicer.
 	var ss = document.createElement('link');
 	ss.rel = 'stylesheet';
-	ss.href = chrome.extension.getURL('markdown.css');
+	ss.href = chrome.extension.getURL('theme/Clearness.css');
 	document.head.appendChild(ss);
 
 	var href = location.href,
