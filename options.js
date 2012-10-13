@@ -1,6 +1,8 @@
 "use strict";
 
 var storage = chrome.storage.local;
+
+// auto-reload
 storage.get('auto_reload', function(items) {
     if(items.auto_reload) {
         $('#auto-reload').attr('checked', 'checked');
@@ -17,8 +19,13 @@ $('#auto-reload').change(function() {
     }
 });
 
+// theme
 storage.get('theme', function(items) {
     if(items.theme) {
         $('#theme').val(items.theme);
     } 
+});
+
+$('#theme').change(function() {
+    storage.set({'theme' : $(this).val()});
 });
