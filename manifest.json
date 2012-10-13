@@ -10,7 +10,7 @@
   },
   "browser_action": {
       "default_title": "Markdown Preview Plus",
-      "popup": "popup.html",
+      "default_popup": "popup.html",
       "default_icon": "images/icon.png"
   },
   "content_scripts": [
