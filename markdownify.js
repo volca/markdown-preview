@@ -7,22 +7,29 @@
 		$(document.body).html(html);
 	}
 
+    function setTheme(theme) {
+        var ss = document.createElement('link');
+        ss.rel = 'stylesheet';
+        ss.id = 'theme';
+        ss.href = chrome.extension.getURL('theme/' + theme + '.css');
+        document.head.appendChild(ss);
+    }
+
 	makeHtml(document.body.innerText);
 
-	// Also inject a reference to the default stylesheet to make things look nicer.
-	var ss = document.createElement('link');
-	ss.rel = 'stylesheet';
-	ss.href = chrome.extension.getURL('theme/Clearness.css');
-	document.head.appendChild(ss);
+	var storage = chrome.storage.local;
 
-	var href = location.href,
-        storage = chrome.storage.local;
+	// Also inject a reference to the default stylesheet to make things look nicer.
+    storage.get('theme', function(items) {
+        theme = items.theme ? items.theme : 'Clearness';
+        setTheme(theme);
+    });
 
     storage.get('auto_reload', function(items) {
         if(items.auto_reload) {
             setInterval(function() {
                 $.ajax({
-                    url : href, 
+                    url : location.href, 
                     cache : false,
                     success : function(data) { 
                         makeHtml(data); 
