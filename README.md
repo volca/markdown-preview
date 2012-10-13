@@ -1,9 +1,8 @@
-# Chrome Markdown Extension
+# Markdown Preview Plus
 
 Automatically parses markdown files (.md) into HTML. This is useful
 if you're writing markdown (ultimately targeting HTML) and want a quick
 preview.
-
 
 # Usage
 
