@@ -1,22 +1,24 @@
+"use strict";
+
 var storage = chrome.storage.local;
 storage.get('auto_reload', function(items) {
-    console.log(items.auto_reload);
-
     if(items.auto_reload) {
         $('#auto-reload').attr('checked', 'checked');
     } else {
         $('#auto-reload').removeAttr('checked');
     }
-
 });
 
-$('#settings-form').submit(function() {
-    if(!!$('#auto-reload').attr('checked')) {
-        storage.set({'auto_reload' : 1}, function() {
-            alert('Setting saved');
-        });
+$('#auto-reload').change(function() {
+    if(!!$(this).attr('checked')) {
+        storage.set({'auto_reload' : 1});
     } else {
         storage.remove('auto_reload');
     }
-    return false;
+});
+
+storage.get('theme', function(items) {
+    if(items.theme) {
+        $('#theme').val(items.theme);
+    } 
 });
