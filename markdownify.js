@@ -8,11 +8,16 @@
 	}
 
     function setTheme(theme) {
-        var ss = document.createElement('link');
-        ss.rel = 'stylesheet';
-        ss.id = 'theme';
-        ss.href = chrome.extension.getURL('theme/' + theme + '.css');
-        document.head.appendChild(ss);
+        var link = $('#theme');
+        if(!link.length) {
+            var ss = document.createElement('link');
+            ss.rel = 'stylesheet';
+            ss.id = 'theme';
+            ss.href = chrome.extension.getURL('theme/' + theme + '.css');
+            document.head.appendChild(ss);
+        } else {
+            link.attr('href', 'theme/' + theme + '.css');
+        }
     }
 
 	makeHtml(document.body.innerText);
