@@ -4,6 +4,11 @@ Automatically parses markdown files (.md) into HTML. This is useful
 if you're writing markdown (ultimately targeting HTML) and want a quick
 preview.
 
+# Changes
+
+* Support auto reload.
+* Support external css file.
+
 # Usage
 
 1. Install extension from [webstore][] (creates no new UI)
