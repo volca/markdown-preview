@@ -19,10 +19,12 @@ preview.
 # Thanks
 
 Thanks to Kevin Burke for his [markdown-friendly stylesheet][style],
-to John Fraser for his [JavaScript markdown processor][showdown] and to
+to John Fraser for his [JavaScript markdown processor][showdown],
+to Boris Smus for his [Markdown Preview][mp] and to
 Swartz and Gruber for [Markdown][md].
 
 [webstore]: https://chrome.google.com/webstore/detail/markdown-preview-plus/febilkbfcbhebfnokafefeacimjdckgl
 [style]: http://kevinburke.bitbucket.org/markdowncss
 [showdown]: https://github.com/coreyti/showdown
 [md]: http://en.wikipedia.org/wiki/Markdown
+[mp]: https://github.com/borismus/markdown-preview
