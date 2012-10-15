@@ -4,10 +4,16 @@ Automatically parses markdown files (.md) into HTML. This is useful
 if you're writing markdown (ultimately targeting HTML) and want a quick
 preview.
 
-# Changes
+# Version History
 
-* Support auto reload.
-* Support external css file.
+### 0.1.1
+
+1. Do not render if file's Content-Type is 'text/html'.
+
+### 0.1
+
+1. Support auto reload.
+1. Support external css file.
 
 # Usage
 
