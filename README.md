@@ -4,10 +4,18 @@ Automatically parses markdown files (.md) into HTML. This is useful
 if you're writing markdown (ultimately targeting HTML) and want a quick
 preview.
 
-# Changes
+[Get it for Chrome][webstore]
 
-* Support auto reload.
-* Support external css file.
+# Version History
+
+### 0.1.1
+
+1. Do not render if file's Content-Type is 'text/html'.
+
+### 0.1
+
+1. Support auto reload.
+1. Support external css file.
 
 # Usage
 
@@ -28,3 +36,5 @@ Swartz and Gruber for [Markdown][md].
 [showdown]: https://github.com/coreyti/showdown
 [md]: http://en.wikipedia.org/wiki/Markdown
 [mp]: https://github.com/borismus/markdown-preview
+
+
