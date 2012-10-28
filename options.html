@@ -13,25 +13,26 @@
 		<div id="bucket">
 			<h1>MarkDown Preview Plus options</h1>
 
-            <h3>Theme</h3>
+            <h2>Theme</h2>
+            <h3>Use CSS</h3>
             <p>
-                Use CSS:
                 <select id="theme">
                 <option>Clearness</option>
                 <option>ClearnessDark</option>
                 <option>Github</option>
                 <option>TopMarks</option>
                 </select>
-
-                or add new one: 
-                <input type="file"><button>Add CSS</button>
 			</p>
+            <p>This CSS applies to Live Preview.</p>
 
+            <h3>or add a new CSS</h3>
             <p>
-            This CSS applies to Live Preview.
+            <input type="file" id="css-file">
+            <button id="btn-add-css">Add CSS</button>
             </p>
 
-            <h3>Miscs</h3>
+
+            <h2>Miscs</h2>
 			<p>
 			  <label><input type="checkbox" id="auto-reload">Enable auto-reload</label>
 			</p>
