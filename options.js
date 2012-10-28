@@ -29,3 +29,4 @@ storage.get('theme', function(items) {
 $('#theme').change(function() {
     storage.set({'theme' : $(this).val()});
 });
+
