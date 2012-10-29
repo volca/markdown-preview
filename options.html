@@ -1,43 +1,55 @@
 <!DOCTYPE html>
 <html>
-    <head>
-		<meta charset="utf-8">
-		<title>MarkDown Preview Plus options</title>
-		<style type='text/css'>
-		body { font-size: 13px; font-family: Helvetica, FreeSans, Arial, sans-serif; }
-		#bucket { margin: 0 auto; width: 480px; }
-		</style>
-		<script src="jquery.js"></script>
-    </head>
-    <body>
-		<div id="bucket">
-			<h1>MarkDown Preview Plus options</h1>
+<head>
+<meta charset="utf-8">
+<title>MarkDown Preview Plus options</title>
+<link href="bootstrap.min.css" rel="stylesheet">
+<script src="jquery.js"></script>
+</head>
+<body>
 
-            <h3>Theme</h3>
-            <p>
-                Use CSS:
-                <select id="theme">
-                <option>Clearness</option>
-                <option>ClearnessDark</option>
-                <option>Github</option>
-                <option>TopMarks</option>
-                </select>
+<div class="container">
 
-                or add new one: 
-                <input type="file"><button>Add CSS</button>
-			</p>
+    <h1>MarkDown Preview Plus options</h1>
 
-            <p>
-            This CSS applies to Live Preview.
-            </p>
+    <div id="msg"></div>
 
+    <section>
+        <div class="page-header">
+            <h2>Theme</h2>
+        </div>
+
+        <strong>Default CSS</strong>
+        <p>This CSS applies to Live Preview.</p>
+        <p>
+        <select id="theme">
+            <optgroup label="Default themes">
+            <option>Clearness</option>
+            <option>ClearnessDark</option>
+            <option>Github</option>
+            <option>TopMarks</option>
+            </optgroup>
+        </select>
+        </p>
+
+        <strong>or add a new CSS</strong>
+        <p>
+        <input type="file" id="css-file" class="span4">
+        <button id="btn-add-css" class="btn btn-small btn-primary">Add CSS</button>
+        </p>
+    </section>
+
+    <section>
+        <div class="page-header">
             <h3>Miscs</h3>
-			<p>
-			  <label><input type="checkbox" id="auto-reload">Enable auto-reload</label>
-			</p>
+        </div>
+        <p>
+        <label class="checkbox"><input type="checkbox" id="auto-reload">Enable auto-reload</label>
+        </p>
+    </section>
 
-		</div>
+</div>
 
-		<script src="options.js"></script>
-	</body>
+<script src="options.js"></script>
+</body>
 </html>
