@@ -20,18 +20,27 @@ $('#auto-reload').change(function() {
 });
 
 // theme
-storage.get(['theme', 'custom_themes'], function(items) {
+function getThemes() {
+    storage.get('custom_themes', function(items) {
+        if(items.custom_themes) {
+            var k, v, themes = items.custom_themes;
+            var group = $('<optgroup label="Custom themes"></optgroup>');
+
+            $('#theme optgroup[label="Custom themes"]').empty().remove();
+            for(k in themes) {
+                v = themes[k];
+                group.append($("<option></option>").text(v)); 
+            }
+            $('#theme').append(group);
+        }
+    });
+}
+
+getThemes();
+storage.get('theme', function(items) {
     if(items.theme) {
         $('#theme').val(items.theme);
     } 
-
-    if(items.custom_themes) {
-        var k, v, themes = items.custom_themes;
-        for(k in themes) {
-            v = themes[k];
-            $('#theme').append($("<option></option>").text(v)); 
-        }
-    }
 });
 
 $('#theme').change(function() {
@@ -58,6 +67,8 @@ $('#btn-add-css').click(function() {
             storage.set({
                 'custom_themes' : themes,
                 filename : fileString
+            }, function() {
+                getThemes();
             });
         });
     };
