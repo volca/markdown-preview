@@ -51,7 +51,5 @@
       "theme/i/email.png",
       "theme/i/folder.png"
   ],
-  "sandbox" : {
-  },
   "options_page": "options.html"
 }
