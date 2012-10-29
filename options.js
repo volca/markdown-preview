@@ -1,6 +1,14 @@
 "use strict";
 
-var storage = chrome.storage.local;
+var storage = chrome.storage.local,
+    defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks'];
+
+function message(text) {
+    $('#msg').html('<div class="alert alert-success">' + text + '</div>');
+    setTimeout(function() {
+        $('div.alert').hide(500);
+    }, 3000);
+}
 
 // auto-reload
 storage.get('auto_reload', function(items) {
@@ -42,7 +50,9 @@ function getThemes() {
 
 getThemes();
 $('#theme').change(function() {
-    storage.set({'theme' : $(this).val()});
+    storage.set({'theme' : $(this).val()}, function() {
+        message('You successfully set the default css.');
+    });
 });
 
 $('#btn-add-css').click(function() {
@@ -67,7 +77,7 @@ $('#btn-add-css').click(function() {
                 filename : fileString
             }, function() {
                 getThemes();
-                $('#msg').html('<div class="alert alert-success">Well done! You successfully add a custom css.</div>');
+                message('Well done! You successfully add a custom css.');
                 $('#css-file').val('');
             });
         });

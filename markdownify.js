@@ -14,15 +14,20 @@
     }
 
     function setTheme(theme) {
-        var link = $('#theme');
-        if(!link.length) {
-            var ss = document.createElement('link');
-            ss.rel = 'stylesheet';
-            ss.id = 'theme';
-            ss.href = getThemeCss(theme);
-            document.head.appendChild(ss);
+        var defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks'];
+
+        if($.inArray(theme, defaultThemes)) {
+            var link = $('#theme');
+            if(!link.length) {
+                var ss = document.createElement('link');
+                ss.rel = 'stylesheet';
+                ss.id = 'theme';
+                ss.href = getThemeCss(theme);
+                document.head.appendChild(ss);
+            } else {
+                link.attr('href', getThemeCss(theme));
+            }
         } else {
-            link.attr('href', getThemeCss(theme));
         }
     }
 
