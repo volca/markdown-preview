@@ -4,8 +4,10 @@ var storage = chrome.storage.local,
     themePrefix = 'theme_',
     defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks'];
 
-function message(text) {
-    $('#msg').html('<div class="alert alert-success">' + text + '</div>');
+function message(text, type) {
+    var msgType = type || 'success',
+        msgClass = 'alert-' + msgType;
+    $('#msg').html('<div class="alert ' + msgClass + '">' + text + '</div>');
     setTimeout(function() {
         $('div.alert').hide(500);
     }, 3000);
@@ -56,9 +58,15 @@ $('#theme').change(function() {
     });
 });
 
+
 $('#btn-add-css').click(function() {
     var file = $('#css-file')[0].files[0],
         reader = new FileReader();
+
+    if(!file || (file.type != 'text/css')) {
+        message('Oops, support css file only.', 'error');
+        return;
+    }
 
     var tmp = file.name.split('.');
     tmp.pop();
