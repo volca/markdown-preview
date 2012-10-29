@@ -1,6 +1,7 @@
 "use strict";
 
 var storage = chrome.storage.local,
+    themePrefix = 'theme_',
     defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks'];
 
 function message(text) {
@@ -72,10 +73,9 @@ $('#btn-add-css').click(function() {
                 themes = [filename + ""];
             }
             themes = $.unique(themes);
-            storage.set({
-                'custom_themes' : themes,
-                filename : fileString
-            }, function() {
+            var obj = {'custom_themes' : themes};
+            obj[themePrefix + filename] = fileString;
+            storage.set(obj, function() {
                 getThemes();
                 message('Well done! You successfully add a custom css.');
                 $('#css-file').val('');

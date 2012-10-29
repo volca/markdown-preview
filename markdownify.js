@@ -1,6 +1,7 @@
 (function(document) {
 
-    var interval;
+    var interval, 
+        storage = chrome.storage.local;
 
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
@@ -16,8 +17,9 @@
     function setTheme(theme) {
         var defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks'];
 
-        if($.inArray(theme, defaultThemes)) {
+        if($.inArray(theme, defaultThemes) != -1) {
             var link = $('#theme');
+            $('#custom-theme').remove();
             if(!link.length) {
                 var ss = document.createElement('link');
                 ss.rel = 'stylesheet';
@@ -28,6 +30,21 @@
                 link.attr('href', getThemeCss(theme));
             }
         } else {
+            var themePrefix = 'theme_',
+                key = themePrefix + theme;
+            storage.get(key, function(items) {
+                if(items[key]) {
+                    $('#theme').remove();
+                    var theme = $('#custom-theme');
+                    if(!theme.length) {
+                        var style = $('<style/>').attr('id', 'custom-theme')
+                                        .html(items[key]);
+                        $(document.head).append(style);
+                    } else {
+                        theme.html(items[key]);
+                    }
+                }
+            });
         }
     }
 
@@ -58,8 +75,6 @@
             }
 
             makeHtml(document.body.innerText);
-
-            var storage = chrome.storage.local;
 
             // Also inject a reference to the default stylesheet to make things look nicer.
             storage.get('theme', function(items) {
