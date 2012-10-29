@@ -30,3 +30,6 @@ $('#theme').change(function() {
     storage.set({'theme' : $(this).val()});
 });
 
+$('#btn-add-css').click(function() {
+    var file = $('#css-file').val();
+});
