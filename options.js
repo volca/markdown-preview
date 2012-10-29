@@ -21,7 +21,7 @@ $('#auto-reload').change(function() {
 
 // theme
 function getThemes() {
-    storage.get('custom_themes', function(items) {
+    storage.get(['custom_themes', 'theme'], function(items) {
         if(items.custom_themes) {
             var k, v, themes = items.custom_themes;
             var group = $('<optgroup label="Custom themes"></optgroup>');
@@ -33,16 +33,14 @@ function getThemes() {
             }
             $('#theme').append(group);
         }
+
+        if(items.theme) {
+            $('#theme').val(items.theme);
+        } 
     });
 }
 
 getThemes();
-storage.get('theme', function(items) {
-    if(items.theme) {
-        $('#theme').val(items.theme);
-    } 
-});
-
 $('#theme').change(function() {
     storage.set({'theme' : $(this).val()});
 });
@@ -69,6 +67,8 @@ $('#btn-add-css').click(function() {
                 filename : fileString
             }, function() {
                 getThemes();
+                $('#msg').html('<div class="alert alert-success">Well done! You successfully add a custom css.</div>');
+                $('#css-file').val('');
             });
         });
     };
