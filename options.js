@@ -20,10 +20,18 @@ $('#auto-reload').change(function() {
 });
 
 // theme
-storage.get('theme', function(items) {
+storage.get(['theme', 'custom_themes'], function(items) {
     if(items.theme) {
         $('#theme').val(items.theme);
     } 
+
+    if(items.custom_themes) {
+        var k, v, themes = items.custom_themes;
+        for(k in themes) {
+            v = themes[k];
+            $('#theme').append($("<option></option>").text(v)); 
+        }
+    }
 });
 
 $('#theme').change(function() {
@@ -34,9 +42,24 @@ $('#btn-add-css').click(function() {
     var file = $('#css-file')[0].files[0],
         reader = new FileReader();
 
+    var tmp = file.name.split('.');
+    tmp.pop();
+    var filename = tmp.join('.');
     reader.onload = function(evt) {
         var fileString = evt.target.result;
-        alert(fileString);
+        storage.get('custom_themes', function(items) {
+            var themes = items.custom_themes;
+            if(themes) {
+                themes.push(filename);
+            } else {
+                themes = [filename + ""];
+            }
+            themes = $.unique(themes);
+            storage.set({
+                'custom_themes' : themes,
+                filename : fileString
+            });
+        });
     };
     reader.readAsText(file);
 });
