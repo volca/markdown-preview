@@ -30,6 +30,17 @@ $('#theme').change(function() {
     storage.set({'theme' : $(this).val()});
 });
 
+
+$('#css-file').change(function(e) {
+    var file = e.target.files[0],
+        reader = new FileReader();
+
+    reader.onload = function(evt) {
+        var fileString = evt.target.result;
+        alert(fileString);
+    };
+    reader.readAsText(file);
+});
+
 $('#btn-add-css').click(function() {
-    var file = $('#css-file').val();
 });
