@@ -30,6 +30,7 @@
           "jquery.js", 
           "showdown.js", 
           "markdownify.js", 
+          "popup.js", 
           "options.js"
       ]
     }
