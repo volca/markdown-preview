@@ -75,10 +75,13 @@
             }
 
             makeHtml(document.body.innerText);
-
-            // Also inject a reference to the default stylesheet to make things look nicer.
-            storage.get('theme', function(items) {
+            var specialThemePrefix = 'special_',
+                pageKey = specialThemePrefix + location.href;
+            storage.get(['theme', pageKey], function(items) {
                 theme = items.theme ? items.theme : 'Clearness';
+                if(items[pageKey]) {
+                    theme = items[pageKey];
+                }
                 setTheme(theme);
             });
 
@@ -91,8 +94,14 @@
             chrome.storage.onChanged.addListener(function(changes, namespace) {
                 for (key in changes) {
                     var value = changes[key];
-                    if(key == 'theme') {
+                    if(key == pageKey) {
                         setTheme(value.newValue);
+                    } else if(key == 'theme') {
+                        storage.get(pageKey, function(items) {
+                            if(!items[pageKey]) {
+                                setTheme(value.newValue);
+                            }
+                        });
                     } else if(key == 'auto_reload') {
                         if(value.newValue) {
                             startAutoReload();

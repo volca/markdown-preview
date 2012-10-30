@@ -1,6 +1,7 @@
 "use strict";
 
-var storage = chrome.storage.local,
+var pageKey, 
+    storage = chrome.storage.local,
     themePrefix = 'theme_',
     specialThemePrefix = 'special_',
     defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks'];
@@ -12,8 +13,7 @@ storage.get('theme', function(items) {
 
 // theme
 function getThemes() {
-    var key = specialThemePrefix + location.href;
-    storage.get(['custom_themes', key], function(items) {
+    storage.get(['custom_themes', pageKey], function(items) {
         if(items.custom_themes) {
             var k, v, themes = items.custom_themes;
             var group = $('<optgroup label="Custom themes"></optgroup>');
@@ -26,16 +26,19 @@ function getThemes() {
             $('#theme').append(group);
         }
 
-        if(items[key]) {
-            $('#theme').val(items[key]);
+        if(items[pageKey]) {
+            $('#theme').val(items[pageKey]);
         } 
     });
 }
 
-getThemes();
-$('#theme').change(function() {
-    var key = specialThemePrefix + location.href;
-    var obj = {};
-    obj[key] = $(this).val();
-    storage.set(obj);
+chrome.tabs.getSelected(null, function(tab) {
+    pageKey = specialThemePrefix + tab.url;
+    getThemes();
+    $('#theme').change(function() {
+        var obj = {};
+        obj[pageKey] = $(this).val();
+        storage.set(obj);
+    });
 });
+
