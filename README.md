@@ -6,7 +6,28 @@ preview.
 
 [Get it for Chrome][webstore]
 
-# Version History
+Features
+--------
+
+1. Support auto reload.
+1. Support external css file.
+1. You can change theme for each single md file.
+
+Usage
+--------
+
+1. Install extension from [webstore][] (creates no new UI)
+2. Check "Allow access to file URLs" in `chrome://extensions` listing: ![fileurls](http://i.imgur.com/qth3K.png)
+3. Open local or remote .md file in Chrome.
+4. See nicely formatted HTML!
+
+Release Notes
+-----------------
+
+### 0.2.1
+
+1. Add browser icon.
+1. You can change theme for each single md file.
 
 ### 0.2
 
@@ -22,14 +43,8 @@ preview.
 1. Support auto reload.
 1. Support external css file.
 
-# Usage
-
-1. Install extension from [webstore][] (creates no new UI)
-2. Check "Allow access to file URLs" in `chrome://extensions` listing: ![fileurls](http://i.imgur.com/qth3K.png)
-3. Open local or remote .md file in Chrome.
-4. See nicely formatted HTML!
-
-# Thanks
+Thanks
+-------
 
 Thanks to Kevin Burke for his [markdown-friendly stylesheet][style],
 to John Fraser for his [JavaScript markdown processor][showdown],

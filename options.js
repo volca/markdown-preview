@@ -68,6 +68,11 @@ $('#btn-add-css').click(function() {
         return;
     }
 
+    if(file.size > 4096) {
+        message('Oops, only support the css the size less than 4k.', 'error');
+        return;
+    }
+
     var tmp = file.name.split('.');
     tmp.pop();
     var filename = tmp.join('.');
