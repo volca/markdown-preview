@@ -1,6 +1,7 @@
 (function(document) {
 
-    var interval;
+    var interval, 
+        storage = chrome.storage.local;
 
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
@@ -14,15 +15,36 @@
     }
 
     function setTheme(theme) {
-        var link = $('#theme');
-        if(!link.length) {
-            var ss = document.createElement('link');
-            ss.rel = 'stylesheet';
-            ss.id = 'theme';
-            ss.href = getThemeCss(theme);
-            document.head.appendChild(ss);
+        var defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks'];
+
+        if($.inArray(theme, defaultThemes) != -1) {
+            var link = $('#theme');
+            $('#custom-theme').remove();
+            if(!link.length) {
+                var ss = document.createElement('link');
+                ss.rel = 'stylesheet';
+                ss.id = 'theme';
+                ss.href = getThemeCss(theme);
+                document.head.appendChild(ss);
+            } else {
+                link.attr('href', getThemeCss(theme));
+            }
         } else {
-            link.attr('href', getThemeCss(theme));
+            var themePrefix = 'theme_',
+                key = themePrefix + theme;
+            storage.get(key, function(items) {
+                if(items[key]) {
+                    $('#theme').remove();
+                    var theme = $('#custom-theme');
+                    if(!theme.length) {
+                        var style = $('<style/>').attr('id', 'custom-theme')
+                                        .html(items[key]);
+                        $(document.head).append(style);
+                    } else {
+                        theme.html(items[key]);
+                    }
+                }
+            });
         }
     }
 
@@ -53,12 +75,13 @@
             }
 
             makeHtml(document.body.innerText);
-
-            var storage = chrome.storage.local;
-
-            // Also inject a reference to the default stylesheet to make things look nicer.
-            storage.get('theme', function(items) {
+            var specialThemePrefix = 'special_',
+                pageKey = specialThemePrefix + location.href;
+            storage.get(['theme', pageKey], function(items) {
                 theme = items.theme ? items.theme : 'Clearness';
+                if(items[pageKey]) {
+                    theme = items[pageKey];
+                }
                 setTheme(theme);
             });
 
@@ -71,8 +94,14 @@
             chrome.storage.onChanged.addListener(function(changes, namespace) {
                 for (key in changes) {
                     var value = changes[key];
-                    if(key == 'theme') {
+                    if(key == pageKey) {
                         setTheme(value.newValue);
+                    } else if(key == 'theme') {
+                        storage.get(pageKey, function(items) {
+                            if(!items[pageKey]) {
+                                setTheme(value.newValue);
+                            }
+                        });
                     } else if(key == 'auto_reload') {
                         if(value.newValue) {
                             startAutoReload();

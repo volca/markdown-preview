@@ -8,6 +8,16 @@ preview.
 
 # Version History
 
+### 0.2.1
+
+1. Add browser icon
+1. You can change the theme for single page
+
+### 0.2
+
+1. New UI for options page.
+1. You can upload custom css files.
+
 ### 0.1.1
 
 1. Do not render if file's Content-Type is 'text/html'.
