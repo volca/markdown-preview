@@ -54,6 +54,7 @@
   ],
   "browser_action" : {
       "default_icon" : "images/icon.png",
+      "default_title" : "Markdown Preview Plus",
       "default_popup" : "popup.html"
   },
   "options_page": "options.html"
