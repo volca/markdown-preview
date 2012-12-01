@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>MarkDown Preview Plus options</title>
 <link href="bootstrap.min.css" rel="stylesheet">
-<script src="jquery.js"></script>
+<script src="js/jquery.js"></script>
 </head>
 <body>
 
@@ -32,7 +32,7 @@
         </select>
         </p>
 
-        <strong>or add a new CSS</strong>
+        <strong>Or add a new CSS</strong>
         <p>
         <input type="file" id="css-file" class="span4">
         <button id="btn-add-css" class="btn btn-small btn-primary">Add CSS</button>
@@ -46,10 +46,25 @@
         <p>
         <label class="checkbox"><input type="checkbox" id="auto-reload">Enable auto-reload</label>
         </p>
+        <div class="input-prepend">
+            <div class="btn-group">
+                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    Scheme
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">*://</a></li>
+                    <li><a href="#">http://</a></li>
+                    <li><a href="#">https://</a></li>
+                    <li><a href="#">file://</a></li>
+                </ul>
+            </div>
+            <input class="span2" id="prependedDropdownButton" type="text">
+        </div>
     </section>
 
 </div>
 
-<script src="options.js"></script>
+<script src="js/options.js"></script>
 </body>
 </html>
