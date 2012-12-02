@@ -68,6 +68,11 @@ $('#btn-add-css').click(function() {
         return;
     }
 
+    if(file.size > 4096) {
+        message('Oops, only support the css the size less than 4k.', 'error');
+        return;
+    }
+
     var tmp = file.name.split('.');
     tmp.pop();
     var filename = tmp.join('.');
@@ -80,7 +85,9 @@ $('#btn-add-css').click(function() {
             } else {
                 themes = [filename + ""];
             }
-            themes = $.unique(themes);
+            themes = $.grep(themes, function(v, k){
+                return $.inArray(v ,arr) === k;
+            });
             var obj = {'custom_themes' : themes};
             obj[themePrefix + filename] = fileString;
             storage.set(obj, function() {
@@ -91,4 +98,39 @@ $('#btn-add-css').click(function() {
         });
     };
     reader.readAsText(file);
+});
+
+// file extensions
+
+$('.cont-exts input').change(function() {
+    var fileExt = this.value,
+        isChecked = this.checked;
+
+    storage.get('exclude_exts', function(items) {
+        var exts = items.exclude_exts,
+            key = fileExt;
+
+        if(!exts) {
+            exts = {};
+        }
+
+        if(isChecked) {
+            delete exts[key];
+        } else {
+            exts[key] = 1;
+        }
+
+        storage.set({'exclude_exts' : exts}); 
+    });
+});
+
+storage.get('exclude_exts', function(items) {
+    var exts = items.exclude_exts;
+    if(!exts) {
+        return;
+    }
+
+    $.each(exts, function(k, v) {
+        $('input[value="' + k + '"]').attr('checked', false);
+    });
 });
