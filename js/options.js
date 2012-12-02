@@ -126,4 +126,11 @@ $('.cont-exts input').change(function() {
 
 storage.get('exclude_exts', function(items) {
     var exts = items.exclude_exts;
+    if(!exts) {
+        return;
+    }
+
+    $.each(exts, function(k, v) {
+        $('input[value="' + k + '"]').attr('checked', false);
+    });
 });
