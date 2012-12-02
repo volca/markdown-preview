@@ -53,7 +53,7 @@
       "theme/i/email.png",
       "theme/i/folder.png",
       "js/popup.js", 
-      "js/options.js",
+      "js/options.js"
   ],
   "browser_action" : {
       "default_icon" : "images/icon.png",
