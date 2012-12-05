@@ -152,6 +152,7 @@
     storage.get('exclude_exts', function(items) {
         var exts = items.exclude_exts;
         if(!exts) {
+            render();
             return;
         }
 
