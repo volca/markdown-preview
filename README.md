@@ -24,7 +24,7 @@ Usage
 Release Notes
 -----------------
 
-### 0.2.2.1
+### 0.2.2.2
 
 1. Fix an issue for render html.
 
