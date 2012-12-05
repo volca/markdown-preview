@@ -1,6 +1,6 @@
 {
   "name": "Markdown Preview Plus",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "manifest_version": 2,
 
   "description": "Converts and previews markdown files (.md, .markdown) to HTML right inside Chrome.",
@@ -13,25 +13,26 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*/*.md*", 
-        "http://*/*.text", 
-        "http://*/*.markdown*", 
-        "http://*/*.mdown*", 	
-        "https://*/*.md*", 
-        "https://*/*.text", 
-        "https://*/*.markdown*", 
-        "https://*/*.mdown*", 	
-        "file://*/*.md", 
+        "http://*/*.md*",
+        "http://*/*.text",
+        "http://*/*.markdown*",
+        "http://*/*.mdown*",
+        "http://*/*.txt*",
+        "https://*/*.md*",
+        "https://*/*.text",
+        "https://*/*.markdown*",
+        "https://*/*.mdown*",
+        "https://*/*.txt*",
+        "file://*/*.md",
         "file://*/*.markdown",
         "file://*/*.mdown",
-        "file://*/*.text"
+        "file://*/*.text",
+        "file://*/*.txt"
       ],
       "js": [
-          "jquery.js", 
-          "showdown.js", 
-          "markdownify.js", 
-          "popup.js", 
-          "options.js"
+          "js/jquery.js", 
+          "js/showdown.js", 
+          "js/markdownify.js"
       ]
     }
   ],
@@ -50,7 +51,9 @@
       "theme/i/compass.png",
       "theme/i/doc.png",
       "theme/i/email.png",
-      "theme/i/folder.png"
+      "theme/i/folder.png",
+      "js/popup.js", 
+      "js/options.js"
   ],
   "browser_action" : {
       "default_icon" : "images/icon.png",
