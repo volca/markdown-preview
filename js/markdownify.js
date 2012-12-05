@@ -159,7 +159,7 @@
             return parseMatchPattern(v);
         });
         var pattern = new RegExp(parsed.join('|'));
-        if(!pattern.test(location.href)) {
+        if(!parsed.length || !pattern.test(location.href)) {
             render();
         }
     });

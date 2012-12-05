@@ -24,6 +24,10 @@ Usage
 Release Notes
 -----------------
 
+### 0.2.2.1
+
+1. Fix an issue for render html.
+
 ### 0.2.2
 
 1. Add a list of the supported file extensions in the options page.
