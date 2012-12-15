@@ -42,3 +42,21 @@ chrome.tabs.getSelected(null, function(tab) {
     });
 });
 
+$('#btn-export').click(function() {
+    var urlObject = window.URL || window.webkitURL || window,
+        BlobBuilder = BlobBuilder || WebKitBlobBuilder || MozBlobBuilder,
+        builder = new BlobBuilder();
+
+    var data = '<html><body>hello world</body></html>';
+    builder.append(data);
+    var blob = builder.getBlob('text/plain; charset=utf-8');
+    var saveLink = document.createElementNS("http://www.w3.org/1999/xhtml", "a")
+    saveLink.href = urlObject.createObjectURL(blob);
+    saveLink.download = 'export.html';
+    var event = document.createEvent('MouseEvents');
+    event.initMouseEvent(
+        "click", true, false, window, 0, 0, 0, 0, 0
+        , false, false, false, false, 0, null
+    );
+    saveLink.dispatchEvent(event);
+});
