@@ -165,4 +165,12 @@
         }
     });
 
+    chrome.extension.onRequest.addListener(
+        function(request, sender, sendResponse) {
+            if(request.method == "getHtml"){
+                sendResponse({data: document.all[0].outerHTML, method: "getHtml"});
+            }
+        }
+    );
+
 }(document));
