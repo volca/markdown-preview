@@ -167,7 +167,9 @@
 
     chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
         if(request.method == "getHtml"){
-            sendResponse({data: document.all[0].outerHTML, method: "getHtml"});
+            var html = document.all[0].outerHTML;
+            html = html.replace('<head>', '<head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">');
+            sendResponse({data: html, method: "getHtml"});
         }
     });
 
