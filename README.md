@@ -26,6 +26,10 @@ Release Notes
 
 ### 0.2.3
 
+1. Add .mkd extension.
+
+### 0.2.3
+
 1. New button for export html file.
 
 ### 0.2.2
