@@ -24,9 +24,13 @@ Usage
 Release Notes
 -----------------
 
-### 0.2.2.2
+### 0.2.3
 
-1. Fix an issue for render html.
+1. Add .mkd extension.
+
+### 0.2.3
+
+1. New button for export html file.
 
 ### 0.2.2
 

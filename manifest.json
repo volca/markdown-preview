@@ -1,6 +1,6 @@
 {
   "name": "Markdown Preview Plus",
-  "version": "0.2.2.2",
+  "version": "0.2.4",
   "manifest_version": 2,
 
   "description": "Converts and previews markdown files (.md, .markdown) to HTML right inside Chrome.",
@@ -18,16 +18,19 @@
         "http://*/*.markdown*",
         "http://*/*.mdown*",
         "http://*/*.txt*",
+        "http://*/*.mkd*",
         "https://*/*.md*",
         "https://*/*.text",
         "https://*/*.markdown*",
         "https://*/*.mdown*",
         "https://*/*.txt*",
+        "https://*/*.mkd*",
         "file://*/*.md",
         "file://*/*.markdown",
         "file://*/*.mdown",
         "file://*/*.text",
-        "file://*/*.txt"
+        "file://*/*.txt",
+        "file://*/*.mkd"
       ],
       "js": [
           "js/jquery.js", 
