@@ -85,8 +85,8 @@ $('#btn-add-css').click(function() {
             } else {
                 themes = [filename + ""];
             }
-            themes = $.grep(themes, function(v, k){
-                return $.inArray(v ,arr) === k;
+            themes = $.grep(themes, function(v, k) {
+                return $.inArray(v, themes) === k;
             });
             var obj = {'custom_themes' : themes};
             obj[themePrefix + filename] = fileString;

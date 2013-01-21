@@ -24,7 +24,11 @@ Usage
 Release Notes
 -----------------
 
-### 0.2.3
+### 0.2.5
+
+1. Fix a bug when add new css.
+
+### 0.2.4
 
 1. Add .mkd extension.
 
