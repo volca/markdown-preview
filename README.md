@@ -36,29 +36,7 @@ Release Notes
 
 1. New button for export html file.
 
-### 0.2.2
-
-1. Add a list of the supported file extensions in the options page.
-1. Support new file extension .txt
-
-### 0.2.1
-
-1. Add browser icon.
-1. You can change theme for each single md file.
-
-### 0.2
-
-1. New UI for options page.
-1. You can upload custom css files.
-
-### 0.1.1
-
-1. Do not render if file's Content-Type is 'text/html'.
-
-### 0.1
-
-1. Support auto reload.
-1. Support external css file.
+You can read the full list of changes in [the wiki](https://github.com/volca/markdown-preview/wiki/Changelog).
 
 Thanks
 -------
