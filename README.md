@@ -28,7 +28,7 @@ Release Notes
 
 * Support code highlight. Thanks Mogztter.
 * Update Showdown.js to latest version. This version of `Showdown.js` supports "Github flavored Markdown" for code. Thanks Mogztter again.
-* Update jquery.js to 2.0.
+* Update jquery.js to 1.9.1
 
 ### Changelog
 
