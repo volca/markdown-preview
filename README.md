@@ -24,19 +24,30 @@ Usage
 Release Notes
 -----------------
 
-### 0.2.5
+### 0.2.6
 
-1. Fix a bug when add new css.
+* Support code highlight. Thanks Mogztter.
+* Update Showdown.js to latest version. This version of `Showdown.js` supports "Github flavored Markdown" for code. Thanks Mogztter again.
+* Update jquery.js to 2.0.
 
-### 0.2.4
+### Changelog
 
-1. Add .mkd extension.
-
-### 0.2.3
-
-1. New button for export html file.
-
-You can read the full list of changes in [the wiki](https://github.com/volca/markdown-preview/wiki/Changelog).
+* 0.2.5 Fix a bug when add new css.
+* 0.2.4 Add .mkd extension.
+* 0.2.3 New button for export html file.
+* 0.2.2 
+    Add a list of the supported file extensions in the options page.
+    Support new file extension .txt
+* 0.2.1 
+    Add browser icon.
+    You can change theme for each single md file.
+* 0.2 
+     New UI for options page.
+     You can upload custom css files.
+* 0.1.1 Do not render if file's Content-Type is 'text/html'. 
+* 0.1
+     Support auto reload. 
+     Support external css file.
 
 Thanks
 -------
