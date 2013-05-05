@@ -81,6 +81,11 @@
         }
     }
 
+    function setCodeHighlight() {
+        hljs.tabReplace = ' ';
+        hljs.initHighlighting();
+    }
+
     function stopAutoReload() {
         clearInterval(interval);
     }
@@ -124,6 +129,8 @@
                         startAutoReload();
                     }
                 });
+
+                setCodeHighlight();
 
                 chrome.storage.onChanged.addListener(function(changes, namespace) {
                     for (key in changes) {

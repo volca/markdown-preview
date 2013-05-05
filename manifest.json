@@ -1,6 +1,6 @@
 {
   "name": "Markdown Preview Plus",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "manifest_version": 2,
 
   "description": "Converts and previews markdown files (.md, .markdown) to HTML right inside Chrome.",
@@ -35,7 +35,8 @@
       "js": [
           "js/jquery.js", 
           "js/showdown.js", 
-          "js/markdownify.js"
+          "js/markdownify.js",
+          "js/highlight.pack.js"
       ]
     }
   ],
