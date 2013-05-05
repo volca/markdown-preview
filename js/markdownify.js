@@ -41,6 +41,7 @@
     function makeHtml(data) {
         var html = (new Showdown.converter()).makeHtml(data);
         $(document.body).html(html);
+        setCodeHighlight();
     }
 
     function getThemeCss(theme) {
@@ -83,7 +84,7 @@
 
     function setCodeHighlight() {
         hljs.tabReplace = ' ';
-        hljs.initHighlighting();
+        $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
     }
 
     function stopAutoReload() {
@@ -129,8 +130,6 @@
                         startAutoReload();
                     }
                 });
-
-                setCodeHighlight();
 
                 chrome.storage.onChanged.addListener(function(changes, namespace) {
                     for (key in changes) {
