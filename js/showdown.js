@@ -6,6 +6,9 @@
 // Original Markdown Copyright (c) 2004-2005 John Gruber
 //   <http://daringfireball.net/projects/markdown/>
 //
+// Redistributable under a BSD-style open source license.
+// See license.txt for more information.
+//
 // The full source distribution is at:
 //
 //				A A L
@@ -48,7 +51,7 @@
 //
 //   var text = "Markdown *rocks*.";
 //
-//   var converter = new Attacklab.showdown.converter();
+//   var converter = new Showdown.converter();
 //   var html = converter.makeHtml(text);
 //
 //   alert(html);
@@ -59,14 +62,30 @@
 
 
 //
-// Attacklab namespace
-//
-var Attacklab = Attacklab || {}
-
-//
 // Showdown namespace
 //
-Attacklab.showdown = Attacklab.showdown || {}
+var Showdown = { extensions: {} };
+
+//
+// forEach
+//
+var forEach = Showdown.forEach = function(obj, callback) {
+	if (typeof obj.forEach === 'function') {
+		obj.forEach(callback);
+	} else {
+		var i, len = obj.length;
+		for (i = 0; i < len; i++) {
+			callback(obj[i], i, obj);
+		}
+	}
+};
+
+//
+// Standard extension naming
+//
+var stdExtName = function(s) {
+	return s.replace(/[_-]||\s/g, '').toLowerCase();
+};
 
 //
 // converter
@@ -74,7 +93,7 @@ Attacklab.showdown = Attacklab.showdown || {}
 // Wraps all "globals" so that the only thing
 // exposed is makeHtml().
 //
-Attacklab.showdown.converter = function() {
+Showdown.converter = function(converter_options) {
 
 //
 // Globals:
@@ -89,6 +108,32 @@ var g_html_blocks;
 // (see _ProcessListItems() for details):
 var g_list_level = 0;
 
+// Global extensions
+var g_lang_extensions = [];
+var g_output_modifiers = [];
+
+
+//
+// Automatic Extension Loading (node only):
+//
+
+if (typeof module !== 'undefind' && typeof exports !== 'undefined' && typeof require !== 'undefind') {
+	var fs = require('fs');
+
+	if (fs) {
+		// Search extensions folder
+		var extensions = fs.readdirSync((__dirname || '.')+'/extensions').filter(function(file){
+			return ~file.indexOf('.js');
+		}).map(function(file){
+			return file.replace(/\.js$/, '');
+		});
+		// Load extensions into Showdown namespace
+		Showdown.forEach(extensions, function(ext){
+			var name = stdExtName(ext);
+			Showdown.extensions[name] = require('./extensions/' + ext);
+		});
+	}
+}
 
 this.makeHtml = function(text) {
 //
@@ -102,14 +147,14 @@ this.makeHtml = function(text) {
 	// from other articles when generating a page which contains more than
 	// one article (e.g. an index page that shows the N most recent
 	// articles):
-	g_urls = new Array();
-	g_titles = new Array();
-	g_html_blocks = new Array();
+	g_urls = {};
+	g_titles = {};
+	g_html_blocks = [];
 
 	// attacklab: Replace ~ with ~T
 	// This lets us use tilde as an escape char to avoid md5 hashes
 	// The choice of character is arbitray; anything that isn't
-    // magic in Markdown will work.
+	// magic in Markdown will work.
 	text = text.replace(/~/g,"~T");
 
 	// attacklab: Replace $ with ~D
@@ -133,6 +178,15 @@ this.makeHtml = function(text) {
 	// contorted like /[ \t]*\n+/ .
 	text = text.replace(/^[ \t]+$/mg,"");
 
+	// Run language extensions
+	Showdown.forEach(g_lang_extensions, function(x){
+		text = _ExecuteExtension(x, text);
+	});
+
+	// Handle github codeblocks prior to running HashHTML so that
+	// HTML contained within the codeblock gets escaped propertly
+	text = _DoGithubCodeBlocks(text);
+
 	// Turn block-level HTML blocks into hash entries
 	text = _HashHTMLBlocks(text);
 
@@ -149,8 +203,60 @@ this.makeHtml = function(text) {
 	// attacklab: Restore tildes
 	text = text.replace(/~T/g,"~");
 
+	// Run output modifiers
+	Showdown.forEach(g_output_modifiers, function(x){
+		text = _ExecuteExtension(x, text);
+	});
+
 	return text;
+};
+//
+// Options:
+//
+
+// Parse extensions options into separate arrays
+if (converter_options && converter_options.extensions) {
+
+  var self = this;
+
+	// Iterate over each plugin
+	Showdown.forEach(converter_options.extensions, function(plugin){
+
+		// Assume it's a bundled plugin if a string is given
+		if (typeof plugin === 'string') {
+			plugin = Showdown.extensions[stdExtName(plugin)];
+		}
+
+		if (typeof plugin === 'function') {
+			// Iterate over each extension within that plugin
+			Showdown.forEach(plugin(self), function(ext){
+				// Sort extensions by type
+				if (ext.type) {
+					if (ext.type === 'language' || ext.type === 'lang') {
+						g_lang_extensions.push(ext);
+					} else if (ext.type === 'output' || ext.type === 'html') {
+						g_output_modifiers.push(ext);
+					}
+				} else {
+					// Assume language extension
+					g_output_modifiers.push(ext);
+				}
+			});
+		} else {
+			throw "Extension '" + plugin + "' could not be loaded.  It was either not found or is not a valid extension.";
+		}
+	});
 }
+
+
+var _ExecuteExtension = function(ext, text) {
+	if (ext.regex) {
+		var re = new RegExp(ext.regex, 'g');
+		return text.replace(re, ext.replace);
+	} else if (ext.filter) {
+		return ext.filter(text);
+	}
+};
 
 var _StripLinkDefinitions = function(text) {
 //
@@ -181,7 +287,11 @@ var _StripLinkDefinitions = function(text) {
 			  /gm,
 			  function(){...});
 	*/
-	var text = text.replace(/^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?[ \t]*\n?[ \t]*(?:(\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm,
+
+	// attacklab: sentinel workarounds for lack of \A and \Z, safari\khtml bug
+	text += "~0";
+
+	text = text.replace(/^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?[ \t]*\n?[ \t]*(?:(\n*)["(](.+?)[")][ \t]*)?(?:\n+|(?=~0))/gm,
 		function (wholeMatch,m1,m2,m3,m4) {
 			m1 = m1.toLowerCase();
 			g_urls[m1] = _EncodeAmpsAndAngles(m2);  // Link IDs are case-insensitive
@@ -192,14 +302,18 @@ var _StripLinkDefinitions = function(text) {
 			} else if (m4) {
 				g_titles[m1] = m4.replace(/"/g,"&quot;");
 			}
-			
+
 			// Completely remove the definition from the text
 			return "";
 		}
 	);
 
+	// attacklab: strip sentinel
+	text = text.replace(/~0/,"");
+
 	return text;
 }
+
 
 var _HashHTMLBlocks = function(text) {
 	// attacklab: Double up blank lines to reduce lookaround
@@ -211,8 +325,8 @@ var _HashHTMLBlocks = function(text) {
 	// "paragraphs" that are wrapped in non-block-level tags, such as anchors,
 	// phrase emphasis, and spans. The list of tags we're looking for is
 	// hard-coded:
-	var block_tags_a = "p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|ins|del"
-	var block_tags_b = "p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math"
+	var block_tags_a = "p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|ins|del|style|section|header|footer|nav|article|aside";
+	var block_tags_b = "p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|style|section|header|footer|nav|article|aside";
 
 	// First, look for nested blocks, e.g.:
 	//   <div>
@@ -255,16 +369,16 @@ var _HashHTMLBlocks = function(text) {
 			\b					// word break
 								// attacklab: hack around khtml/pcre bug...
 			[^\r]*?				// any number of lines, minimally matching
-			.*</\2>				// the matching end tag
+			</\2>				// the matching end tag
 			[ \t]*				// trailing spaces/tabs
 			(?=\n+)				// followed by a newline
 		)						// attacklab: there are sentinel newlines at end of document
 		/gm,function(){...}};
 	*/
-	text = text.replace(/^(<(p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math)\b[^\r]*?.*<\/\2>[ \t]*(?=\n+)\n)/gm,hashElement);
+	text = text.replace(/^(<(p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|style|section|header|footer|nav|article|aside)\b[^\r]*?<\/\2>[ \t]*(?=\n+)\n)/gm,hashElement);
 
 	// Special case just for <hr />. It was easier to make a special case than
-	// to make the other regex more complicated.  
+	// to make the other regex more complicated.
 
 	/*
 		text = text.replace(/
@@ -273,7 +387,7 @@ var _HashHTMLBlocks = function(text) {
 			[ ]{0,3}
 			(<(hr)				// start tag = $2
 			\b					// word break
-			([^<>])*?			// 
+			([^<>])*?			//
 			\/?>)				// the matching end tag
 			[ \t]*
 			(?=\n{2,})			// followed by a blank line
@@ -331,13 +445,13 @@ var hashElement = function(wholeMatch,m1) {
 	// Undo double lines
 	blockText = blockText.replace(/\n\n/g,"\n");
 	blockText = blockText.replace(/^\n/,"");
-	
+
 	// strip trailing blank lines
 	blockText = blockText.replace(/\n+$/g,"");
-	
+
 	// Replace the element text with a marker ("~KxK" where x is its key)
 	blockText = "\n\n~K" + (g_html_blocks.push(blockText)-1) + "K\n\n";
-	
+
 	return blockText;
 };
 
@@ -351,8 +465,8 @@ var _RunBlockGamut = function(text) {
 	// Do Horizontal Rules:
 	var key = hashBlock("<hr />");
 	text = text.replace(/^[ ]{0,2}([ ]?\*[ ]?){3,}[ \t]*$/gm,key);
-	text = text.replace(/^[ ]{0,2}([ ]?-[ ]?){3,}[ \t]*$/gm,key);
-	text = text.replace(/^[ ]{0,2}([ ]?_[ ]?){3,}[ \t]*$/gm,key);
+	text = text.replace(/^[ ]{0,2}([ ]?\-[ ]?){3,}[ \t]*$/gm,key);
+	text = text.replace(/^[ ]{0,2}([ ]?\_[ ]?){3,}[ \t]*$/gm,key);
 
 	text = _DoLists(text);
 	text = _DoCodeBlocks(text);
@@ -366,7 +480,7 @@ var _RunBlockGamut = function(text) {
 	text = _FormParagraphs(text);
 
 	return text;
-}
+};
 
 
 var _RunSpanGamut = function(text) {
@@ -403,7 +517,7 @@ var _EscapeSpecialCharsWithinTagAttributes = function(text) {
 // don't conflict with their use in Markdown for code, italics and strong.
 //
 
-	// Build a regex to find HTML tags and comments.  See Friedl's 
+	// Build a regex to find HTML tags and comments.  See Friedl's
 	// "Mastering Regular Expressions", 2nd Ed., pp. 200-201.
 	var regex = /(<[a-z\/!$]("[^"]*"|'[^']*'|[^'">])*>|<!(--.*?--\s*)+>)/gi;
 
@@ -479,7 +593,7 @@ var _DoAnchors = function(text) {
 		)
 		/g,writeAnchorTag);
 	*/
-	text = text.replace(/(\[((?:\[[^\]]*\]|[^\[\]])*)\]\([ \t]*()<?(.*?)>?[ \t]*((['"])(.*?)\6[ \t]*)?\))/g,writeAnchorTag);
+	text = text.replace(/(\[((?:\[[^\]]*\]|[^\[\]])*)\]\([ \t]*()<?(.*?(?:\(.*?\).*?)?)>?[ \t]*((['"])(.*?)\6[ \t]*)?\))/g,writeAnchorTag);
 
 	//
 	// Last, handle reference-style shortcuts: [link text]
@@ -508,14 +622,14 @@ var writeAnchorTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
 	var link_id	 = m3.toLowerCase();
 	var url		= m4;
 	var title	= m7;
-	
+
 	if (url == "") {
 		if (link_id == "") {
 			// lower-case and turn embedded newlines into spaces
 			link_id = link_text.toLowerCase().replace(/ ?\n/g," ");
 		}
 		url = "#"+link_id;
-		
+
 		if (g_urls[link_id] != undefined) {
 			url = g_urls[link_id];
 			if (g_titles[link_id] != undefined) {
@@ -530,19 +644,19 @@ var writeAnchorTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
 				return whole_match;
 			}
 		}
-	}	
-	
+	}
+
 	url = escapeCharacters(url,"*_");
 	var result = "<a href=\"" + url + "\"";
-	
+
 	if (title != "") {
 		title = title.replace(/"/g,"&quot;");
 		title = escapeCharacters(title,"*_");
 		result +=  " title=\"" + title + "\"";
 	}
-	
+
 	result += ">" + link_text + "</a>";
-	
+
 	return result;
 }
 
@@ -613,14 +727,14 @@ var writeImageTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
 	var title	= m7;
 
 	if (!title) title = "";
-	
+
 	if (url == "") {
 		if (link_id == "") {
 			// lower-case and turn embedded newlines into spaces
 			link_id = alt_text.toLowerCase().replace(/ ?\n/g," ");
 		}
 		url = "#"+link_id;
-		
+
 		if (g_urls[link_id] != undefined) {
 			url = g_urls[link_id];
 			if (g_titles[link_id] != undefined) {
@@ -630,8 +744,8 @@ var writeImageTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
 		else {
 			return whole_match;
 		}
-	}	
-	
+	}
+
 	alt_text = alt_text.replace(/"/g,"&quot;");
 	url = escapeCharacters(url,"*_");
 	var result = "<img src=\"" + url + "\" alt=\"" + alt_text + "\"";
@@ -644,9 +758,9 @@ var writeImageTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
 		title = escapeCharacters(title,"*_");
 		result +=  " title=\"" + title + "\"";
 	//}
-	
+
 	result += " />";
-	
+
 	return result;
 }
 
@@ -656,15 +770,15 @@ var _DoHeaders = function(text) {
 	// Setext-style headers:
 	//	Header 1
 	//	========
-	//  
+	//
 	//	Header 2
 	//	--------
 	//
 	text = text.replace(/^(.+)[ \t]*\n=+[ \t]*\n+/gm,
-		function(wholeMatch,m1){return hashBlock("<h1>" + _RunSpanGamut(m1) + "</h1>");});
+		function(wholeMatch,m1){return hashBlock('<h1 id="' + headerId(m1) + '">' + _RunSpanGamut(m1) + "</h1>");});
 
 	text = text.replace(/^(.+)[ \t]*\n-+[ \t]*\n+/gm,
-		function(matchFound,m1){return hashBlock("<h2>" + _RunSpanGamut(m1) + "</h2>");});
+		function(matchFound,m1){return hashBlock('<h2 id="' + headerId(m1) + '">' + _RunSpanGamut(m1) + "</h2>");});
 
 	// atx-style headers:
 	//  # Header 1
@@ -688,9 +802,12 @@ var _DoHeaders = function(text) {
 	text = text.replace(/^(\#{1,6})[ \t]*(.+?)[ \t]*\#*\n+/gm,
 		function(wholeMatch,m1,m2) {
 			var h_level = m1.length;
-			return hashBlock("<h" + h_level + ">" + _RunSpanGamut(m2) + "</h" + h_level + ">");
+			return hashBlock("<h" + h_level + ' id="' + headerId(m2) + '">' + _RunSpanGamut(m2) + "</h" + h_level + ">");
 		});
 
+	function headerId(m) {
+		return m.replace(/[^\w]/g, '').toLowerCase();
+	}
 	return text;
 }
 
@@ -740,7 +857,7 @@ var _DoLists = function(text) {
 			// paragraph for the last item in a list, if necessary:
 			list = list.replace(/\n{2,}/g,"\n\n\n");;
 			var result = _ProcessListItems(list);
-	
+
 			// Trim any trailing whitespace, to put the closing `</$list_type>`
 			// up on the preceding line, to get it past the current stupid
 			// HTML block parser. This is a hack to work around the terrible
@@ -760,7 +877,7 @@ var _DoLists = function(text) {
 			// paragraph for the last item in a list, if necessary:
 			var list = list.replace(/\n{2,}/g,"\n\n\n");;
 			var result = _ProcessListItems(list);
-			result = runup + "<"+list_type+">\n" + result + "</"+list_type+">\n";	
+			result = runup + "<"+list_type+">\n" + result + "</"+list_type+">\n";
 			return result;
 		});
 	}
@@ -846,7 +963,7 @@ _ProcessListItems = function(list_str) {
 var _DoCodeBlocks = function(text) {
 //
 //  Process Markdown `<pre><code>` blocks.
-//  
+//
 
 	/*
 		text = text.replace(text,
@@ -863,12 +980,12 @@ var _DoCodeBlocks = function(text) {
 
 	// attacklab: sentinel workarounds for lack of \A and \Z, safari\khtml bug
 	text += "~0";
-	
+
 	text = text.replace(/(?:\n\n|^)((?:(?:[ ]{4}|\t).*\n+)+)(\n*[ ]{0,3}[^ \t\n]|(?=~0))/g,
 		function(wholeMatch,m1,m2) {
 			var codeblock = m1;
 			var nextChar = m2;
-		
+
 			codeblock = _EncodeCode( _Outdent(codeblock));
 			codeblock = _Detab(codeblock);
 			codeblock = codeblock.replace(/^\n+/g,""); // trim leading newlines
@@ -884,6 +1001,43 @@ var _DoCodeBlocks = function(text) {
 	text = text.replace(/~0/,"");
 
 	return text;
+};
+
+var _DoGithubCodeBlocks = function(text) {
+//
+//  Process Github-style code blocks
+//  Example:
+//  ```ruby
+//  def hello_world(x)
+//    puts "Hello, #{x}"
+//  end
+//  ```
+//
+
+
+	// attacklab: sentinel workarounds for lack of \A and \Z, safari\khtml bug
+	text += "~0";
+
+	text = text.replace(/(?:^|\n)```(.*)\n([\s\S]*?)\n```/g,
+		function(wholeMatch,m1,m2) {
+			var language = m1;
+			var codeblock = m2;
+
+			codeblock = _EncodeCode(codeblock);
+			codeblock = _Detab(codeblock);
+			codeblock = codeblock.replace(/^\n+/g,""); // trim leading newlines
+			codeblock = codeblock.replace(/\n+$/g,""); // trim trailing whitespace
+
+			codeblock = "<pre><code" + (language ? " class=\"" + language + '"' : "") + ">" + codeblock + "\n</code></pre>";
+
+			return hashBlock(codeblock);
+		}
+	);
+
+	// attacklab: strip sentinel
+	text = text.replace(/~0/,"");
+
+	return text;
 }
 
 var hashBlock = function(text) {
@@ -891,30 +1045,29 @@ var hashBlock = function(text) {
 	return "\n\n~K" + (g_html_blocks.push(text)-1) + "K\n\n";
 }
 
-
 var _DoCodeSpans = function(text) {
 //
 //   *  Backtick quotes are used for <code></code> spans.
-// 
+//
 //   *  You can use multiple backticks as the delimiters if you want to
 //	 include literal backticks in the code span. So, this input:
-//	 
+//
 //		 Just type ``foo `bar` baz`` at the prompt.
-//	 
+//
 //	   Will translate to:
-//	 
+//
 //		 <p>Just type <code>foo `bar` baz</code> at the prompt.</p>
-//	 
+//
 //	There's no arbitrary limit to the number of backticks you
 //	can use as delimters. If you need three consecutive backticks
 //	in your code, use four for delimiters, etc.
 //
 //  *  You can use spaces to get literal backticks at the edges:
-//	 
+//
 //		 ... type `` `bar` `` ...
-//	 
+//
 //	   Turns to:
-//	 
+//
 //		 ... type <code>`bar`</code> ...
 //
 
@@ -942,7 +1095,6 @@ var _DoCodeSpans = function(text) {
 
 	return text;
 }
-
 
 var _EncodeCode = function(text) {
 //
@@ -978,7 +1130,7 @@ var _EncodeCode = function(text) {
 var _DoItalicsAndBold = function(text) {
 
 	// <strong> must go first:
-	text = text.replace(/(\*\*|__)(?=\S)([^\r]*?\S[\*_]*)\1/g,
+	text = text.replace(/(\*\*|__)(?=\S)([^\r]*?\S[*_]*)\1/g,
 		"<strong>$2</strong>");
 
 	text = text.replace(/(\*|_)(?=\S)([^\r]*?\S)\1/g,
@@ -1017,7 +1169,7 @@ var _DoBlockQuotes = function(text) {
 
 			bq = bq.replace(/^[ \t]+$/gm,"");		// trim whitespace-only lines
 			bq = _RunBlockGamut(bq);				// recurse
-			
+
 			bq = bq.replace(/(^|\n)/g,"$1  ");
 			// These leading spaces screw with <pre> content, so we need to fix that:
 			bq = bq.replace(
@@ -1029,7 +1181,7 @@ var _DoBlockQuotes = function(text) {
 					pre = pre.replace(/~0/g,"");
 					return pre;
 				});
-			
+
 			return hashBlock("<blockquote>\n" + bq + "\n</blockquote>");
 		});
 	return text;
@@ -1047,7 +1199,7 @@ var _FormParagraphs = function(text) {
 	text = text.replace(/\n+$/g,"");
 
 	var grafs = text.split(/\n{2,}/g);
-	var grafsOut = new Array();
+	var grafsOut = [];
 
 	//
 	// Wrap <p> tags.
@@ -1088,14 +1240,14 @@ var _FormParagraphs = function(text) {
 
 var _EncodeAmpsAndAngles = function(text) {
 // Smart processing for ampersands and angle brackets that need to be encoded.
-	
+
 	// Ampersand-encoding based entirely on Nat Irons's Amputator MT plugin:
 	//   http://bumppo.net/projects/amputator/
 	text = text.replace(/&(?!#?[xX]?(?:[0-9a-fA-F]+|\w+);)/g,"&amp;");
-	
+
 	// Encode naked <'s
 	text = text.replace(/<(?![a-z\/?\$!])/gi,"&lt;");
-	
+
 	return text;
 }
 
@@ -1166,16 +1318,9 @@ var _EncodeEmailAddress = function(addr) {
 //  mailing list: <http://tinyurl.com/yu7ue>
 //
 
-	// attacklab: why can't javascript speak hex?
-	function char2hex(ch) {
-		var hexDigits = '0123456789ABCDEF';
-		var dec = ch.charCodeAt(0);
-		return(hexDigits.charAt(dec>>4) + hexDigits.charAt(dec&15));
-	}
-
 	var encode = [
 		function(ch){return "&#"+ch.charCodeAt(0)+";";},
-		function(ch){return "&#x"+char2hex(ch)+";";},
+		function(ch){return "&#x"+ch.charCodeAt(0).toString(16)+";";},
 		function(ch){return ch;}
 	];
 
@@ -1293,15 +1438,17 @@ var escapeCharacters_callback = function(wholeMatch,m1) {
 	return "~E"+charCodeToEscape+"E";
 }
 
-} // end of Attacklab.showdown.converter
+} // end of Showdown.converter
 
 
-// Version 0.9 used the Showdown namespace instead of Attacklab.showdown
-// The old namespace is deprecated, but we'll support it for now:
-var Showdown = Attacklab.showdown;
+// export
+if (typeof module !== 'undefined') module.exports = Showdown;
 
-// If anyone's interested, tell the world that this file's been loaded
-if (Attacklab.fileLoaded) {
-	Attacklab.fileLoaded("showdown.js");
+// stolen from AMD branch of underscore
+// AMD define happens at the end for compatibility with AMD loaders
+// that don't enforce next-turn semantics on modules.
+if (typeof define === 'function' && define.amd) {
+    define('showdown', function() {
+        return Showdown;
+    });
 }
-
