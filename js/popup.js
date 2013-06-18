@@ -49,13 +49,10 @@ $('#btn-export').click(function() {
                 var html = response.data;
 
                 var urlObject = window.URL || window.webkitURL || window,
-                    BlobBuilder = BlobBuilder || WebKitBlobBuilder || MozBlobBuilder,
-                    builder = new BlobBuilder();
+                    builder = new Blob([html], {type: 'text/plain; charset=utf-8'});
 
-                builder.append(html);
-                var blob = builder.getBlob('text/plain; charset=utf-8');
                 var saveLink = document.createElementNS("http://www.w3.org/1999/xhtml", "a")
-                saveLink.href = urlObject.createObjectURL(blob);
+                saveLink.href = urlObject.createObjectURL(builder);
                 saveLink.download = 'export.html';
                 var event = document.createEvent('MouseEvents');
                 event.initMouseEvent(

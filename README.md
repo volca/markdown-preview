@@ -24,6 +24,10 @@ Usage
 Release Notes
 -----------------
 
+### 0.2.7
+
+* Fix a bug for "Export Html" 
+
 ### 0.2.6
 
 * Support code highlight. Thanks Mogztter.
