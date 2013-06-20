@@ -34,7 +34,7 @@
       ],
       "js": [
           "js/jquery.js", 
-          "js/showdown.js", 
+          "js/marked.js", 
           "js/markdownify.js"
       ]
     }

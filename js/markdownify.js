@@ -39,7 +39,23 @@
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
-        var html = (new Showdown.converter()).makeHtml(data);
+        marked.setOptions({
+          gfm: true,
+          tables: true,
+          breaks: false,
+          pedantic: false,
+          sanitize: true,
+          smartLists: true,
+          smartypants: false,
+          langPrefix: 'language-',
+          highlight: function(code, lang) {
+            if (lang === 'js') {
+              return highlighter.javascript(code);
+            }
+            return code;
+          }
+        });
+        var html = marked(data);
         $(document.body).html(html);
     }
 
