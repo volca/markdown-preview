@@ -12,6 +12,7 @@ Features
 1. Support auto reload.
 1. Support external css file.
 1. You can change theme for each single md file.
+1. Support github flavored markdown.
 
 Usage
 --------
@@ -23,6 +24,11 @@ Usage
 
 Release Notes
 -----------------
+
+### 0.3
+
+* Support github flavored markdown.
+* Change the markdown parser from showdown to [marked](https://github.com/chjj/marked).
 
 ### 0.2.7
 
