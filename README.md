@@ -28,7 +28,7 @@ Release Notes
 ### 0.3
 
 * Support github flavored markdown.
-* Change the markdown parser from showdown to [marked](https://github.com/chjj/marked).
+* Change the markdown parser from showdown to [marked][marked].
 
 ### 0.2.7
 
@@ -70,7 +70,7 @@ Swartz and Gruber for [Markdown][md].
 
 [webstore]: https://chrome.google.com/webstore/detail/markdown-preview-plus/febilkbfcbhebfnokafefeacimjdckgl
 [style]: http://kevinburke.bitbucket.org/markdowncss
-[showdown]: https://github.com/coreyti/showdown
+[marked]: https://github.com/chjj/marked
 [md]: http://en.wikipedia.org/wiki/Markdown
 [mp]: https://github.com/borismus/markdown-preview
 
