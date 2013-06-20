@@ -23,7 +23,7 @@ storage.get('auto_reload', function(items) {
 });
 
 $('#auto-reload').change(function() {
-    if(!!$(this).attr('checked')) {
+    if($(this).prop('checked')) {
         storage.set({'auto_reload' : 1});
     } else {
         storage.remove('auto_reload');

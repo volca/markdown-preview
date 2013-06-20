@@ -57,6 +57,7 @@
         });
         var html = marked(data);
         $(document.body).html(html);
+        setCodeHighlight();
     }
 
     function getThemeCss(theme) {
@@ -95,6 +96,11 @@
                 }
             });
         }
+    }
+
+    function setCodeHighlight() {
+        hljs.tabReplace = ' ';
+        $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
     }
 
     function stopAutoReload() {
