@@ -44,16 +44,9 @@
           tables: true,
           breaks: false,
           pedantic: false,
-          sanitize: true,
+          sanitize: false,
           smartLists: true,
           smartypants: false,
-          langPrefix: 'language-',
-          highlight: function(code, lang) {
-            if (lang === 'js') {
-              return highlighter.javascript(code);
-            }
-            return code;
-          }
         });
         var html = marked(data);
         $(document.body).html(html);
