@@ -25,6 +25,10 @@ Usage
 Release Notes
 -----------------
 
+### 0.3.1
+
+* Fixed a bug for code highlight.
+
 ### 0.3
 
 * Support github flavored markdown.
