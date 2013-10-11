@@ -2,7 +2,7 @@
 
 var storage = chrome.storage.local,
     themePrefix = 'theme_',
-    defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks'];
+    defaultThemes = ['Clearness', 'ClearnessDark', 'GitHub', 'TopMarks'];
 
 function message(text, type) {
     var msgType = type || 'success',
