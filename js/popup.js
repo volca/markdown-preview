@@ -4,7 +4,7 @@ var pageKey,
     storage = chrome.storage.local,
     themePrefix = 'theme_',
     specialThemePrefix = 'special_',
-    defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks'];
+    defaultThemes = ['Clearness', 'ClearnessDark', 'GitHub', 'TopMarks'];
 
 storage.get('theme', function(items) {
     var theme = items.theme ? items.theme : 'Clearness';
