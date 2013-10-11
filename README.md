@@ -25,6 +25,10 @@ Usage
 Release Notes
 -----------------
 
+### 0.3.2
+
+* Fix Github theme.
+
 ### 0.3.1
 
 * Fixed a bug for code highlight.
@@ -34,19 +38,10 @@ Release Notes
 * Support github flavored markdown.
 * Change the markdown parser from showdown to [marked][marked].
 
-### 0.2.7
-
-* Fix a bug for "Export Html" 
-
-### 0.2.6
-
-* Support code highlight. Thanks Mogztter.
-* Update Showdown.js to latest version. This version of `Showdown.js` supports "Github flavored Markdown" for code. Thanks Mogztter again.
-* Update jquery.js to 1.9.1
-* Fix a bug for auto reload.
-
 ### Changelog
 
+* 0.2.7 Fix a bug for "Export Html".
+* 0.2.6 Support code hightlight. Fix a bug for auto reload.
 * 0.2.5 Fix a bug when add new css.
 * 0.2.4 Add .mkd extension.
 * 0.2.3 New button for export html file.
