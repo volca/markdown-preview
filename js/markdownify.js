@@ -39,6 +39,7 @@
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
+        /*
         marked.setOptions({
           gfm: true,
           tables: true,
@@ -48,6 +49,7 @@
           smartLists: true,
           smartypants: false,
         });
+       */
         var html = marked(data);
         $(document.body).html(html);
         setCodeHighlight();
