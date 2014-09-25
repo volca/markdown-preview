@@ -56,9 +56,9 @@ h2,h3{margin:1em 0;}
 h1,h2,h3,h4,h5,h6{border:0;}
 h1{font-size:170%;border-top:4px solid #aaa;padding-top:.5em;margin-top:1.5em;}
 h1:first-child{margin-top:0;padding-top:.25em;border-top:none;}
-h2{font-size:150%;margin-top:1.5em;border-top:4px solid #e0e0e0;padding-top:.5em;}
+h2{font-size:150%;margin-top:1.5em;border-bottom:1px solid #ddd;padding-bottom:.5em;}
 h3{margin-top:1em;}
-hr{border:1px solid #ddd;}
+hr{height:0;margin:15px 0;overflow:hidden;background:transparent;border:0;border-bottom:4px solid #ddd;}
 ul{margin:1em 0 1em 2em;}
 ol{margin:1em 0 1em 2em;}
 ul li,ol li{margin-top:.5em;margin-bottom:.5em;}
