@@ -2,6 +2,7 @@
 
 var storage = chrome.storage.local,
     themePrefix = 'theme_',
+    defaultReloadFreq = 3,
     defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks'];
 
 function message(text, type) {
@@ -122,6 +123,21 @@ $('.cont-exts input').change(function() {
 
         storage.set({'exclude_exts' : exts}); 
     });
+});
+
+storage.get('reload_freq', function(items) {
+    var freq = items.reload_freq;
+    freq = freq ? freq : defaultReloadFreq;
+    
+    $.each($('#reload-freq option'), function(k, v) {
+        if($(v).val() == freq) {
+            $(v).attr('selected', 'selected');
+        }
+    });
+});
+
+$('#reload-freq').change(function() {
+    storage.set({'reload_freq' : $(this).val()});
 });
 
 storage.get('exclude_exts', function(items) {

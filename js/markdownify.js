@@ -1,6 +1,7 @@
 (function(document) {
 
     var interval, 
+        defaultReloadFreq = 3,
         storage = chrome.storage.local;
 
     function parseMatchPattern(input) {
@@ -104,6 +105,14 @@
 
     function startAutoReload() {
         stopAutoReload();
+
+        var freq = defaultReloadFreq;
+        storage.get('reload_freq', function(items) {
+            if(items.reload_freq) {
+                freq = items.reload_freq;
+            }
+        });
+
         interval = setInterval(function() {
             $.ajax({
                 url : location.href, 
@@ -112,7 +121,7 @@
                     makeHtml(data); 
                 }
             });
-        }, 3000);
+        }, freq * 1000);
     }
 
     function render() {
@@ -152,6 +161,10 @@
                                 if(!items[pageKey]) {
                                     setTheme(value.newValue);
                                 }
+                            });
+                        } else if(key == 'reload_freq') {
+                            storage.get('auto_reload', function(items) {
+                                startAutoReload();
                             });
                         } else if(key == 'auto_reload') {
                             if(value.newValue) {
