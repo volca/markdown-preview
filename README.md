@@ -25,6 +25,11 @@ Usage
 Release Notes
 -----------------
 
+### 0.3.4
+
+* H2 and HR tag styles update, to be more close to current github styles. Thanks Lukas238. See #13.
+* Add an option for custom reload time interval. see #12.
+
 ### 0.3.2/0.3.3
 
 * Fix Github theme.
