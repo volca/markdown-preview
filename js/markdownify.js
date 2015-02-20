@@ -201,6 +201,8 @@
 
 
     chrome.storage.onChanged.addListener(function(changes, namespace) {
+        var specialThemePrefix = 'special_',
+            pageKey = specialThemePrefix + location.href;
         for (key in changes) {
             var value = changes[key];
             if(key == pageKey) {
@@ -223,7 +225,14 @@
                 }
             } else if(key == 'disable_markdown') {
                 if(value.newValue) {
-                    location.reload();
+                    $.ajax({
+                        url : location.href, 
+                        cache : false,
+                        complete : function(xhr, textStatus) {
+                            $(document.body).html(document.body.innerText);
+                        }
+                    });
+                    //location.href.reload();
                 } else {
                     render();
                 }
