@@ -14,6 +14,23 @@ function message(text, type) {
     }, 3000);
 }
 
+// mathjax
+storage.get('mathjax', function(items) {
+    if(items.mathjax) {
+        $('#mathjax').attr('checked', 'checked');
+    } else {
+        $('#mathjax').removeAttr('checked');
+    }
+});
+
+$('#mathjax').change(function() {
+    if($(this).prop('checked')) {
+        storage.set({'mathjax' :1});
+    } else {
+        storage.remove('mathjax');
+    }
+});
+
 // auto-reload
 storage.get('auto_reload', function(items) {
     if(items.auto_reload) {

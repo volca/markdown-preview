@@ -51,9 +51,17 @@
           smartypants: false,
         });
        */
-        var html = marked(data);
-        $(document.body).html(html);
-        setCodeHighlight();
+        storage.get('mathjax', function(items) {
+            if(items.mathjax) {
+                data = data.replace(/\\\(/g, "\\\\(");
+                data = data.replace(/\\\)/g, "\\\\)");
+                data = data.replace(/\\\[/g, "\\\\[");
+                data = data.replace(/\\\]/g, "\\\\]");
+            }
+            var html = marked(data);
+            $(document.body).html(html);
+            setCodeHighlight();
+        });
     }
 
     function getThemeCss(theme) {
@@ -92,6 +100,16 @@
                 }
             });
         }
+    }
+
+    function setMathJax() {
+        var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
+        .html("MathJax.Hub.Config({tex2jax: {inlineMath: [ ['$','$'], ['\\\\(','\\\\)'] ],processEscapes:true}});");
+        $(document.head).append(mjc);
+        var js = $('<script/>').attr('type','text/javascript')
+        .attr('src','http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
+        $(document.head).append(js);
+
     }
 
     function setCodeHighlight() {
@@ -143,6 +161,12 @@
                         theme = items[pageKey];
                     }
                     setTheme(theme);
+                });
+
+                storage.get('mathjax', function(items) {
+                    if(items.mathjax) {
+                        setMathJax()
+                    }
                 });
 
                 storage.get('auto_reload', function(items) {
