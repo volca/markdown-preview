@@ -73,7 +73,7 @@ function getThemes() {
 getThemes();
 $('#theme').change(function() {
     storage.set({'theme' : $(this).val()}, function() {
-        message('You successfully set the default css.');
+        message('You changed the default css.');
     });
 });
 

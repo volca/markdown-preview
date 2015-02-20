@@ -64,3 +64,6 @@ $('#btn-export').click(function() {
         });
     });
 });
+
+$('#disable-markdown').change(function() {
+});
