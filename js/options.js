@@ -2,6 +2,7 @@
 
 var storage = chrome.storage.local,
     themePrefix = 'theme_',
+    maxCustomCssSize = 8192,
     defaultReloadFreq = 3,
     defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks'];
 
@@ -86,8 +87,8 @@ $('#btn-add-css').click(function() {
         return;
     }
 
-    if(file.size > 4096) {
-        message('Oops, only support the css the size less than 4k.', 'error');
+    if(file.size > maxCustomCssSize) {
+        message('Oops, only support the css file that size less than ' + (maxCustomCssSize / 1024) + '.', 'error');
         return;
     }
 
@@ -110,7 +111,7 @@ $('#btn-add-css').click(function() {
             obj[themePrefix + filename] = fileString;
             storage.set(obj, function() {
                 getThemes();
-                message('Well done! You successfully add a custom css.');
+                message('Well done! You added a custom css.');
                 $('#css-file').val('');
             });
         });
