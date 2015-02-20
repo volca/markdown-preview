@@ -51,14 +51,17 @@
           smartypants: false,
         });
        */
-        // Hack to work around a marked.js bug.
-        data = data.replace(/\\\(/g, "\\\\(");
-        data = data.replace(/\\\)/g, "\\\\)");
-        data = data.replace(/\\\[/g, "\\\\[");
-        data = data.replace(/\\\]/g, "\\\\]");
-        var html = marked(data);
-        $(document.body).html(html);
-        setCodeHighlight();
+        storage.get('mathjax', function(items) {
+            if(items.mathjax) {
+                data = data.replace(/\\\(/g, "\\\\(");
+                data = data.replace(/\\\)/g, "\\\\)");
+                data = data.replace(/\\\[/g, "\\\\[");
+                data = data.replace(/\\\]/g, "\\\\]");
+            }
+            var html = marked(data);
+            $(document.body).html(html);
+            setCodeHighlight();
+        });
     }
 
     function getThemeCss(theme) {
