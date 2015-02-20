@@ -168,38 +168,14 @@
                         startAutoReload();
                     }
                 });
-
-                chrome.storage.onChanged.addListener(function(changes, namespace) {
-                    for (key in changes) {
-                        var value = changes[key];
-                        if(key == pageKey) {
-                            setTheme(value.newValue);
-                        } else if(key == 'theme') {
-                            storage.get(pageKey, function(items) {
-                                if(!items[pageKey]) {
-                                    setTheme(value.newValue);
-                                }
-                            });
-                        } else if(key == 'reload_freq') {
-                            storage.get('auto_reload', function(items) {
-                                startAutoReload();
-                            });
-                        } else if(key == 'auto_reload') {
-                            if(value.newValue) {
-                                startAutoReload();
-                            } else {
-                                stopAutoReload();
-                            }
-                        } else if(key == 'disable_markdown') {
-                            location.reload();
-                        }
-                    }
-                });
             }
         });
     }
 
-    storage.get('exclude_exts', function(items) {
+    storage.get(['exclude_exts', 'disable_markdown'], function(items) {
+        if(items.disable_markdown) {
+            return;
+        }
         var exts = items.exclude_exts;
         if(!exts) {
             render();
@@ -220,6 +196,38 @@
             var html = document.all[0].outerHTML;
             html = html.replace('<head>', '<head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">');
             sendResponse({data: html, method: "getHtml"});
+        }
+    });
+
+
+    chrome.storage.onChanged.addListener(function(changes, namespace) {
+        for (key in changes) {
+            var value = changes[key];
+            if(key == pageKey) {
+                setTheme(value.newValue);
+            } else if(key == 'theme') {
+                storage.get(pageKey, function(items) {
+                    if(!items[pageKey]) {
+                        setTheme(value.newValue);
+                    }
+                });
+            } else if(key == 'reload_freq') {
+                storage.get('auto_reload', function(items) {
+                    startAutoReload();
+                });
+            } else if(key == 'auto_reload') {
+                if(value.newValue) {
+                    startAutoReload();
+                } else {
+                    stopAutoReload();
+                }
+            } else if(key == 'disable_markdown') {
+                if(value.newValue) {
+                    location.reload();
+                } else {
+                    render();
+                }
+            }
         }
     });
 
