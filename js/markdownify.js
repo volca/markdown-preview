@@ -13,7 +13,10 @@
             result = /^(\*|https?|file|ftp|chrome-extension):\/\//.exec(input);
 
         // Parse scheme
-        if (!result) return null;
+        if (!result) {
+            return null;
+        }
+
         input = input.substr(result[0].length);
         match_pattern += result[1] === '*' ? 'https?://' : result[1] + '://';
 
@@ -31,6 +34,7 @@
                 match_pattern += regEscape(match[2]) + '/';
             }
         }
+
         // Add remainder (path)
         match_pattern += input.split('*').map(regEscape).join('.*');
         match_pattern += '$)';
@@ -40,24 +44,15 @@
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
-        /*
-        marked.setOptions({
-          gfm: true,
-          tables: true,
-          breaks: false,
-          pedantic: false,
-          sanitize: false,
-          smartLists: true,
-          smartypants: false,
-        });
-       */
-        storage.get('mathjax', function(items) {
+        var keys = ['mathjax', 'disable_markdown'];
+        storage.get(keys, function(items) {
             if(items.mathjax) {
                 data = data.replace(/\\\(/g, "\\\\(");
                 data = data.replace(/\\\)/g, "\\\\)");
                 data = data.replace(/\\\[/g, "\\\\[");
                 data = data.replace(/\\\]/g, "\\\\]");
             }
+
             var html = marked(data);
             $(document.body).html(html);
             setCodeHighlight();
@@ -195,6 +190,8 @@
                             } else {
                                 stopAutoReload();
                             }
+                        } else if(key == 'disable_markdown') {
+                            location.reload();
                         }
                     }
                 });
