@@ -40,5 +40,5 @@ Swartz and Gruber for [Markdown][md].
 Links
 -----------------
 
-* [Change Log](ChangeLog)
+* [Change Log](https://github.com/volca/markdown-preview/wiki/Changelog)
 
