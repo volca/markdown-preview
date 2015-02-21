@@ -44,8 +44,7 @@
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
-        var keys = ['mathjax', 'disable_markdown'];
-        storage.get(keys, function(items) {
+        storage.get('mathjax', function(items) {
             if(items.mathjax) {
                 data = data.replace(/\\\(/g, "\\\\(");
                 data = data.replace(/\\\)/g, "\\\\)");
@@ -224,18 +223,7 @@
                     stopAutoReload();
                 }
             } else if(key == 'disable_markdown') {
-                if(value.newValue) {
-                    $.ajax({
-                        url : location.href, 
-                        cache : false,
-                        complete : function(xhr, textStatus) {
-                            $(document.body).html(document.body.innerText);
-                        }
-                    });
-                    //location.href.reload();
-                } else {
-                    render();
-                }
+                location.reload();
             }
         }
     });
