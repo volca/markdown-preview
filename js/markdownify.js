@@ -13,7 +13,10 @@
             result = /^(\*|https?|file|ftp|chrome-extension):\/\//.exec(input);
 
         // Parse scheme
-        if (!result) return null;
+        if (!result) {
+            return null;
+        }
+
         input = input.substr(result[0].length);
         match_pattern += result[1] === '*' ? 'https?://' : result[1] + '://';
 
@@ -31,6 +34,7 @@
                 match_pattern += regEscape(match[2]) + '/';
             }
         }
+
         // Add remainder (path)
         match_pattern += input.split('*').map(regEscape).join('.*');
         match_pattern += '$)';
@@ -40,17 +44,6 @@
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
-        /*
-        marked.setOptions({
-          gfm: true,
-          tables: true,
-          breaks: false,
-          pedantic: false,
-          sanitize: false,
-          smartLists: true,
-          smartypants: false,
-        });
-       */
         storage.get('mathjax', function(items) {
             if(items.mathjax) {
                 data = data.replace(/\\\(/g, "\\\\(");
@@ -58,6 +51,7 @@
                 data = data.replace(/\\\[/g, "\\\\[");
                 data = data.replace(/\\\]/g, "\\\\]");
             }
+
             var html = marked(data);
             $(document.body).html(html);
             setCodeHighlight();
@@ -104,12 +98,11 @@
 
     function setMathJax() {
         var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
-        .html("MathJax.Hub.Config({tex2jax: {inlineMath: [ ['$','$'], ['\\\\(','\\\\)'] ],processEscapes:true}});");
+            .html("MathJax.Hub.Config({tex2jax: {inlineMath: [ ['$','$'], ['\\\\(','\\\\)'] ],processEscapes:true}});");
         $(document.head).append(mjc);
         var js = $('<script/>').attr('type','text/javascript')
-        .attr('src','http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
+            .attr('src','http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
         $(document.head).append(js);
-
     }
 
     function setCodeHighlight() {
@@ -174,36 +167,14 @@
                         startAutoReload();
                     }
                 });
-
-                chrome.storage.onChanged.addListener(function(changes, namespace) {
-                    for (key in changes) {
-                        var value = changes[key];
-                        if(key == pageKey) {
-                            setTheme(value.newValue);
-                        } else if(key == 'theme') {
-                            storage.get(pageKey, function(items) {
-                                if(!items[pageKey]) {
-                                    setTheme(value.newValue);
-                                }
-                            });
-                        } else if(key == 'reload_freq') {
-                            storage.get('auto_reload', function(items) {
-                                startAutoReload();
-                            });
-                        } else if(key == 'auto_reload') {
-                            if(value.newValue) {
-                                startAutoReload();
-                            } else {
-                                stopAutoReload();
-                            }
-                        }
-                    }
-                });
             }
         });
     }
 
-    storage.get('exclude_exts', function(items) {
+    storage.get(['exclude_exts', 'disable_markdown'], function(items) {
+        if(items.disable_markdown) {
+            return;
+        }
         var exts = items.exclude_exts;
         if(!exts) {
             render();
@@ -224,6 +195,36 @@
             var html = document.all[0].outerHTML;
             html = html.replace('<head>', '<head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">');
             sendResponse({data: html, method: "getHtml"});
+        }
+    });
+
+
+    chrome.storage.onChanged.addListener(function(changes, namespace) {
+        var specialThemePrefix = 'special_',
+            pageKey = specialThemePrefix + location.href;
+        for (key in changes) {
+            var value = changes[key];
+            if(key == pageKey) {
+                setTheme(value.newValue);
+            } else if(key == 'theme') {
+                storage.get(pageKey, function(items) {
+                    if(!items[pageKey]) {
+                        setTheme(value.newValue);
+                    }
+                });
+            } else if(key == 'reload_freq') {
+                storage.get('auto_reload', function(items) {
+                    startAutoReload();
+                });
+            } else if(key == 'auto_reload') {
+                if(value.newValue) {
+                    startAutoReload();
+                } else {
+                    stopAutoReload();
+                }
+            } else if(key == 'disable_markdown') {
+                location.reload();
+            }
         }
     });
 
