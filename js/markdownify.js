@@ -1,4 +1,4 @@
-(function(document) {
+(function(document, mermaid, Prism) {
 
     var interval, 
         defaultReloadFreq = 3,
@@ -52,10 +52,22 @@
                 data = data.replace(/\\\]/g, "\\\\]");
             }
 
-            var html = marked(data);
+            var html = marked(data, {
+              langPrefix: "language-"
+            });
             $(document.body).html(html);
-            setCodeHighlight();
+            loadPrismCss();
+            loadMermaidGraphs();
+            Prism.highlightAll();
         });
+    }
+
+    function loadPrismCss() {
+        var ss = document.createElement('link');
+        ss.rel = 'stylesheet';
+        ss.id = 'theme';
+        ss.href = chrome.extension.getURL('prism.css');
+        document.head.appendChild(ss);
     }
 
     function getThemeCss(theme) {
@@ -105,9 +117,12 @@
         $(document.head).append(js);
     }
 
-    function setCodeHighlight() {
-        hljs.tabReplace = ' ';
-        $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
+    function loadMermaidGraphs() {
+        var charts = $('.language-mermaid');
+        for(var i = 0; i < charts.length; i++) {
+            charts[i].setAttribute('class', 'mermaid');
+        }
+        mermaid.init();
     }
 
     function stopAutoReload() {
@@ -228,4 +243,4 @@
         }
     });
 
-}(document));
+}(document, mermaid, Prism));

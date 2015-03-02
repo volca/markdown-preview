@@ -33,20 +33,22 @@
         "file://*/*.mkd"
       ],
       "js": [
-          "js/jquery.js", 
-          "js/marked.js", 
-          "js/highlight.js",
+          "js/jquery.js",
+          "js/marked.js",
+          "js/prism.js",
+          "js/mermaid.full.js",
           "js/markdownify.js"
       ]
     }
   ],
   "permissions": [
-      "storage", 
-      "tabs", 
+      "storage",
+      "tabs",
       "<all_urls>"
   ],
   "web_accessible_resources": [
       "bootstrap.min.css",
+      "prism.css",
       "theme/Clearness.css",
       "theme/ClearnessDark.css",
       "theme/Github.css",
@@ -56,7 +58,7 @@
       "theme/i/doc.png",
       "theme/i/email.png",
       "theme/i/folder.png",
-      "js/popup.js", 
+      "js/popup.js",
       "js/options.js"
   ],
   "browser_action" : {
