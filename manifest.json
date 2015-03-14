@@ -57,14 +57,12 @@
       "theme/i/email.png",
       "theme/i/folder.png",
       "js/popup.js", 
-      // MathJax
       "js/MathJax.js", 
       "js/runMathJax.js", 
       "js/config/TeX-AMS_HTML.js",
       "js/jax/output/HTML-CSS/jax.js",
       "js/jax/output/HTML-CSS/fonts/STIX/fontdata.js",
       "js/images/MenuArrow-15.png",
-      // MathJax end
       "js/options.js"
   ],
   "browser_action" : {
