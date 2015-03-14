@@ -33,8 +33,8 @@
         "file://*/*.mkd"
       ],
       "js": [
-          "js/jquery.js", 
-          "js/marked.js", 
+          "js/jquery.js",
+          "js/marked.js",
           "js/highlight.js",
           "js/markdownify.js"
       ]
@@ -57,12 +57,13 @@
       "theme/i/email.png",
       "theme/i/folder.png",
       "js/popup.js", 
-      "js/MathJax.js", 
       // MathJax
-      "js/images/MenuArrow-15.png",
+      "js/MathJax.js", 
+      "js/runMathJax.js", 
       "js/config/TeX-AMS_HTML.js",
       "js/jax/output/HTML-CSS/jax.js",
       "js/jax/output/HTML-CSS/fonts/STIX/fontdata.js",
+      "js/images/MenuArrow-15.png",
       // MathJax end
       "js/options.js"
   ],

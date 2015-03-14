@@ -59,6 +59,13 @@
             });
             var html = marked(data);
             $(document.body).html(html);
+
+            if (items.mathjax) {
+                // Inject js to reload MathJax
+                var js = $('<script/>').attr('type', 'text/javascript')
+                    .attr('src', chrome.extension.getURL('js/runMathJax.js'));
+                $(document.head).append(js);
+            }
         });
     }
 
