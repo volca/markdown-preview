@@ -105,7 +105,7 @@
             .html("MathJax.Hub.Config({tex2jax: {inlineMath: [ ['$','$'], ['\\\\(','\\\\)'] ],processEscapes:true}});");
         $(document.head).append(mjc);
         var js = $('<script/>').attr('type','text/javascript')
-            .attr('src','http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
+            .attr('src', chrome.extension.getURL('js/MathJax.js?config=TeX-AMS_HTML'));
         $(document.head).append(js);
     }
 
@@ -155,12 +155,6 @@
                     setTheme(theme);
                 });
 
-                storage.get('mathjax', function(items) {
-                    if(items.mathjax) {
-                        setMathJax()
-                    }
-                });
-
                 storage.get('auto_reload', function(items) {
                     if(items.auto_reload) {
                         startAutoReload();
@@ -170,10 +164,15 @@
         });
     }
 
-    storage.get(['exclude_exts', 'disable_markdown'], function(items) {
+    storage.get(['exclude_exts', 'disable_markdown', 'mathjax'], function(items) {
         if(items.disable_markdown) {
             return;
         }
+
+        if(items.mathjax) {
+            setMathJax();
+        }
+
         var exts = items.exclude_exts;
         if(!exts) {
             render();
@@ -196,7 +195,6 @@
             sendResponse({data: html, method: "getHtml"});
         }
     });
-
 
     chrome.storage.onChanged.addListener(function(changes, namespace) {
         var specialThemePrefix = 'special_',
