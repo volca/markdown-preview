@@ -52,9 +52,13 @@
                 data = data.replace(/\\\]/g, "\\\\]");
             }
 
+            marked.setOptions({
+                highlight : function(code) {
+                    return hljs.highlightAuto(code).value;
+                }
+            });
             var html = marked(data);
             $(document.body).html(html);
-            setCodeHighlight();
         });
     }
 
@@ -103,11 +107,6 @@
         var js = $('<script/>').attr('type','text/javascript')
             .attr('src','http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
         $(document.head).append(js);
-    }
-
-    function setCodeHighlight() {
-        hljs.tabReplace = ' ';
-        $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
     }
 
     function stopAutoReload() {
