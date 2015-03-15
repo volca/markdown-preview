@@ -26,7 +26,7 @@ Thanks
 -------
 
 Thanks to Kevin Burke for his [markdown-friendly stylesheet][style],
-to John Fraser for his [JavaScript markdown processor][showdown],
+to chjj for his [JavaScript markdown processor][marked],
 to Boris Smus for his [Markdown Preview][mp] and to
 Swartz and Gruber for [Markdown][md].
 
