@@ -112,7 +112,7 @@
             .html("MathJax.Hub.Config({tex2jax: {inlineMath: [ ['$','$'], ['\\\\(','\\\\)'] ],processEscapes:true}});");
         $(document.head).append(mjc);
         var js = $('<script/>').attr('type','text/javascript')
-            .attr('src','http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
+            .attr('src', 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
         $(document.head).append(js);
     }
 
