@@ -2,6 +2,7 @@
 
     var interval, 
         defaultReloadFreq = 3,
+        previousText,
         storage = chrome.storage.local;
 
     function parseMatchPattern(input) {
@@ -135,7 +136,11 @@
                 url : location.href, 
                 cache : false,
                 success : function(data) { 
+                    if (previousText == data) {
+                        return;
+                    }
                     makeHtml(data); 
+                    previousText = data;
                 }
             });
         }, freq * 1000);
