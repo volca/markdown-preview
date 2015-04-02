@@ -1,6 +1,6 @@
 {
   "name": "Markdown Preview Plus",
-  "version": "0.4.3",
+  "version": "0.4.5",
   "manifest_version": 2,
 
   "description": "Converts and previews markdown files (.md, .markdown) to HTML right inside Chrome.",
@@ -57,12 +57,7 @@
       "theme/i/email.png",
       "theme/i/folder.png",
       "js/popup.js", 
-      "js/MathJax.js", 
       "js/runMathJax.js", 
-      "js/config/TeX-AMS_HTML.js",
-      "js/jax/output/HTML-CSS/jax.js",
-      "js/jax/output/HTML-CSS/fonts/STIX/fontdata.js",
-      "js/images/MenuArrow-15.png",
       "js/options.js"
   ],
   "browser_action" : {
