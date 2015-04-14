@@ -11,8 +11,10 @@ Features
 
 1. Support auto reload.
 1. Support external css file.
-1. You can change theme for each single md file.
+1. Customize theme for every md file.
 1. Support github flavored markdown.
+1. Export nicely formatted HTML.
+1. Support MathJax.
 
 Usage
 --------
