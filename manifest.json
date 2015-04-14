@@ -1,6 +1,6 @@
 {
   "name": "Markdown Preview Plus",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "manifest_version": 2,
 
   "description": "Converts and previews markdown files (.md, .markdown) to HTML right inside Chrome.",
@@ -43,6 +43,8 @@
   "permissions": [
       "storage", 
       "tabs", 
+      "pageCapture",
+      "downloads",
       "<all_urls>"
   ],
   "web_accessible_resources": [

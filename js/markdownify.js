@@ -84,6 +84,7 @@
                 var ss = document.createElement('link');
                 ss.rel = 'stylesheet';
                 ss.id = 'theme';
+                //ss.media = "print";
                 ss.href = getThemeCss(theme);
                 document.head.appendChild(ss);
             } else {
@@ -197,14 +198,6 @@
         var pattern = new RegExp(parsed.join('|'));
         if(!parsed.length || !pattern.test(location.href)) {
             render();
-        }
-    });
-
-    chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-        if(request.method == "getHtml"){
-            var html = document.all[0].outerHTML;
-            html = html.replace('<head>', '<head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">');
-            sendResponse({data: html, method: "getHtml"});
         }
     });
 
