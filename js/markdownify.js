@@ -1,6 +1,6 @@
 (function(document) {
 
-    var interval, 
+    var interval,
         defaultReloadFreq = 3,
         previousText,
         storage = chrome.storage.local;
@@ -9,8 +9,8 @@
         if (typeof input !== 'string') {
             return null;
         }
-        var match_pattern = '(?:^', 
-            regEscape = function(s) {return s.replace(/[[^$.|?*+(){}\\]/g, '\\$&');},  
+        var match_pattern = '(?:^',
+            regEscape = function(s) {return s.replace(/[[^$.|?*+(){}\\]/g, '\\$&');},
             result = /^(\*|https?|file|ftp|chrome-extension):\/\//.exec(input);
 
         // Parse scheme
@@ -46,13 +46,9 @@
     // apply the converter.
     function makeHtml(data) {
         storage.get('mathjax', function(items) {
-            if(items.mathjax) {
-                data = data.replace(/\\\(/g, "\\\\(");
-                data = data.replace(/\\\)/g, "\\\\)");
-                data = data.replace(/\\\[/g, "\\\\[");
-                data = data.replace(/\\\]/g, "\\\\]");
-            }
-
+            // Convert MarkDown to HTML without MathJax typesetting.
+            // This is done to make page responsiveness.  The HTML body
+            // is replaced after MathJax typesetting.
             marked.setOptions({
                 highlight : function(code) {
                     return hljs.highlightAuto(code).value;
@@ -61,11 +57,25 @@
             var html = marked(data);
             $(document.body).html(html);
 
+            // Apply MathJax typesetting
             if (items.mathjax) {
-                // Inject js to reload MathJax
+                // Inject js required to process MathJax before Markdown
+                var markedJs = $('<script/>').attr('type', 'text/javascript')
+                    .attr('src',
+                          chrome.extension.getURL('js/marked.js'));
+                $(document.head).append(markedJs);
+
                 var js = $('<script/>').attr('type', 'text/javascript')
-                    .attr('src', chrome.extension.getURL('js/runMathJax.js'));
+                    .attr('src',
+                          chrome.extension.getURL('js/runMathJax.js'));
                 $(document.head).append(js);
+
+                // Create hidden div to use for MathJax processing
+                var mathjaxDiv = document.createElement("div");
+                mathjaxDiv.setAttribute("id", "mathjaxProcessing");
+                mathjaxDiv.innerHTML = data;
+                mathjaxDiv.style.display = 'none';
+                document.body.appendChild(mathjaxDiv);
             }
         });
     }
@@ -111,10 +121,10 @@
 
     function setMathJax() {
         var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
-            .html("MathJax.Hub.Config({tex2jax: {inlineMath: [ ['$','$'], ['\\\\(','\\\\)'] ],processEscapes:true}});");
+            .html("MathJax.Hub.Config({tex2jax: {inlineMath: [ ['\\\\\\\\(', '\\\\\\\\)'] ], displayMath: [ ['\\\\\\\\[', '\\\\\\\\]'] ], processEscapes:false}});");
         $(document.head).append(mjc);
         var js = $('<script/>').attr('type','text/javascript')
-            .attr('src', 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
+            .attr('src', 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
         $(document.head).append(js);
     }
 
@@ -134,13 +144,13 @@
 
         interval = setInterval(function() {
             $.ajax({
-                url : location.href, 
+                url : location.href,
                 cache : false,
-                success : function(data) { 
+                success : function(data) {
                     if (previousText == data) {
                         return;
                     }
-                    makeHtml(data); 
+                    makeHtml(data);
                     previousText = data;
                 }
             });
@@ -149,12 +159,12 @@
 
     function render() {
         $.ajax({
-            url : location.href, 
+            url : location.href,
             cache : false,
             complete : function(xhr, textStatus) {
                 var contentType = xhr.getResponseHeader('Content-Type');
                 if(contentType && (contentType.indexOf('html') > -1)) {
-                    return;    
+                    return;
                 }
 
                 makeHtml(document.body.innerText);
