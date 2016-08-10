@@ -121,7 +121,7 @@
 
     function setMathJax() {
         var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
-            .html("MathJax.Hub.Config({tex2jax: {inlineMath: [ ['\\\\\\\\(', '\\\\\\\\)'] ], displayMath: [ ['\\\\\\\\[', '\\\\\\\\]'] ], processEscapes:false}});");
+            .html("MathJax.Hub.Config({tex2jax: {inlineMath: [ ['\\\\\\\\(', '\\\\\\\\)'] ], displayMath: [ ['$$', '$$'], ['\\\\\\\\[', '\\\\\\\\]'] ], processEscapes:false}});");
         $(document.head).append(mjc);
         var js = $('<script/>').attr('type','text/javascript')
             .attr('src', 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
