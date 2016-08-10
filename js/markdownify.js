@@ -5,41 +5,11 @@
         previousText,
         storage = chrome.storage.local;
 
-    function parseMatchPattern(input) {
-        if (typeof input !== 'string') {
-            return null;
-        }
-        var match_pattern = '(?:^',
-            regEscape = function(s) {return s.replace(/[[^$.|?*+(){}\\]/g, '\\$&');},
-            result = /^(\*|https?|file|ftp|chrome-extension):\/\//.exec(input);
-
-        // Parse scheme
-        if (!result) {
-            return null;
-        }
-
-        input = input.substr(result[0].length);
-        match_pattern += result[1] === '*' ? 'https?://' : result[1] + '://';
-
-        // Parse host if scheme is not `file`
-        if (result[1] !== 'file') {
-            if (!(result = /^(?:\*|(\*\.)?([^\/*]+))/.exec(input))) return null;
-            input = input.substr(result[0].length);
-            if (result[0] === '*') {    // host is '*'
-                match_pattern += '[^/]+';
-            } else {
-                if (match[1]) {         // Subdomain wildcard exists
-                    match_pattern += '(?:[^/]+\.)?';
-                }
-                // Append host (escape special regex characters)
-                match_pattern += regEscape(match[2]) + '/';
-            }
-        }
-
-        // Add remainder (path)
-        match_pattern += input.split('*').map(regEscape).join('.*');
-        match_pattern += '$)';
-        return match_pattern;
+    function getExtension(url) {
+        url = url.substr(1 + url.lastIndexOf("/"))
+            .split('?')[0]
+            .split('#')[0];
+        return url.substr(1 + url.lastIndexOf("."))
     }
 
     // Onload, take the DOM of the page, get the markdown formatted text out and
@@ -205,11 +175,8 @@
             return;
         }
 
-        var parsed = $.map(exts, function(k, v) {
-            return parseMatchPattern(v);
-        });
-        var pattern = new RegExp(parsed.join('|'));
-        if(!parsed.length || !pattern.test(location.href)) {
+        var fileExt = getExtension(location.href);
+        if (typeof exts[fileExt] == "undefined") {
             render();
         }
     });
