@@ -24,46 +24,48 @@ Usage
 3. Open local or remote .md file in Chrome.
 4. See nicely formatted HTML!
 
-Supported Math Syntax
----------------------
+Math Syntax
+-----------
 
-To minimize conflict between Markdown and MathJax, MathJax has been configured
-to recognize the following math syntax.  Unfortunately, several standard LaTeX
-delimiters were explicitly disabled to avoid conflict with Markdown syntax
-(i.e., we prioritized Markdown over LaTeX).
+Markdown Preview Plus uses the MathJax engine to support rendering of
+mathematical expressions.  Markdown Preview Plus supports the following math
+syntax.  To minimize interference between Markdown and MathJax, some standard
+LaTeX delimiters (indicated below) are disabled by default to avoid conflict
+with Markdown syntax.  LaTeX syntax can be enabled in the options.
 
 ### Inline Math ###
+
+* __Single Dollar Signs__ (requires LaTeX delimiters):
+  <span class="tex2jax_ignore">`$math$`<span/>.  When LaTeX syntax is enabled,
+  dollar signs used in non-math contexts should be escaped with a backslash:
+  <span class="tex2jax_ignore">`\$`<span/>
+
+* __Single Backslash with Parentheses__ (requires LaTex delimiters):
+  <span class="tex2jax_ignore">`\(math\)`<span/>.  Conflicts with Markdown's
+  escaped syntax for parentheses `\(`.
 
 * __Double Backslash with Parentheses__:
   <span class="tex2jax_ignore">`\\(math\\)`<span/>
 
 ### Display Math ###
 
-* __Double Dollar Signs__:
-  <span class="tex2jax_ignore">`$$math$$`<span/>
+* __Single Backslash with Brackets__ (requires LaTeX delimiters):
+  <span class="tex2jax_ignore">`\[math\]`<span/>.  Conflicts with Markdown's
+  escaped syntax for brackets `\[`.
 
 * __Double Backslash with Brackets__:
   <span class="tex2jax_ignore">`\\[math\\]`<span/>
 
-* __LaTeX Environments__:
-  <span class="tex2jax_ignore">`\begin{equation}math\end{equation}`<span/>
+* __Double Dollar Signs__:
+  <span class="tex2jax_ignore">`$$math$$`<span/>
 
-### Unsupported Math Syntax ###
+* __LaTeX Environments__ (always available when MathJax is enabled)
 
-* __Single Dollar Signs__:
-  <span class="tex2jax_ignore">`$math$`<span/>.
-  This syntax (from LaTeX) is not supported because it conflicts with the use
-  of the dollar sign in financial contexts.
+  * <span class="tex2jax_ignore">`\begin{equation}math\end{equation}`<span/>
 
-* __Single Backslash with Parentheses__:
-  <span class="tex2jax_ignore">`\(math\)`<span/>.
-  This syntax (from LaTeX) is not supported because it conflicts with
-  Markdown's escaped syntax for parentheses `\(`.
+  * <span class="tex2jax_ignore">`\begin{eqnarray}math\end{eqnarray}`<span/>
 
-* __Single Backslash with Brackets__:
-  <span class="tex2jax_ignore">`\[math\]`<span/>.
-  This syntax (from LaTeX) is not supported because it conflicts with
-  Markdown's escaped syntax for brackets `\[`.
+  * ...
 
 Thanks
 ------
