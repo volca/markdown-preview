@@ -93,7 +93,7 @@
     }
 
     function setMathJax() {
-        storage.get('enable_latex_syntax', function(items) {
+        storage.get('enable_latex_delimiters', function(items) {
 
             // Note: when math delimiters are set in JS as strings,
             // backslashes need to be escaped
@@ -105,8 +105,8 @@
                 }
             };
 
-            // Enable MathJAX LaTeX syntax
-            if (items.enable_latex_syntax) {
+            // Enable MathJAX LaTeX delimiters
+            if (items.enable_latex_delimiters) {
                 mathjaxConfig.tex2jax.inlineMath.push(['$', '$']);
                 mathjaxConfig.tex2jax.inlineMath.push(['\\(', '\\)']);
                 mathjaxConfig.tex2jax.displayMath.push(['\\[', '\\]']);
