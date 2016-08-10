@@ -56,6 +56,7 @@
       "theme/i/doc.png",
       "theme/i/email.png",
       "theme/i/folder.png",
+      "js/highlight.js",
       "js/popup.js",
       "js/runMathJax.js",
       "js/marked.js",
