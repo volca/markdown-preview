@@ -13,6 +13,14 @@
   "content_scripts": [
     {
       "matches": [
+        "file://*/*.md*",
+        "file://*/*.MD*",
+        "file://*/*.text",
+        "file://*/*.markdown*",
+        "file://*/*.mdown*",
+        "file://*/*.txt*",
+        "file://*/*.mkd*",
+        "file://*/*.rst",
         "*://*/*.md*",
         "*://*/*.MD*",
         "*://*/*.text",
