@@ -41,8 +41,8 @@
     }
   ],
   "permissions": [
-      "storage", 
-      "tabs", 
+      "storage",
+      "tabs",
       "pageCapture",
       "downloads",
       "<all_urls>"
@@ -58,8 +58,9 @@
       "theme/i/doc.png",
       "theme/i/email.png",
       "theme/i/folder.png",
-      "js/popup.js", 
-      "js/runMathJax.js", 
+      "js/popup.js",
+      "js/runMathJax.js",
+      "js/marked.js",
       "js/options.js"
   ],
   "browser_action" : {
