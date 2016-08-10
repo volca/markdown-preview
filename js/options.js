@@ -32,6 +32,23 @@ $('#mathjax').change(function() {
     }
 });
 
+// enable_latex_syntax
+storage.get('enable_latex_syntax', function(items) {
+    if(items.enable_latex_syntax) {
+        $('#enable-latex-syntax').attr('checked', 'checked');
+    } else {
+        $('#enable-latex-syntax').removeAttr('checked');
+    }
+});
+
+$('#enable-latex-syntax').change(function() {
+    if($(this).prop('checked')) {
+        storage.set({'enable_latex_syntax' :1});
+    } else {
+        storage.remove('enable_latex_syntax');
+    }
+});
+
 // auto-reload
 storage.get('auto_reload', function(items) {
     if(items.auto_reload) {
