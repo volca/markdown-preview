@@ -36,34 +36,34 @@ with Markdown syntax.  LaTeX syntax can be enabled in the options.
 ### Inline Math ###
 
 * __Single Dollar Signs__ (requires LaTeX delimiters):
-  <span class="tex2jax_ignore">`$math$`<span/>.  When LaTeX syntax is enabled,
+  <code class="tex2jax_ignore">`$math$`</code>.  When LaTeX syntax is enabled,
   dollar signs used in non-math contexts should be escaped with a backslash:
-  <span class="tex2jax_ignore">`\$`<span/>
+  <code class="tex2jax_ignore">`\$`</code>
 
 * __Single Backslash with Parentheses__ (requires LaTex delimiters):
-  <span class="tex2jax_ignore">`\(math\)`<span/>.  Conflicts with Markdown's
+  <code class="tex2jax_ignore">`\(math\)`</code>.  Conflicts with Markdown's
   escaped syntax for parentheses `\(`.
 
 * __Double Backslash with Parentheses__:
-  <span class="tex2jax_ignore">`\\(math\\)`<span/>
+  <code class="tex2jax_ignore">`\\(math\\)`</code>
 
 ### Display Math ###
 
 * __Single Backslash with Brackets__ (requires LaTeX delimiters):
-  <span class="tex2jax_ignore">`\[math\]`<span/>.  Conflicts with Markdown's
+  <code class="tex2jax_ignore">`\[math\]`</code>.  Conflicts with Markdown's
   escaped syntax for brackets `\[`.
 
 * __Double Backslash with Brackets__:
-  <span class="tex2jax_ignore">`\\[math\\]`<span/>
+  <code class="tex2jax_ignore">`\\[math\\]`</code>
 
 * __Double Dollar Signs__:
-  <span class="tex2jax_ignore">`$$math$$`<span/>
+  <code class="tex2jax_ignore">`$$math$$`</code>
 
 * __LaTeX Environments__ (always available when MathJax is enabled)
 
-  * <span class="tex2jax_ignore">`\begin{equation}math\end{equation}`<span/>
+  * <code class="tex2jax_ignore">`\begin{equation}math\end{equation}`</code>
 
-  * <span class="tex2jax_ignore">`\begin{eqnarray}math\end{eqnarray}`<span/>
+  * <code class="tex2jax_ignore">`\begin{eqnarray}math\end{eqnarray}`</code>
 
   * ...
 
