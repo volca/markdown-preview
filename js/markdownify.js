@@ -50,6 +50,9 @@
             // This is done to make page responsiveness.  The HTML body
             // is replaced after MathJax typesetting.
             marked.setOptions({
+                gfm : true,
+                tables: true,
+                breaks: true,
                 highlight : function(code) {
                     return hljs.highlightAuto(code).value;
                 }
