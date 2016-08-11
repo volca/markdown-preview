@@ -19,14 +19,7 @@
             // Convert MarkDown to HTML without MathJax typesetting.
             // This is done to make page responsiveness.  The HTML body
             // is replaced after MathJax typesetting.
-            marked.setOptions({
-                gfm : true,
-                tables: true,
-                breaks: false,
-                highlight : function(code) {
-                    return hljs.highlightAuto(code).value;
-                }
-            });
+            marked.setOptions(config.markedOptions);
             var html = marked(data);
             $(document.body).html(html);
 
@@ -34,23 +27,25 @@
             if (items.mathjax) {
                 // Inject js required to process MathJax before Markdown
                 var highlightJs = $('<script/>').attr('type', 'text/javascript')
-                    .attr('src',
-                          chrome.extension.getURL('js/highlight.js'));
+                    .attr('src', chrome.extension.getURL('js/highlight.js'));
                 $(document.head).append(highlightJs);
 
                 var markedJs = $('<script/>').attr('type', 'text/javascript')
-                    .attr('src',
-                          chrome.extension.getURL('js/marked.js'));
+                    .attr('src', chrome.extension.getURL('js/marked.js'));
                 $(document.head).append(markedJs);
 
+                var configJs = $('<script/>').attr('type', 'text/javascript')
+                    .attr('src', chrome.extension.getURL('js/config.js'));
+                $(document.head).append(configJs);
+
                 var js = $('<script/>').attr('type', 'text/javascript')
-                    .attr('src',
-                          chrome.extension.getURL('js/runMathJax.js'));
+                    .attr('src', chrome.extension.getURL('js/runMathJax.js'));
                 $(document.head).append(js);
 
                 // Create hidden div to use for MathJax processing
                 var mathjaxDiv = document.createElement("div");
-                mathjaxDiv.setAttribute("id", "mathjaxProcessing");
+                mathjaxDiv.setAttribute("id",
+                                        config.mathjaxProcessingElementId);
                 mathjaxDiv.innerHTML = data;
                 mathjaxDiv.style.display = 'none';
                 document.body.appendChild(mathjaxDiv);
@@ -100,22 +95,9 @@
     function setMathJax() {
         storage.get('enable_latex_delimiters', function(items) {
 
-            // Note: when math delimiters are set in JS as strings,
-            // backslashes need to be escaped
-            var mathjaxConfig = {
-                tex2jax: {
-                    inlineMath: [ ['\\\\(', '\\\\)'] ],
-                    displayMath: [ ['$$', '$$'], ['\\\\[', '\\\\]'] ],
-                    processEscapes: false
-                }
-            };
-
             // Enable MathJAX LaTeX delimiters
             if (items.enable_latex_delimiters) {
-                mathjaxConfig.tex2jax.inlineMath.push(['$', '$']);
-                mathjaxConfig.tex2jax.inlineMath.push(['\\(', '\\)']);
-                mathjaxConfig.tex2jax.displayMath.push(['\\[', '\\]']);
-                mathjaxConfig.tex2jax.processEscapes = true;
+                config.enableLatexDelimiters();
             }
 
             // Add MathJax configuration and js to document head
@@ -124,7 +106,8 @@
             $(document.head).append(js);
 
             var mjc = $('<script/>').attr('type', 'text/x-mathjax-config').
-                html("MathJax.Hub.Config(" + JSON.stringify(mathjaxConfig) +
+                html("MathJax.Hub.Config(" +
+                     JSON.stringify(config.mathjaxConfig) +
                      ");");
             $(document.head).append(mjc);
         });
