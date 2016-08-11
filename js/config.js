@@ -1,4 +1,4 @@
-var config = (function() {
+var config = (function(hljs) {
     // Define module
     var module = {};
 
@@ -43,4 +43,4 @@ var config = (function() {
     }
 
     return module;
-}());
+}(hljs));
