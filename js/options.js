@@ -16,12 +16,24 @@ function message(text, type) {
 }
 
 // mathjax
-storage.get('mathjax', function(items) {
+storage.get(['mathjax', 'enable_latex_delimiters'], function(items) {
     if(items.mathjax) {
-        $('#mathjax').attr('checked', 'checked');
+        $('#mathjax').prop('checked', 'checked');
     } else {
-        $('#mathjax').removeAttr('checked');
+        $('#mathjax').removeProp('checked');
     }
+
+    if(items.enable_latex_delimiters) {
+        $('#enable-latex-delimiters').prop('checked', 'checked');
+
+        // Automaticaly enable MathJax
+        storage.set({'mathjax' :1});
+        $('#mathjax').prop('checked', 'checked');
+
+    } else {
+        $('#enable-latex-delimiters').removeProp('checked');
+    }
+
 });
 
 $('#mathjax').change(function() {
@@ -29,15 +41,31 @@ $('#mathjax').change(function() {
         storage.set({'mathjax' :1});
     } else {
         storage.remove('mathjax');
+
+        // Automatically disable LaTeX delimiters
+        storage.remove('enable_latex_delimiters');
+        $('#enable-latex-delimiters').removeProp('checked');
+    }
+});
+
+$('#enable-latex-delimiters').change(function() {
+    if($(this).prop('checked')) {
+        storage.set({'enable_latex_delimiters' :1});
+
+        // Automatically enable MathJax
+        storage.set({'mathjax' :1});
+        $('#mathjax').prop('checked', 'checked');
+    } else {
+        storage.remove('enable_latex_delimiters');
     }
 });
 
 // auto-reload
 storage.get('auto_reload', function(items) {
     if(items.auto_reload) {
-        $('#auto-reload').attr('checked', 'checked');
+        $('#auto-reload').prop('checked', 'checked');
     } else {
-        $('#auto-reload').removeAttr('checked');
+        $('#auto-reload').removeProp('checked');
     }
 });
 
@@ -59,14 +87,14 @@ function getThemes() {
             $('#theme optgroup[label="Custom themes"]').empty().remove();
             for(k in themes) {
                 v = themes[k];
-                group.append($("<option></option>").text(v)); 
+                group.append($("<option></option>").text(v));
             }
             $('#theme').append(group);
         }
 
         if(items.theme) {
             $('#theme').val(items.theme);
-        } 
+        }
     });
 }
 
@@ -139,17 +167,17 @@ $('.cont-exts input').change(function() {
             exts[key] = 1;
         }
 
-        storage.set({'exclude_exts' : exts}); 
+        storage.set({'exclude_exts' : exts});
     });
 });
 
 storage.get('reload_freq', function(items) {
     var freq = items.reload_freq;
     freq = freq ? freq : defaultReloadFreq;
-    
+
     $.each($('#reload-freq option'), function(k, v) {
         if($(v).val() == freq) {
-            $(v).attr('selected', 'selected');
+            $(v).prop('selected', 'selected');
         }
     });
 });
@@ -165,6 +193,6 @@ storage.get('exclude_exts', function(items) {
     }
 
     $.each(exts, function(k, v) {
-        $('input[value="' + k + '"]').attr('checked', false);
+        $('input[value="' + k + '"]').prop('checked', false);
     });
 });

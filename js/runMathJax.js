@@ -11,6 +11,9 @@
         window.MathJax.Hub.Register.StartupHook("End Typeset",
             function () {
                 marked.setOptions({
+                    gfm : true,
+                    tables: true,
+                    breaks: true,
                     highlight : function(code) {
                         return hljs.highlightAuto(code).value;
                     }

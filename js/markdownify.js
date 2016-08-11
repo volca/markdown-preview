@@ -33,6 +33,11 @@
             // Apply MathJax typesetting
             if (items.mathjax) {
                 // Inject js required to process MathJax before Markdown
+                var highlightJs = $('<script/>').attr('type', 'text/javascript')
+                    .attr('src',
+                          chrome.extension.getURL('js/highlight.js'));
+                $(document.head).append(highlightJs);
+
                 var markedJs = $('<script/>').attr('type', 'text/javascript')
                     .attr('src',
                           chrome.extension.getURL('js/marked.js'));
@@ -93,12 +98,36 @@
     }
 
     function setMathJax() {
-        var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
-            .html("MathJax.Hub.Config({tex2jax: {inlineMath: [ ['\\\\\\\\(', '\\\\\\\\)'] ], displayMath: [ ['$$', '$$'], ['\\\\\\\\[', '\\\\\\\\]'] ], processEscapes:false}});");
-        $(document.head).append(mjc);
-        var js = $('<script/>').attr('type','text/javascript')
-            .attr('src', 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
-        $(document.head).append(js);
+        storage.get('enable_latex_delimiters', function(items) {
+
+            // Note: when math delimiters are set in JS as strings,
+            // backslashes need to be escaped
+            var mathjaxConfig = {
+                tex2jax: {
+                    inlineMath: [ ['\\\\(', '\\\\)'] ],
+                    displayMath: [ ['$$', '$$'], ['\\\\[', '\\\\]'] ],
+                    processEscapes: false
+                }
+            };
+
+            // Enable MathJAX LaTeX delimiters
+            if (items.enable_latex_delimiters) {
+                mathjaxConfig.tex2jax.inlineMath.push(['$', '$']);
+                mathjaxConfig.tex2jax.inlineMath.push(['\\(', '\\)']);
+                mathjaxConfig.tex2jax.displayMath.push(['\\[', '\\]']);
+                mathjaxConfig.tex2jax.processEscapes = true;
+            }
+
+            // Add MathJax configuration and js to document head
+            var js = $('<script/>').attr('type','text/javascript')
+                .attr('src', 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
+            $(document.head).append(js);
+
+            var mjc = $('<script/>').attr('type', 'text/x-mathjax-config').
+                html("MathJax.Hub.Config(" + JSON.stringify(mathjaxConfig) +
+                     ");");
+            $(document.head).append(mjc);
+        });
     }
 
     function stopAutoReload() {

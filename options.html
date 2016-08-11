@@ -20,7 +20,17 @@
             <h2>Miscs</h2>
         </div>
         <p>
-        <label class="checkbox"><input type="checkbox" id="mathjax">Enable MathJax</label>
+        <label class="checkbox"><input type="checkbox" id="mathjax"/>Enable MathJax</label>
+        </p>
+        <p>
+        <label class="checkbox">
+          <input type="checkbox" id="enable-latex-delimiters">
+          Enable LaTeX delimiters: <code>$math$</code>, <code>\(math\)</code>,
+          <code>\[math\]</code>.
+          <strong>Note</strong>: LaTeX environments (e.g., <code>equation</code>
+          and <code>eqnarray</code>) are always (even if LaTeX delimiters are
+          disabled).
+        </label>
         </p>
         <p>
         <label class="checkbox"><input type="checkbox" id="auto-reload">Enable auto-reload</label>
@@ -77,7 +87,6 @@
         <label class="checkbox"><input type="checkbox" value="rst" checked="checked">rst</label>
         </p>
     </section>
-    
 </div>
 
 <script src="js/options.js"></script>
