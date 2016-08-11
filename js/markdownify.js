@@ -22,7 +22,7 @@
             marked.setOptions({
                 gfm : true,
                 tables: true,
-                breaks: true,
+                breaks: false,
                 highlight : function(code) {
                     return hljs.highlightAuto(code).value;
                 }
