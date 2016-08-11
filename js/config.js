@@ -7,10 +7,10 @@ var config = (function(hljs) {
 
     // Public module properties
     module.markedOptions = {
-        gfm : true,
+        gfm: true,
         tables: true,
         breaks: false,
-        highlight : function(code) {
+        highlight: function(code) {
             return hljs.highlightAuto(code).value;
         }
     };

@@ -129,9 +129,9 @@
 
         interval = setInterval(function() {
             $.ajax({
-                url : location.href,
-                cache : false,
-                success : function(data) {
+                url: location.href,
+                cache: false,
+                success: function(data) {
                     if (previousText == data) {
                         return;
                     }
@@ -144,9 +144,9 @@
 
     function render() {
         $.ajax({
-            url : location.href,
-            cache : false,
-            complete : function(xhr, textStatus) {
+            url: location.href,
+            cache: false,
+            complete: function(xhr, textStatus) {
                 var contentType = xhr.getResponseHeader('Content-Type');
                 if(contentType && (contentType.indexOf('html') > -1)) {
                     return;
