@@ -34,6 +34,7 @@
           "js/jquery.js",
           "js/marked.js",
           "js/highlight.js",
+          "js/config.js",
           "js/markdownify.js"
       ]
     }
@@ -58,6 +59,7 @@
       "theme/i/folder.png",
       "js/highlight.js",
       "js/popup.js",
+      "js/config.js",
       "js/runMathJax.js",
       "js/marked.js",
       "js/options.js"

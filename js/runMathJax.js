@@ -2,7 +2,8 @@
     if ((typeof window.MathJax != 'undefined') && (typeof window.MathJax.Hub != 'undefined')) {
 
         // Apply MathJax typesetting
-        var mathjaxDiv = document.getElementById("mathjaxProcessing");
+        var mathjaxDiv =
+            document.getElementById(config.mathjaxProcessingElementId);
 
         // Apply Markdown parser after MathJax typesetting is complete
         window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub,
@@ -10,14 +11,7 @@
 
         window.MathJax.Hub.Register.StartupHook("End Typeset",
             function () {
-                marked.setOptions({
-                    gfm : true,
-                    tables: true,
-                    breaks: true,
-                    highlight : function(code) {
-                        return hljs.highlightAuto(code).value;
-                    }
-                });
+                marked.setOptions(config.markedOptions);
 
                 // Convert Markdown to HTML and replace document body
                 var html = marked(mathjaxDiv.innerHTML);
