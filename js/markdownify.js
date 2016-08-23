@@ -46,7 +46,7 @@
                 var mathjaxDiv = document.createElement("div");
                 mathjaxDiv.setAttribute("id",
                                         config.mathjaxProcessingElementId);
-                mathjaxDiv.innerHTML = data;
+                $(mathjaxDiv).text(data);
                 mathjaxDiv.style.display = 'none';
                 document.body.appendChild(mathjaxDiv);
             }

@@ -13,8 +13,13 @@
             function () {
                 marked.setOptions(config.markedOptions);
 
+                // Decode &lt; and &gt;
+                mathjaxData = mathjaxDiv.innerHTML;
+                mathjaxData = mathjaxData.replace(/&lt;/g, "<");
+                mathjaxData = mathjaxData.replace(/&gt;/g, ">");
+
                 // Convert Markdown to HTML and replace document body
-                var html = marked(mathjaxDiv.innerHTML);
+                var html = marked(mathjaxData);
                 document.body.innerHTML = html;
 
                 // Remove div used for MathJax processing
