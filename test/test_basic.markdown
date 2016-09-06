@@ -1,5 +1,4 @@
-Markdown: Basics
-================
+# Markdown: Basics #
 
 Getting the Gist of Markdown's Formatting Syntax
 ------------------------------------------------
