@@ -25,19 +25,19 @@
 
             // Apply MathJax typesetting
             if (items.mathjax) {
-                // Inject js required to process MathJax before Markdown
-                var highlightJs = $('<script/>').attr('type', 'text/javascript')
-                    .attr('src', chrome.extension.getURL('js/highlight.js'));
-                $(document.head).append(highlightJs);
-
                 var markedJs = $('<script/>').attr('type', 'text/javascript')
                     .attr('src', chrome.extension.getURL('js/marked.js'));
                 $(document.head).append(markedJs);
+
+                var highlightJs = $('<script/>').attr('type', 'text/javascript')
+                    .attr('src', chrome.extension.getURL('js/highlight.js'));
+                $(document.head).append(highlightJs);
 
                 var configJs = $('<script/>').attr('type', 'text/javascript')
                     .attr('src', chrome.extension.getURL('js/config.js'));
                 $(document.head).append(configJs);
 
+                // Inject js required to process MathJax before Markdown
                 var js = $('<script/>').attr('type', 'text/javascript')
                     .attr('src', chrome.extension.getURL('js/runMathJax.js'));
                 $(document.head).append(js);
