@@ -1,6 +1,6 @@
 {
   "name": "Markdown Preview Plus",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "manifest_version": 2,
 
   "description": "Converts and previews markdown files (.md, .markdown) to HTML right inside Chrome.",
@@ -64,7 +64,7 @@
       "js/marked.js",
       "js/options.js"
   ],
-  "browser_action" : {
+  "browser_action": {
       "default_icon" : "images/icon.png",
       "default_title" : "Markdown Preview Plus",
       "default_popup" : "popup.html"
