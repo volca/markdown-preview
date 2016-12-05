@@ -41,6 +41,10 @@
                 document.body.appendChild(mathjaxDiv);
             }
         });
+
+        $("img").error(function () {
+            console.log("error");
+        });
     }
 
     function getThemeCss(theme) {
