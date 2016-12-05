@@ -1,4 +1,4 @@
-var config = (function(hljs) {
+window.config = (function(hljs) {
     // Define module
     var module = {};
 
