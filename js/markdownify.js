@@ -12,6 +12,13 @@
         return url.substr(1 + url.lastIndexOf("."))
     }
 
+    function resolveImg(img) {
+        var src = $(img).attr("src");
+        if (src[0] == "/") {
+            $(img).attr("src", src.substring(1));
+        }
+    }
+
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
@@ -22,6 +29,9 @@
             marked.setOptions(config.markedOptions);
             var html = marked(data);
             $(document.body).html(html);
+            $('img').on("error", function() {
+                resolveImg(this);
+            });
 
             // Apply MathJax typesetting
             if (items.mathjax) {
@@ -29,21 +39,15 @@
                 $.getScript(chrome.extension.getURL('js/highlight.js'), function() {
                     $.getScript(chrome.extension.getURL('js/config.js'));
                 });
-
                 $.getScript(chrome.extension.getURL('js/runMathJax.js'));
 
                 // Create hidden div to use for MathJax processing
                 var mathjaxDiv = document.createElement("div");
-                mathjaxDiv.setAttribute("id",
-                                        config.mathjaxProcessingElementId);
+                mathjaxDiv.setAttribute("id", config.mathjaxProcessingElementId);
                 $(mathjaxDiv).text(data);
                 mathjaxDiv.style.display = 'none';
                 document.body.appendChild(mathjaxDiv);
             }
-        });
-
-        $("img").error(function () {
-            console.log("error");
         });
     }
 
