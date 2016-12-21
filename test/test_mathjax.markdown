@@ -48,3 +48,12 @@ LaTeX Math Syntax
 
 * Dollar sign.  \$100.00
 
+### Subscript
+
+* $\frac{w_x}{\sum_z x_z}$
+* $\frac{w}{\sum_{z} x_z}$
+* $\frac{w_x}{\sum_{z} x_z}$
+* $\frac{w\_x}{\sum_{z} x_z}$
+* $\frac{w\_x}{\sum\_{z} 
+x\_z}$
+

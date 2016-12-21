@@ -41,13 +41,13 @@
                 $.getScript(chrome.extension.getURL('js/highlight.js'), function() {
                     $.getScript(chrome.extension.getURL('js/config.js'));
                 });
-                $.getScript(chrome.extension.getURL('js/runMathJax.js'));
 
                 // Create hidden div to use for MathJax processing
                 var mathjaxDiv = $("<div/>").attr("id", config.mathjaxProcessingElementId)
                                     .text(data)
                                     .hide();
                 $(document.body).append(mathjaxDiv);
+                $.getScript(chrome.extension.getURL('js/runMathJax.js'));
             }
         });
     }
