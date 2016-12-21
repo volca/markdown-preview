@@ -32,7 +32,7 @@ function getThemes() {
     });
 }
 
-chrome.tabs.getSelected(null, function(tab) {
+chrome.tabs.query({active: true, currentWindow: true}, function(tab) {
     pageKey = specialThemePrefix + tab.url;
     getThemes();
     $('#theme').change(function() {
@@ -43,14 +43,20 @@ chrome.tabs.getSelected(null, function(tab) {
 });
 
 $('#btn-export').click(function() {
-    chrome.tabs.getSelected(null, function(tab) {
-        chrome.pageCapture.saveAsMHTML({tabId: tab.id}, function(mhtml){
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.pageCapture.saveAsMHTML({tabId: tabs[0].id}, function(mhtml){
             var url = URL.createObjectURL(mhtml);
             chrome.downloads.download({
                 url: url,
                 filename: 'export.mhtml'
             });
         });
+    });
+});
+
+$('#btn-copy').click(function() {
+    chrome.tabs.executeScript({
+        code: 'var s = $("<textarea/>").text($("body").html());$(document.body).append(s);s.select();document.execCommand("copy"); s.remove(); alert("Copied to clipboard");'
     });
 });
 

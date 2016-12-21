@@ -1,3 +1,4 @@
+
 (function(document) {
 
     var interval,
@@ -29,6 +30,7 @@
             marked.setOptions(config.markedOptions);
             var html = marked(data);
             $(document.body).html(html);
+
             $('img').on("error", function() {
                 resolveImg(this);
             });
@@ -39,14 +41,13 @@
                 $.getScript(chrome.extension.getURL('js/highlight.js'), function() {
                     $.getScript(chrome.extension.getURL('js/config.js'));
                 });
-                $.getScript(chrome.extension.getURL('js/runMathJax.js'));
 
                 // Create hidden div to use for MathJax processing
-                var mathjaxDiv = document.createElement("div");
-                mathjaxDiv.setAttribute("id", config.mathjaxProcessingElementId);
-                $(mathjaxDiv).text(data);
-                mathjaxDiv.style.display = 'none';
-                document.body.appendChild(mathjaxDiv);
+                var mathjaxDiv = $("<div/>").attr("id", config.mathjaxProcessingElementId)
+                                    .text(data)
+                                    .hide();
+                $(document.body).append(mathjaxDiv);
+                $.getScript(chrome.extension.getURL('js/runMathJax.js'));
             }
         });
     }
@@ -100,10 +101,8 @@
 
             // Add MathJax configuration and js to document head
             $.getScript('https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
-            var mjc = $('<script/>').attr('type', 'text/x-mathjax-config').
-                html("MathJax.Hub.Config(" +
-                     JSON.stringify(config.mathjaxConfig) +
-                     ");");
+            var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
+                .html("MathJax.Hub.Config(" + JSON.stringify(config.mathjaxConfig) + ");");
             $(document.head).append(mjc);
         });
     }
