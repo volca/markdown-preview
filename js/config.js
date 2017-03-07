@@ -10,6 +10,7 @@ window.config = (function(hljs) {
         gfm: true,
         tables: true,
         breaks: false,
+        sanitize: true,
         highlight: function(code) {
             return hljs.highlightAuto(code).value;
         }

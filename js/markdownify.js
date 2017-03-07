@@ -27,6 +27,7 @@
             // Convert MarkDown to HTML without MathJax typesetting.
             // This is done to make page responsiveness.  The HTML body
             // is replaced after MathJax typesetting.
+            config.markedOptions.sanitize = items.mathjax ? false : true;
             marked.setOptions(config.markedOptions);
             var html = marked(data);
             $(document.body).html(html);
