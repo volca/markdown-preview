@@ -41,9 +41,6 @@
   ],
   "permissions": [
       "storage",
-      "activeTab",
-      "pageCapture",
-      "downloads",
       "clipboardWrite",
       "<all_urls>"
   ],
