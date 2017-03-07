@@ -11,6 +11,7 @@
 
         window.MathJax.Hub.Register.StartupHook("End Typeset",
             function () {
+                config.markedOptions.sanitize = false;
                 marked.setOptions(config.markedOptions);
 
                 // Decode &lt; and &gt;
