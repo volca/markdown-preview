@@ -27,7 +27,6 @@
             // Convert MarkDown to HTML without MathJax typesetting.
             // This is done to make page responsiveness.  The HTML body
             // is replaced after MathJax typesetting.
-            config.markedOptions.sanitize = items.mathjax ? false : true;
             marked.setOptions(config.markedOptions);
             var html = marked(data);
             $(document.body).html(html);
@@ -167,22 +166,26 @@
         });
     }
 
-    storage.get(['exclude_exts', 'disable_markdown', 'mathjax'], function(items) {
-        if(items.disable_markdown) {
+    storage.get(['exclude_exts', 'disable_markdown', 'mathjax', 'html'], function(items) {
+        if (items.disable_markdown) {
             return;
         }
 
-        if(items.mathjax) {
+        if (items.mathjax) {
             setMathJax();
+        }
+
+        if (items.html) {
+            config.markedOptions.sanitize = false;
         }
 
         var allExtentions = ["md", "MD", "text", "markdown", "mdown", "txt", "mkd", "rst"],
             exts = items.exclude_exts;
+
         if(!exts) {
             render();
             return;
         }
-
 
         var fileExt = getExtension(location.href);
         if (($.inArray(fileExt, allExtentions) != -1) && 
