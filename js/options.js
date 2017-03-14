@@ -16,7 +16,7 @@ function message(text, type) {
 }
 
 // mathjax
-storage.get(['mathjax', 'enable_latex_delimiters'], function(items) {
+storage.get(['mathjax', 'enable_latex_delimiters', 'html'], function(items) {
     if(items.mathjax) {
         $('#mathjax').prop('checked', 'checked');
     } else {
@@ -25,20 +25,42 @@ storage.get(['mathjax', 'enable_latex_delimiters'], function(items) {
 
     if(items.enable_latex_delimiters) {
         $('#enable-latex-delimiters').prop('checked', 'checked');
-
         // Automaticaly enable MathJax
         storage.set({'mathjax' :1});
         $('#mathjax').prop('checked', 'checked');
-
     } else {
         $('#enable-latex-delimiters').removeProp('checked');
     }
 
+    if(items.html) {
+        $('#html').prop('checked', 'checked');
+    } else {
+        $('#html').removeProp('checked');
+    }
+});
+
+// auto-reload
+storage.get('auto_reload', function(items) {
+    if(items.auto_reload) {
+        $('#auto-reload').prop('checked', 'checked');
+    } else {
+        $('#auto-reload').removeProp('checked');
+    }
+});
+
+$('#html').change(function() {
+    if($(this).prop('checked')) {
+        storage.set({'html' : 1});
+    } else {
+        storage.remove('html');
+    }
 });
 
 $('#mathjax').change(function() {
     if($(this).prop('checked')) {
         storage.set({'mathjax' :1});
+        // Auto enable HTML
+        $('#html').removeProp('checked').trigger('click');
     } else {
         storage.remove('mathjax');
 
@@ -51,21 +73,10 @@ $('#mathjax').change(function() {
 $('#enable-latex-delimiters').change(function() {
     if($(this).prop('checked')) {
         storage.set({'enable_latex_delimiters' :1});
-
         // Automatically enable MathJax
-        storage.set({'mathjax' :1});
-        $('#mathjax').prop('checked', 'checked');
+        $('#mathjax').removeProp('checked').trigger('click');
     } else {
         storage.remove('enable_latex_delimiters');
-    }
-});
-
-// auto-reload
-storage.get('auto_reload', function(items) {
-    if(items.auto_reload) {
-        $('#auto-reload').prop('checked', 'checked');
-    } else {
-        $('#auto-reload').removeProp('checked');
     }
 });
 
