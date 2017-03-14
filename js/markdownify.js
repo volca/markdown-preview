@@ -176,14 +176,17 @@
             setMathJax();
         }
 
-        var exts = items.exclude_exts;
+        var allExtentions = ["md", "MD", "text", "markdown", "mdown", "txt", "mkd", "rst"],
+            exts = items.exclude_exts;
         if(!exts) {
             render();
             return;
         }
 
+
         var fileExt = getExtension(location.href);
-        if (typeof exts[fileExt] == "undefined") {
+        if (($.inArray(fileExt, allExtentions) != -1) && 
+            (typeof exts[fileExt] == "undefined")) {
             render();
         }
     });
