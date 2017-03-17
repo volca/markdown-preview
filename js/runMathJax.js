@@ -1,14 +1,5 @@
 (function(document) {
     if ((typeof window.MathJax != 'undefined') && (typeof window.MathJax.Hub != 'undefined')) {
-
-        // Create hidden div to use for MathJax processing
-        /*
-        var mathjaxDiv = $("<div/>").attr("id", config.mathjaxProcessingElementId)
-                            .text(data)
-                            .hide();
-        $(document.body).append(mathjaxDiv);
-        */
-
         // Apply MathJax typesetting
         var mathjaxDiv =
             document.getElementById(config.mathjaxProcessingElementId);
@@ -25,6 +16,7 @@
             mathjaxData = mathjaxDiv.innerHTML;
             mathjaxData = mathjaxData.replace(/&lt;/g, "<");
             mathjaxData = mathjaxData.replace(/&gt;/g, ">");
+            mathjaxData = mathjaxData.replace(/&amp;/g, "&");
 
             // Convert Markdown to HTML and replace document body
             var html = marked(mathjaxData);
