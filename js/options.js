@@ -60,7 +60,8 @@ $('#mathjax').change(function() {
     if($(this).prop('checked')) {
         storage.set({'mathjax' :1});
         // Auto enable HTML
-        $('#html').removeProp('checked').trigger('click');
+        $('#html').prop("checked", "checked");
+        storage.set({'html' :1});
     } else {
         storage.remove('mathjax');
 
@@ -74,7 +75,8 @@ $('#enable-latex-delimiters').change(function() {
     if($(this).prop('checked')) {
         storage.set({'enable_latex_delimiters' :1});
         // Automatically enable MathJax
-        $('#mathjax').removeProp('checked').trigger('click');
+        $('#mathjax').prop('checked', 'checked');
+        storage.set({'mathjax' :1});
     } else {
         storage.remove('enable_latex_delimiters');
     }

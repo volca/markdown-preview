@@ -1,4 +1,3 @@
-
 (function(document) {
 
     var interval,
@@ -20,13 +19,30 @@
         }
     }
 
+    function runMathjax(data) {
+        // Create hidden div to use for MathJax processing
+        var mathjaxDiv = $("<div/>").attr("id", config.mathjaxProcessingElementId)
+                            .text(data)
+                            .hide();
+        $(document.body).append(mathjaxDiv);
+
+        $.getScript(chrome.extension.getURL('js/marked.js'));
+        $.getScript(chrome.extension.getURL('js/highlight.js'), function() {
+            $.getScript(chrome.extension.getURL('js/config.js'));
+        });
+        $.getScript(chrome.extension.getURL('js/runMathJax.js'));
+    }
+
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
-        storage.get('mathjax', function(items) {
+        storage.get(['mathjax', 'html'], function(items) {
             // Convert MarkDown to HTML without MathJax typesetting.
             // This is done to make page responsiveness.  The HTML body
             // is replaced after MathJax typesetting.
+            if (items.html) {
+                config.markedOptions.sanitize = false;
+            }
             marked.setOptions(config.markedOptions);
             var html = marked(data);
             $(document.body).html(html);
@@ -37,17 +53,7 @@
 
             // Apply MathJax typesetting
             if (items.mathjax) {
-                $.getScript(chrome.extension.getURL('js/marked.js'));
-                $.getScript(chrome.extension.getURL('js/highlight.js'), function() {
-                    $.getScript(chrome.extension.getURL('js/config.js'));
-                });
-
-                // Create hidden div to use for MathJax processing
-                var mathjaxDiv = $("<div/>").attr("id", config.mathjaxProcessingElementId)
-                                    .text(data)
-                                    .hide();
-                $(document.body).append(mathjaxDiv);
-                $.getScript(chrome.extension.getURL('js/runMathJax.js'));
+                runMathjax(data);
             }
         });
     }
@@ -89,22 +95,6 @@
                 }
             });
         }
-    }
-
-    function setMathJax() {
-        storage.get('enable_latex_delimiters', function(items) {
-
-            // Enable MathJAX LaTeX delimiters
-            if (items.enable_latex_delimiters) {
-                config.enableLatexDelimiters();
-            }
-
-            // Add MathJax configuration and js to document head
-            $.getScript('https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
-            var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
-                .html("MathJax.Hub.Config(" + JSON.stringify(config.mathjaxConfig) + ");");
-            $(document.head).append(mjc);
-        });
     }
 
     function stopAutoReload() {
@@ -166,22 +156,26 @@
         });
     }
 
-    storage.get(['exclude_exts', 'disable_markdown', 'mathjax', 'html'], function(items) {
+    storage.get(['exclude_exts', 'disable_markdown', 'mathjax', 'html', 'enable_latex_delimiters'], function(items) {
         if (items.disable_markdown) {
             return;
         }
 
+        if (items.enable_latex_delimiters) {
+            config.enableLatexDelimiters();
+        }
+
         if (items.mathjax) {
-            setMathJax();
+            // Enable MathJAX LaTeX delimiters
+            // Add MathJax configuration and js to document head
+            $.getScript('https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
+            var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
+                .html("MathJax.Hub.Config(" + JSON.stringify(config.mathjaxConfig) + ");");
+            $(document.head).append(mjc);
         }
 
-        if (items.html) {
-            config.markedOptions.sanitize = false;
-        }
-
-        var allExtentions = ["md", "MD", "text", "markdown", "mdown", "txt", "mkd", "rst"],
-            exts = items.exclude_exts;
-
+        var allExtentions = ["md", "MD", "text", "markdown", "mdown", "txt", "mkd", "rst"];
+        var exts = items.exclude_exts;
         if(!exts) {
             render();
             return;
