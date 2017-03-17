@@ -1,4 +1,3 @@
-
 (function(document) {
 
     var interval,
@@ -23,10 +22,13 @@
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
-        storage.get('mathjax', function(items) {
+        storage.get(['mathjax', 'html'], function(items) {
             // Convert MarkDown to HTML without MathJax typesetting.
             // This is done to make page responsiveness.  The HTML body
             // is replaced after MathJax typesetting.
+            if (items.html) {
+                config.markedOptions.sanitize = false;
+            }
             marked.setOptions(config.markedOptions);
             var html = marked(data);
             $(document.body).html(html);
@@ -37,17 +39,7 @@
 
             // Apply MathJax typesetting
             if (items.mathjax) {
-                $.getScript(chrome.extension.getURL('js/marked.js'));
-                $.getScript(chrome.extension.getURL('js/highlight.js'), function() {
-                    $.getScript(chrome.extension.getURL('js/config.js'));
-                });
-
-                // Create hidden div to use for MathJax processing
-                var mathjaxDiv = $("<div/>").attr("id", config.mathjaxProcessingElementId)
-                                    .text(data)
-                                    .hide();
-                $(document.body).append(mathjaxDiv);
-                $.getScript(chrome.extension.getURL('js/runMathJax.js'));
+                runMathjax();
             }
         });
     }
@@ -122,6 +114,7 @@
         });
 
         interval = setInterval(function() {
+            console.log(window.MathJax);
             $.ajax({
                 url: location.href,
                 cache: false,
@@ -166,27 +159,48 @@
         });
     }
 
-    storage.get(['exclude_exts', 'disable_markdown', 'mathjax', 'html'], function(items) {
-        if (items.disable_markdown) {
-            return;
-        }
+    function startRender(items) {
+        var allExtentions = ["md", "MD", "text", "markdown", "mdown", "txt", "mkd", "rst"];
 
-        if (items.mathjax) {
-            setMathJax();
-        }
-
-        if (items.html) {
-            config.markedOptions.sanitize = false;
-        }
-
-        var allExtentions = ["md", "MD", "text", "markdown", "mdown", "txt", "mkd", "rst"],
-            exts = items.exclude_exts;
-
-        if(!exts) {
+        if(!items.exclude_exts) {
             render();
             return;
         }
 
+        var exts = items.exclude_exts;
+        var fileExt = getExtension(location.href);
+        if (($.inArray(fileExt, allExtentions) != -1) && 
+            (typeof exts[fileExt] == "undefined")) {
+            render();
+        }
+    }
+
+    storage.get(['exclude_exts', 'disable_markdown', 'mathjax', 'html', 'enable_latex_delimiters'], function(items) {
+        if (items.disable_markdown) {
+            return;
+        }
+
+        if (items.enable_latex_delimiters) {
+            config.enableLatexDelimiters();
+        }
+
+        if (items.mathjax) {
+            // Enable MathJAX LaTeX delimiters
+            // Add MathJax configuration and js to document head
+            $.getScript('https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
+            var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
+                .html("MathJax.Hub.Config(" + JSON.stringify(config.mathjaxConfig) + ");");
+            $(document.head).append(mjc);
+        }
+
+        var allExtentions = ["md", "MD", "text", "markdown", "mdown", "txt", "mkd", "rst"];
+
+        if(!items.exclude_exts) {
+            render();
+            return;
+        }
+
+        var exts = items.exclude_exts;
         var fileExt = getExtension(location.href);
         if (($.inArray(fileExt, allExtentions) != -1) && 
             (typeof exts[fileExt] == "undefined")) {
@@ -223,4 +237,40 @@
         }
     });
 
+    function runMathjax(document) {
+        console.log("here");
+        if ((typeof window.MathJax != 'undefined') && (typeof window.MathJax.Hub != 'undefined')) {
+
+            // Create hidden div to use for MathJax processing
+            var mathjaxDiv = $("<div/>").attr("id", config.mathjaxProcessingElementId)
+                                .text(data)
+                                .hide();
+            $(document.body).append(mathjaxDiv);
+
+            // Apply MathJax typesetting
+            var mathjaxDiv =
+                document.getElementById(config.mathjaxProcessingElementId);
+
+            window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub,
+                                      mathjaxDiv]);
+
+            window.MathJax.Hub.Register.StartupHook("End Typeset", function() {
+                config.markedOptions.sanitize = false;
+                marked.setOptions(config.markedOptions);
+
+                // Decode &lt; and &gt;
+                mathjaxData = mathjaxDiv.innerHTML;
+                mathjaxData = mathjaxData.replace(/&lt;/g, "<");
+                mathjaxData = mathjaxData.replace(/&gt;/g, ">");
+
+                // Convert Markdown to HTML and replace document body
+                var html = marked(mathjaxData);
+                document.body.innerHTML = html;
+
+                // Remove div used for MathJax processing
+                mathjaxDiv.remove();
+            });
+
+        }
+    }
 }(document));
