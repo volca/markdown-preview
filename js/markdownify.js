@@ -175,13 +175,12 @@
         }
 
         var allExtentions = ["md", "MD", "text", "markdown", "mdown", "txt", "mkd", "rst"];
-
-        if(!items.exclude_exts) {
+        var exts = items.exclude_exts;
+        if(!exts) {
             render();
             return;
         }
 
-        var exts = items.exclude_exts;
         var fileExt = getExtension(location.href);
         if (($.inArray(fileExt, allExtentions) != -1) && 
             (typeof exts[fileExt] == "undefined")) {
