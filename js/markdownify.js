@@ -63,7 +63,7 @@
     }
 
     function setTheme(theme) {
-        var defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks'];
+        var defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks', 'YetAnotherGithub'];
 
         if($.inArray(theme, defaultThemes) != -1) {
             var link = $('#theme');
