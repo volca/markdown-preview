@@ -56,4 +56,6 @@ LaTeX Math Syntax
 * $\frac{w\_x}{\sum_{z} x_z}$
 * $\frac{w\_x}{\sum\_{z} 
 x\_z}$
+* $x_\gamma = x_i$
+* $x_i = x_\gamma$
 

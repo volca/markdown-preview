@@ -21,6 +21,9 @@ window.config = (function(hljs) {
     // Note: when math delimiters are set in JS as strings, backslashes need
     // to be escaped
     module.mathjaxConfig = {
+        showMathMenu: false,
+        showProcessingMessages: false,
+        messageStyle: "none",
         tex2jax: {
             inlineMath: [ ['\\\\(', '\\\\)'] ],
             displayMath: [ ['$$', '$$'], ['\\\\[', '\\\\]'] ],
