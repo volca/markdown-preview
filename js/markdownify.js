@@ -9,7 +9,8 @@
         url = url.substr(1 + url.lastIndexOf("/"))
             .split('?')[0]
             .split('#')[0];
-        return url.substr(1 + url.lastIndexOf("."))
+        var ext = url.substr(1 + url.lastIndexOf("."));
+        return ext.toLowerCase();
     }
 
     function resolveImg(img) {
@@ -174,7 +175,7 @@
             $(document.head).append(mjc);
         }
 
-        var allExtentions = ["md", "MD", "text", "markdown", "mdown", "txt", "mkd", "rst"];
+        var allExtentions = ["md", "text", "markdown", "mdown", "txt", "mkd", "rst", "rmd"];
         var exts = items.exclude_exts;
         if(!exts) {
             render();
