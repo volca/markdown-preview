@@ -169,7 +169,7 @@
         if (items.mathjax) {
             // Enable MathJAX LaTeX delimiters
             // Add MathJax configuration and js to document head
-            $.getScript('https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
+            $.getScript('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML');
             var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
                 .html("MathJax.Hub.Config(" + JSON.stringify(config.mathjaxConfig) + ");");
             $(document.head).append(mjc);
