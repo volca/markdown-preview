@@ -1,5 +1,24 @@
 # Markdown Preview Plus
 
+## v0.6.2.1102 revision
+
+
+	1) add TOC： add a TOC in the right of the window, which 
+
+		i) can be toggled or closed,
+  
+		ii) will scroll along with the text,
+    
+		iii) if its scroll bar reach the bottom/top,
+		    e.preventDefault() will take effect
+
+	2) set default css to Github-left (a modification of Github, to keep the left),
+		so TOC wont cover text
+
+![](images/demo.png)
+  
+------------------------------------ Original README ------------------------------------
+
 Automatically parses markdown files (.md) into HTML. This is useful
 if you're writing markdown (ultimately targeting HTML) and want a quick
 preview.
