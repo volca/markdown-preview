@@ -52,8 +52,6 @@
                 resolveImg(this);
             });
 
-            //the click on 'X' in adTOC() will execute $jquery
-            $.getScript(chrome.extension.getURL('js/jquery.js'));
             addTOC();
             
             // Apply MathJax typesetting
@@ -301,7 +299,7 @@
         if($(".BlogAnchor").length == 0){
             $("body").append('<div class="BlogAnchor">' + 
                 '<span style="color:red;position:absolute;top:-3px;left:3px;cursor:pointer;" ' +
-                'onclick="$(\'.BlogAnchor\').hide();">X</span>' + '<p>' +
+                'onclick="document.getElementsByClassName(\'BlogAnchor\')[0].style.display = \'none\';">X</span>' + '<p>' +
                 '<b id="AnchorContentToggle" title="Expand" style="cursor:pointer;">Content▲</b>' + 
                 '</p>' + '<div class="AnchorContent" id="AnchorContent"> </div>' + '</div>' );
             var clientheight = document.compatMode=="CSS1Compat" ?
