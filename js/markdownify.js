@@ -9,7 +9,7 @@
         url = url.substr(1 + url.lastIndexOf("/"))
             .split('?')[0]
             .split('#')[0];
-		var ext = url.substr(1 + url.lastIndexOf("."));
+        var ext = url.substr(1 + url.lastIndexOf("."));
         return ext.toLowerCase();
     }
 
@@ -66,7 +66,7 @@
     }
 
     function setTheme(theme) {
-        var defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'Github-left', 'TopMarks', 'YetAnotherGithub'];
+        var defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks', 'YetAnotherGithub'];
 
         if($.inArray(theme, defaultThemes) != -1) {
             var link = $('#theme');
@@ -144,7 +144,7 @@
                 var specialThemePrefix = 'special_',
                     pageKey = specialThemePrefix + location.href;
                 storage.get(['theme', pageKey], function(items) {
-                    theme = items.theme ? items.theme : 'Github-left';
+                    theme = items.theme ? items.theme : 'Clearness';
                     if(items[pageKey]) {
                         theme = items[pageKey];
                     }
@@ -178,7 +178,7 @@
             $(document.head).append(mjc);
         }
 
-		var allExtentions = ["md", "text", "markdown", "mdown", "txt", "mkd", "rst", "rmd"];
+        var allExtentions = ["md", "text", "markdown", "mdown", "txt", "mkd", "rst", "rmd"];
         var exts = items.exclude_exts;
         if(!exts) {
             render();
