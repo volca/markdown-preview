@@ -834,7 +834,7 @@ Renderer.prototype.listitem = function(text, checked) {
     return '<li>' + text + '</li>\n';
   }
 
-  return '<li class="task-list-item">'
+  return '<li class="task-list-item" style="list-style-type:none;">'
     + '<input type="checkbox" class="task-list-item-checkbox" disabled="disabled"'
     + (checked ? ' checked' : '')
     + '> '
