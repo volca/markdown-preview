@@ -4,10 +4,10 @@ var pageKey,
     storage = chrome.storage.local,
     themePrefix = 'theme_',
     specialThemePrefix = 'special_',
-    defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'Github-left', 'TopMarks', 'YetAnotherGithub'];
+    defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'GithubLeft', 'TopMarks', 'YetAnotherGithub'];
 
 storage.get('theme', function(items) {
-    var theme = items.theme ? items.theme : 'Github-left';
+    var theme = items.theme ? items.theme : 'Clearness';
     $('#current-theme').html(theme);
 });
 

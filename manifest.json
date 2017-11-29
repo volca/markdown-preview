@@ -30,7 +30,7 @@
         "*://*/*.mkd*",
         "*://*/*.rst*"
       ],
-	  "css": ["theme/markdownTOC.css"],
+      "css": ["theme/MarkdownTOC.css"],
       "js": [
           "js/jquery.js",
           "js/marked.js",
@@ -51,10 +51,10 @@
       "theme/Clearness.css",
       "theme/ClearnessDark.css",
       "theme/Github.css",
-      "theme/markdownTOC.css",
+      "theme/MarkdownTOC.css",
       "theme/TopMarks.css",
       "theme/YetAnotherGithub.css",
-      "theme/Github-left.css",
+      "theme/GithubLeft.css",
       "theme/i/cal.png",
       "theme/i/compass.png",
       "theme/i/doc.png",
@@ -67,8 +67,7 @@
       "js/marked.js",
       "js/options.js",
 	  "js/jquery.js",
-	  "js/markdownTOC.css",
-	  "js/markdownTOC.js"
+      "js/markdownTOC.js"
   ],
   "browser_action": {
       "default_icon" : "images/icon.png",
