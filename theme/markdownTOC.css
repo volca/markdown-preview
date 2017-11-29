@@ -1,0 +1,68 @@
+/*导航*/
+.BlogAnchor {
+	background: #f1f1f1;
+	padding: 10px;
+	line-height: 180%;
+	position: fixed;
+	right: 48px;
+	top: 48px;
+	max-width: 25%;
+	min-width: 20%;
+	white-space: nowrap;
+	border: 1px solid #aaaaaa;
+}
+.BlogAnchor p {
+	font-size: 18px;
+	color: #15a230;
+	margin: 0 0 0.3rem 0;
+	text-align: right;
+}
+.BlogAnchor .AnchorContent {
+	padding: 5px 0px;
+	overflow: auto;
+}
+.BlogAnchor li{
+	text-indent: 0rem;
+	font-size: 14px;
+	list-style: none;
+}
+.BlogAnchor li .nav_item{
+	padding: 3px;
+	line-height: 28px;
+}
+.BlogAnchor li .item_h1{
+	margin-left: 0rem;
+	font-size: 0.98rem;
+}
+.BlogAnchor li .item_h2{
+	margin-left: 1.2rem;
+	font-size: 0.98rem;
+}
+.BlogAnchor li .item_h3{
+	margin-left: 2.4rem;
+	font-size: 0.98rem;
+}
+.BlogAnchor li .item_h4{
+	margin-left: 3.6rem;
+	font-size: 0.97rem;
+}
+.BlogAnchor li .nav_item.current{
+	color: white;
+	background-color: #5cc26f;
+}
+#AnchorContentToggle {
+	font-size: 13px;
+	font-weight: normal;
+	color: #FFF;
+	display: inline-block;
+	line-height: 25px;
+	background: #5cc26f;
+	font-style: normal;
+	padding: 1px 8px;
+}
+.BlogAnchor a:hover {
+	color: #5cc26f;
+}
+.BlogAnchor a {
+	text-decoration: none;
+}

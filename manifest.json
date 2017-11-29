@@ -3,7 +3,7 @@
   "version": "0.6.3",
   "manifest_version": 2,
 
-  "description": "Converts and previews markdown files (.md, .markdown) to HTML right inside Chrome and support live reload",
+  "description": "Converts and previews markdown files (.md, .markdown) to HTML(include TOC) right inside Chrome and support live reload",
   "icons": {
     "128": "images/icon.png",
     "48": "images/icon.png",
@@ -30,13 +30,15 @@
         "*://*/*.mkd*",
         "*://*/*.rst*"
       ],
+	  "css": ["theme/markdownTOC.css"],
       "js": [
           "js/jquery.js",
           "js/marked.js",
           "js/highlight.js",
           "js/config.js",
           "js/markdownify.js"
-      ]
+      ],
+      "run_at": "document_end"
     }
   ],
   "permissions": [
@@ -49,8 +51,10 @@
       "theme/Clearness.css",
       "theme/ClearnessDark.css",
       "theme/Github.css",
+      "theme/markdownTOC.css",
       "theme/TopMarks.css",
       "theme/YetAnotherGithub.css",
+      "theme/Github-left.css",
       "theme/i/cal.png",
       "theme/i/compass.png",
       "theme/i/doc.png",
@@ -61,7 +65,10 @@
       "js/config.js",
       "js/runMathJax.js",
       "js/marked.js",
-      "js/options.js"
+      "js/options.js",
+	  "js/jquery.js",
+	  "js/markdownTOC.css",
+	  "js/markdownTOC.js"
   ],
   "browser_action": {
       "default_icon" : "images/icon.png",
