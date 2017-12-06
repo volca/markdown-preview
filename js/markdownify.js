@@ -37,7 +37,7 @@
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
-        storage.get(['mathjax', 'html'], function(items) {
+        storage.get(['mathjax', 'html', 'toc'], function(items) {
             // Convert MarkDown to HTML without MathJax typesetting.
             // This is done to make page responsiveness.  The HTML body
             // is replaced after MathJax typesetting.
@@ -52,7 +52,9 @@
                 resolveImg(this);
             });
 
-            addTOC();
+            if (items.toc) {
+                addTOC();
+            }
             
             // Apply MathJax typesetting
             if (items.mathjax) {
@@ -205,6 +207,8 @@
                         setTheme(value.newValue);
                     }
                 });
+            } else if(key == 'toc') {
+                location.reload();
             } else if(key == 'reload_freq') {
                 storage.get('auto_reload', function(items) {
                     startAutoReload();

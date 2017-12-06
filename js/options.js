@@ -90,6 +90,14 @@ $('#auto-reload').change(function() {
     }
 });
 
+$('#toc').change(function() {
+    if($(this).prop('checked')) {
+        storage.set({'toc' : 1});
+    } else {
+        storage.remove('toc');
+    }
+});
+
 // theme
 function getThemes() {
     storage.get(['custom_themes', 'theme'], function(items) {
