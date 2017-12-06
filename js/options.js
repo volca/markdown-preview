@@ -16,11 +16,17 @@ function message(text, type) {
 }
 
 // mathjax
-storage.get(['mathjax', 'enable_latex_delimiters', 'html'], function(items) {
+storage.get(['mathjax', 'enable_latex_delimiters', 'html', 'toc'], function(items) {
     if(items.mathjax) {
         $('#mathjax').prop('checked', 'checked');
     } else {
         $('#mathjax').removeProp('checked');
+    }
+
+    if(items.toc) {
+        $('#toc').prop('checked', 'checked');
+    } else {
+        $('#toc').removeProp('checked');
     }
 
     if(items.enable_latex_delimiters) {
