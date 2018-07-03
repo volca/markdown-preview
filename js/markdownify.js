@@ -229,7 +229,8 @@
     var showNavBar = true;
     var expandNavBar = true;
     var hasNavItem = true;
-    var vH1Tag = null, vH2Tag = null, vH3Tag = null, vH4Tag = null;
+    var vH1Tag = null, vH2Tag = null, vH3Tag = null, 
+        vH4Tag = null, vH5Tag = null, vH6Tag = null;
     var headerNavs;
     var headerTops = [];
     var tocTops = [];
@@ -282,17 +283,22 @@
         var headCounts = [h1s.length, h2s.length, h3s.length, h4s.length, h5s.length, h6s.length];
         for(var i = 0; i < headCounts.length; i++){
             if(headCounts[i] > 0){
-                if(vH1Tag == null){
+                if (vH1Tag == null){
                     vH1Tag = 'h' + (i + 1);
-                }else if(vH2Tag == null){
+                } else if(vH2Tag == null){
                     vH2Tag = 'h' + (i + 1);
-                }else if(vH3Tag == null){
+                } else if(vH3Tag == null){
                     vH3Tag = 'h' + (i + 1);
-                }else if(vH4Tag == null){
+                } else if(vH4Tag == null){
                     vH4Tag = 'h' + (i + 1);
+                } else if(vH5Tag == null){
+                    vH5Tag = 'h' + (i + 1);
+                } else if(vH6Tag == null){
+                    vH6Tag = 'h' + (i + 1);
                 }
             }
         }
+
         if(vH1Tag == null){
             hasNavItem = false;//hide TOC, nothing to show
             return;
@@ -311,32 +317,43 @@
             $("#AnchorContent").css('max-height', (clientheight - 160) + 'px');
         }
 
-        var vH1Index = 0, vH2Index = 0, vH3Index = 0, vH4Index = 0;
+        var vH1Index = 0, vH2Index = 0, vH3Index = 0, 
+            vH4Index = 0, vH5Index = 0, vH6Index = 0;
         $("body").find("h1,h2,h3,h4,h5,h6").each(function(i,item){
             var id = '';
             var name = '';
             var tag = $(item).get(0).tagName.toLowerCase();
             var className = '';
 
-            if(tag == vH1Tag){
+            if (tag == vH1Tag){
                 id = name = ++vH1Index;
                 name = id;
                 vH2Index = 0;
                 className = 'item_h1';
-            }else if(tag == vH2Tag){
+            } else if(tag == vH2Tag){
                 id = vH1Index + '_' + ++vH2Index;
                 name = vH1Index + '.' + vH2Index;
                 vH3Index = 0;
                 className = 'item_h2';
-            }else if(tag == vH3Tag){
+            } else if(tag == vH3Tag){
                 id = vH1Index + '_' + vH2Index + '_' + ++vH3Index;
                 name = vH1Index + '.' + vH2Index + '.' + vH3Index;
                 vH4Index = 0;
                 className = 'item_h3';
-            }else if(tag == vH4Tag){
+            } else if(tag == vH4Tag){
                 id = vH1Index + '_' + vH2Index + '_' + vH3Index + '_' + ++vH4Index;
                 name = vH1Index + '.' + vH2Index + '.' + vH3Index + '.' + vH4Index;
                 className = 'item_h4';
+            } else if(tag == vH5Tag){
+                id = [vH1Index, vH2Index, vH3Index, vH4Index, ++vH5Index].join('_');
+                name = [vH1Index, vH2Index, vH3Index, vH4Index, vH5Index].join('.');
+                vH5Index = 0;
+                className = 'item_h5';
+            } else if(tag == vH6Tag){
+                id = [vH1Index, vH2Index, vH3Index, vH4Index, vH5Index, ++vH6Index].join('_');
+                name = [vH1Index, vH2Index, vH3Index, vH4Index, vH5Index, vH6Index].join('.');
+                vH6Index = 0;
+                className = 'item_h6';
             }
 
             $(item).attr("id","wow"+id);

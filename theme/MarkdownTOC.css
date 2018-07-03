@@ -46,6 +46,14 @@
 	margin-left: 3.6rem;
 	font-size: 0.97rem;
 }
+.BlogAnchor li .item_h5{
+	margin-left: 4.8rem;
+	font-size: 0.96rem;
+}
+.BlogAnchor li .item_h6{
+	margin-left: 6.0rem;
+	font-size: 0.95rem;
+}
 .BlogAnchor li .nav_item.current{
 	color: white;
 	background-color: #5cc26f;
