@@ -34,6 +34,17 @@
         $.getScript(chrome.extension.getURL('js/runMathJax.js'));
     }
 
+    function postRender() {
+        if (location.hash) {
+            window.setTimeout(function() {
+                $('html, body').animate({
+                    scrollTop: $(location.hash).offset().top
+                }, 100);
+            }, 300);
+
+        }
+    }
+
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
@@ -60,6 +71,8 @@
             if (items.mathjax) {
                 runMathjax(data);
             }
+
+            postRender();
         });
     }
 
@@ -378,9 +391,9 @@
         $(".anchor-link").click(function(){
             $(".BlogAnchor li .nav_item.current").removeClass('current'); 
             $(this).addClass('current');
-            $(window).off('scroll', doscroll);
+            $(window).off('scroll', doScroll);
             $("html,body").animate({scrollTop: $($(this).attr("link")).offset().top}, 100, 
-                function(){ $(window).on('scroll', doscroll); });
+                function(){ $(window).on('scroll', doScroll); });
         });
 
         if(!showNavBar){ $('.BlogAnchor').hide(); }
@@ -391,7 +404,7 @@
         }
     }
 
-    function doscroll(){ //$(window).scroll
+    function doScroll(){ //$(window).scroll
         scrollFunc();
         var scrollTop = $(window).scrollTop();
         var clientheight = document.compatMode=="CSS1Compat" ? document.documentElement.clientHeight : document.body.clientHeight;
@@ -464,8 +477,8 @@
             tocTops.push($(n).offset().top);
         });
         
-        $(window).on('scroll', doscroll);
-        doscroll();
+        $(window).on('scroll', doScroll);
+        doScroll();
     }
 
     function hasScroll(Id){
