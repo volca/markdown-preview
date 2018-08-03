@@ -855,8 +855,9 @@ Renderer.prototype.code = function(code, lang, escaped) {
       var out = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
       return out;
   }
-  else if (lang == 'uml') {
-      var out = '<img src=\'https://g.gravizo.com/svg?\n ' + code + '\n\'>\n';
+  else if (lang == 'puml') {
+      var umlCode = code.replace(/\n/g, ';\n');
+      var out = '<img src=\'https://g.gravizo.com/svg?\n ' + umlCode + '\n\'>\n';
       return out;
   }
   else if (this.options.highlight) {
