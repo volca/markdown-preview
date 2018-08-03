@@ -31,6 +31,12 @@
         $.getScript(chrome.extension.getURL('js/highlight.js'), function() {
             $.getScript(chrome.extension.getURL('js/config.js'));
         });
+        $.getScript(chrome.extension.getURL('js/webfont.js'));
+        $.getScript(chrome.extension.getURL('js/snap.svg-min.js'));
+        $.getScript(chrome.extension.getURL('js/underscore-min.js'));
+        $.getScript(chrome.extension.getURL('js/sequence-diagram-min.js'));
+        $.getScript(chrome.extension.getURL('js/raphael.min.js'));
+        $.getScript(chrome.extension.getURL('js/flowchart.min.js'));
         $.getScript(chrome.extension.getURL('js/runMathJax.js'));
     }
 
@@ -70,6 +76,16 @@
             // Apply MathJax typesetting
             if (items.mathjax) {
                 runMathjax(data);
+            }
+
+            for (i = 1; i <= g_seq_id; ++i) {
+                var seqid = make_seq_id(i);
+                drawSeq(seqid);
+            }
+
+            for (i = 1; i <= g_flow_id; ++i) {
+                var flowid = make_flow_id(i);
+                drawFlow(flowid);
             }
 
             postRender();

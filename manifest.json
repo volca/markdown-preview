@@ -1,6 +1,6 @@
 {
-  "name": "Markdown Preview Plus",
-  "version": "0.6.7",
+  "name": "Markdown Preview Plus patch sequence/flow",
+  "version": "0.6.7.1",
   "manifest_version": 2,
 
   "description": "Converts and previews markdown files (.md, .markdown) to HTML(include TOC) right inside Chrome and support live reload",
@@ -36,7 +36,13 @@
           "js/marked.js",
           "js/highlight.js",
           "js/config.js",
-          "js/markdownify.js"
+          "js/markdownify.js",
+          "js/webfont.js",
+          "js/snap.svg-min.js",
+          "js/underscore-min.js",
+          "js/sequence-diagram-min.js",
+          "js/raphael.min.js",
+          "js/flowchart.min.js"
       ],
       "run_at": "document_end"
     }
@@ -67,7 +73,11 @@
       "js/marked.js",
       "js/options.js",
 	  "js/jquery.js",
-      "js/markdownTOC.js"
+      "js/markdownTOC.js",
+      "js/webfont.js",
+      "js/snap.svg-min.js",
+      "js/underscore-min.js",
+      "js/sequence-diagram-min.js"
   ],
   "browser_action": {
       "default_icon" : "images/icon.png",

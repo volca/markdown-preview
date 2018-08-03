@@ -24,6 +24,16 @@
 
             // Remove div used for MathJax processing
             mathjaxDiv.remove();
+
+            for (i = 1; i <= g_seq_id; ++i) {
+                var seqid = make_seq_id(i);
+                drawSeq(seqid);
+            }
+
+            for (i = 1; i <= g_flow_id; ++i) {
+                var flowid = make_flow_id(i);
+                drawFlow(flowid);
+            }
         });
 
     }
