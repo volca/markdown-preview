@@ -855,6 +855,10 @@ Renderer.prototype.code = function(code, lang, escaped) {
       var out = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
       return out;
   }
+  else if (lang == 'uml') {
+      var out = '<img src=\'https://g.gravizo.com/svg?\n ' + code + '\n\'>\n';
+      return out;
+  }
   else if (this.options.highlight) {
     var out = this.options.highlight(code, lang);
     if (out != null && out !== code) {
