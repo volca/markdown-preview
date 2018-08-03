@@ -1254,6 +1254,8 @@ function merge(obj) {
  */
 
 function marked(src, opt, callback) {
+  g_seq_id = 0;
+  g_flow_id = 0;
   if (callback || typeof opt === 'function') {
     if (!callback) {
       callback = opt;
