@@ -77,7 +77,9 @@
       "js/webfont.js",
       "js/snap.svg-min.js",
       "js/underscore-min.js",
-      "js/sequence-diagram-min.js"
+      "js/sequence-diagram-min.js",
+      "js/raphael.min.js",
+      "js/flowchart.min.js"
   ],
   "browser_action": {
       "default_icon" : "images/icon.png",
