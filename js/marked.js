@@ -855,9 +855,9 @@ Renderer.prototype.code = function(code, lang, escaped) {
       var out = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
       return out;
   }
-  else if (lang == 'puml') {
-      var umlCode = code.replace(/\n/g, ';\n');
-      var out = '<img src=\'https://g.gravizo.com/svg?\n ' + umlCode + '\n\'>\n';
+  else if (lang == 'puml' && window.navigator.onLine) {
+      var umlCode = platuml_compress(code);
+      var out = '<img src=\"' + umlCode + '\">\n';
       return out;
   }
   else if (this.options.highlight) {
@@ -977,7 +977,7 @@ Renderer.prototype.del = function(text) {
 Renderer.prototype.link = function(href, title, text) {
   if (this.options.sanitize) {
     try {
-      var prot = decodeURIComponent(unescape(href))
+      var prot = decodeURIComponent(marked_unescape(href))
         .replace(/[^\w:]/g, '')
         .toLowerCase();
     } catch (e) {
@@ -1207,7 +1207,7 @@ function escape(html, encode) {
     .replace(/'/g, '&#39;');
 }
 
-function unescape(html) {
+function marked_unescape(html) {
 	// explicitly match decimal, hex, and named HTML entities 
   return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/g, function(_, n) {
     n = n.toLowerCase();

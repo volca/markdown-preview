@@ -37,6 +37,8 @@
         $.getScript(chrome.extension.getURL('js/sequence-diagram-min.js'));
         $.getScript(chrome.extension.getURL('js/raphael.min.js'));
         $.getScript(chrome.extension.getURL('js/flowchart.min.js'));
+        $.getScript(chrome.extension.getURL('js/rawdeflate.js'));
+        $.getScript(chrome.extension.getURL('js/platuml_encode.js'));
         $.getScript(chrome.extension.getURL('js/runMathJax.js'));
     }
 
@@ -426,7 +428,7 @@
         var clientheight = document.compatMode=="CSS1Compat" ? document.documentElement.clientHeight : document.body.clientHeight;
         $.each(headerTops, function(i, n){
             var distance = n - scrollTop;
-            if(distance > 0){
+            if(distance > 0 && headerNavs[i]){
                 var item = $(headerNavs[i])[0];
                 var curItemTop = $(headerNavs[i]).position().top;
                 var dist2Top = distance + item.offsetHeight;
