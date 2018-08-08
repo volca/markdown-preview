@@ -45,32 +45,6 @@ var flowStyle = {
 var g_seq_id = 0;
 var g_flow_id = 0;
 
-function make_seq_id(id) {
-    return 'diag_seq_id' + id.toString();
-}
-
-function make_flow_id(id) {
-    return 'diag_flow_id' + id.toString();
-}
-
-function drawSeq(id) {
-    var divSeq = document.getElementById(id);
-    var txt = divSeq.getAttribute('seq');
-    if(txt) {
-        var diagram = Diagram.parse(txt);
-        diagram.drawSVG(id, {theme: 'hand'});
-    }
-}
-
-function drawFlow(id) {
-    var divFlow = document.getElementById(id);
-    var txt = divFlow.getAttribute('flow');
-    if(txt) {
-        var diagram = flowchart.parse(txt);
-        diagram.drawSVG(id, flowStyle);
-    }
-}
-
 ;(function() {
 
 /**
@@ -529,7 +503,7 @@ Lexer.prototype.token = function(src, top, bq) {
  */
 
 var inline = {
-  escape: /^\\([\\`*{}\[\]()#+\-.!_>])/,
+  escape: /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,
   autolink: /^<([^ >]+(@|:\/)[^ >]+)>/,
   url: noop,
   tag: /^<!--[\s\S]*?-->|^<\/?\w+(?:"[^"]*"|'[^']*'|[^'">])*?>/,
@@ -541,7 +515,7 @@ var inline = {
   code: /^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,
   br: /^ {2,}\n(?!\s*$)/,
   del: noop,
-  text: /^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/
+  text: /^[\s\S]+?(?=[\\<!\[`*]|\b_| {2,}\n|$)/
 };
 
 inline._inside = /(?:\[[^\]]*\]|[^\[\]]|\](?=[^\[]*\]))*/;
@@ -842,92 +816,135 @@ function Renderer(options) {
   this.options = options || {};
 }
 
-Renderer.prototype.code = function(code, lang, escaped) {
-  if (lang == 'sequence') {
-      g_seq_id += 1;
-      var seqid = make_seq_id(g_seq_id);
-      var out = '<div id=\"' + seqid + '\" seq=\"' + code + '\"></div>\n';
-      return out;
-  }
-  else if (lang == 'flow') {
-      g_flow_id += 1;
-      var flowid = make_flow_id(g_flow_id);
-      var out = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
-      return out;
-  }
-  else if (lang == 'puml' && window.navigator.onLine) {
-      var umlCode = platuml_compress(code);
-      var out = '<img src=\"' + umlCode + '\">\n';
-      return out;
-  }
-  else if (this.options.highlight) {
-    var out = this.options.highlight(code, lang);
-    if (out != null && out !== code) {
-      escaped = true;
-      code = out;
+function make_seq_id(id) {
+    return 'diag_seq_id' + id.toString();
+}
+
+function make_flow_id(id) {
+    return 'diag_flow_id' + id.toString();
+}
+
+function replaceMathString(src) {
+    var out = src;
+    var pattern = RegExp(/(\${1,2})((?:[^\$])*)\1|(\\\[)((?:\\.|[\s\S])*)(\\])|(\\\()((?:\\.|[\s\S])*)(\\\))/g);
+    var mc = null;
+    while (null != (mc = pattern.exec(src))) {
+        var srcMath = "";
+        if (mc[1]) { //match $ or $$
+            srcMath = mc[2];
+            if(mc[1] === '$$') {
+                isDisplay = true;
+            }
+            else {
+                isDisplay = false;
+            }
+        }
+        else if (mc[3]) { //match \\[ \\]
+            isDisplay = true;
+            srcMath = mc[4];
+        }
+        else if (mc[6]) { //match \\( \\)
+            isDisplay = true;
+            srcMath = mc[7];
+        }
+
+        srcMath = katex.renderToString(srcMath, {displayMode: isDisplay});
+        if (srcMath && srcMath.length != 0) {
+            out = out.replace(mc[0], srcMath);
+        }
     }
-  }
+    return out;
+}
 
-  if (!lang) {
-    return '<pre><code>'
-      + (escaped ? code : escape(code, true))
-      + '\n</code></pre>';
-  }
+Renderer.prototype.code = function(code, lang, escaped) {
+if (lang == 'sequence') {
+  g_seq_id += 1;
+  var seqid = make_seq_id(g_seq_id);
+  var out = '<div id=\"' + seqid + '\" seq=\"' + code + '\"></div>\n';
+  return out;
+}
+else if (lang == 'flow') {
+  g_flow_id += 1;
+  var flowid = make_flow_id(g_flow_id);
+  var out = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
+  return out;
+}
+else if (lang == 'puml' && window.navigator.onLine) {
+  var umlCode = platuml_compress(code);
+  var out = '<img src=\"' + umlCode + '\">\n';
+  return out;
+}
+else if (this.options.highlight) {
+var out = this.options.highlight(code, lang);
+if (out != null && out !== code) {
+  escaped = true;
+  code = out;
+}
+}
 
-  return '<pre><code class="'
-    + this.options.langPrefix
-    + escape(lang, true)
-    + '">'
-    + (escaped ? code : escape(code, true))
-    + '\n</code></pre>\n';
+if (!lang) {
+return '<pre><code>'
+  + (escaped ? code : escape(code, true))
+  + '\n</code></pre>';
+}
+
+return '<pre><code class="'
++ this.options.langPrefix
++ escape(lang, true)
++ '">'
++ (escaped ? code : escape(code, true))
++ '\n</code></pre>\n';
 };
 
 Renderer.prototype.blockquote = function(quote) {
-  return '<blockquote>\n' + quote + '</blockquote>\n';
+return '<blockquote>\n' + quote + '</blockquote>\n';
 };
 
 Renderer.prototype.html = function(html) {
-  return html;
+return html;
 };
 
 Renderer.prototype.heading = function(text, level, raw) {
-  return '<h'
+var mathSrc = this.options.katex ? replaceMathString(text) : text;
+return '<h'
     + level
     + ' id="'
     + this.options.headerPrefix
     + raw.toLowerCase().replace(/[^\w]+/g, '-')
     + '">'
-    + text
+    + mathSrc
     + '</h'
     + level
     + '>\n';
 };
 
 Renderer.prototype.hr = function() {
-  return this.options.xhtml ? '<hr/>\n' : '<hr>\n';
+return this.options.xhtml ? '<hr/>\n' : '<hr>\n';
 };
 
 Renderer.prototype.list = function(body, ordered, taskList) {
-  var type = ordered ? 'ol' : 'ul';
-  var classes = taskList ? ' class="task-list"' : '';
-  return '<' + type + classes + '>\n' + body + '</' + type + '>\n';
+var type = ordered ? 'ol' : 'ul';
+var classes = taskList ? ' class="task-list"' : '';
+return '<' + type + classes + '>\n' + body + '</' + type + '>\n';
 };
 
 Renderer.prototype.listitem = function(text, checked) {
-  if (checked === undefined) {
-    return '<li>' + text + '</li>\n';
-  }
+    var mathSrc = this.options.katex ? replaceMathString(text) : text;
+    if (checked === undefined) {
+        return '<li>' + mathSrc + '</li>\n';
+    }
 
-  return '<li class="task-list-item" style="list-style-type:none;">'
-    + '<input type="checkbox" class="task-list-item-checkbox" disabled="disabled"'
-    + (checked ? ' checked' : '')
-    + '> '
-    + text
-    + '</li>\n';
+    return '<li class="task-list-item" style="list-style-type:none;">'
+        + '<input type="checkbox" class="task-list-item-checkbox" disabled="disabled"'
+        + (checked ? ' checked' : '')
+        + '> '
+        + mathSrc 
+        + '</li>\n';
 };
 
 Renderer.prototype.paragraph = function(text) {
-  return '<p>' + text + '</p>\n';
+    var mathSrc = this.options.katex ? replaceMathString(text) : text;
+    return '<p>' + mathSrc + '</p>\n';
 };
 
 Renderer.prototype.table = function(header, body) {
@@ -946,20 +963,21 @@ Renderer.prototype.tablerow = function(content) {
 };
 
 Renderer.prototype.tablecell = function(content, flags) {
-  var type = flags.header ? 'th' : 'td';
-  var tag = flags.align
-    ? '<' + type + ' style="text-align:' + flags.align + '">'
-    : '<' + type + '>';
-  return tag + content + '</' + type + '>\n';
+    var mathSrc = this.options.katex ? replaceMathString(content) : content;
+    var type = flags.header ? 'th' : 'td';
+    var tag = flags.align
+        ? '<' + type + ' style="text-align:' + flags.align + '">'
+        : '<' + type + '>';
+    return tag + mathSrc + '</' + type + '>\n';
 };
 
 // span level renderer
 Renderer.prototype.strong = function(text) {
-  return '<strong>' + text + '</strong>';
+    return '<strong>' + text + '</strong>';
 };
 
 Renderer.prototype.em = function(text) {
-  return '<em>' + text + '</em>';
+    return '<em>' + text + '</em>';
 };
 
 Renderer.prototype.codespan = function(text) {
@@ -1005,7 +1023,7 @@ Renderer.prototype.image = function(href, title, text) {
 };
 
 Renderer.prototype.text = function(text) {
-  return text;
+    return text;
 };
 
 /**
