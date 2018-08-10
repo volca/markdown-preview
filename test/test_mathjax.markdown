@@ -10,7 +10,7 @@ Default Math Syntax
 
 * Double backslash with bracket.
 
-  \\[ A_i = B_i + C_{i} \sum_{k=0}^{i} D_k E^k + dx \\]
+  \\[ A_i = B_i + C_i \sum_{k=0}^{i} D_k E^k + dx \\]
 
 * Double dollar signs.
   $$A_i = B_i + C_i \sum_{k=0}^{i} D_k E^k + dx$$
