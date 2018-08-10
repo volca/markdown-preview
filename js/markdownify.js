@@ -5,6 +5,44 @@
         previousText,
         storage = chrome.storage.local;
 
+    var flowStyle = {
+        'x': 0,
+        'y': 0,
+        'line-width': 3,
+        'line-length': 50,
+        'text-margin': 10,
+        'font-size': 14,
+        'font-color': 'black',
+        'line-color': 'black',
+        'element-color': 'black',
+        'fill': 'white',
+        'yes-text': 'yes',
+        'no-text': 'no',
+        'arrow-end': 'block',
+        'scale': 1,
+        // style symbol types
+        'symbols': {
+            'start': {
+                'font-color': 'red',
+                'element-color': 'green',
+                'fill': 'yellow'
+            },
+            'end':{
+                'class': 'end-element'
+            }
+        },
+        // even flowstate support ;-)
+        'flowstate' : {
+            'past' : { 'fill' : '#CCCCCC', 'font-size' : 12},
+            'current' : {'fill' : 'yellow', 'font-color' : 'red', 'font-weight' : 'bold'},
+            'future' : { 'fill' : '#FFFF99'},
+            'request' : { 'fill' : 'blue'},
+            'invalid': {'fill' : '#444444'},
+            'approved' : { 'fill' : '#58C4A3', 'font-size' : 12, 'yes-text' : 'APPROVED', 'no-text' : 'n/a' },
+            'rejected' : { 'fill' : '#C45879', 'font-size' : 12, 'yes-text' : 'n/a', 'no-text' : 'REJECTED' }
+        }
+    };
+
     function getExtension(url) {
         url = url.substr(1 + url.lastIndexOf("/"))
             .split('?')[0]
@@ -20,28 +58,6 @@
         }
     }
 
-    function runMathjax(data) {
-        // Create hidden div to use for MathJax processing
-        var mathjaxDiv = $("<div/>").attr("id", config.mathjaxProcessingElementId)
-                            .text(data)
-                            .hide();
-        $(document.body).append(mathjaxDiv);
-
-        $.getScript(chrome.extension.getURL('js/marked.js'));
-        $.getScript(chrome.extension.getURL('js/highlight.js'), function() {
-            $.getScript(chrome.extension.getURL('js/config.js'));
-        });
-        $.getScript(chrome.extension.getURL('js/webfont.js'));
-        $.getScript(chrome.extension.getURL('js/snap.svg-min.js'));
-        $.getScript(chrome.extension.getURL('js/underscore-min.js'));
-        $.getScript(chrome.extension.getURL('js/sequence-diagram-min.js'));
-        $.getScript(chrome.extension.getURL('js/raphael.min.js'));
-        $.getScript(chrome.extension.getURL('js/flowchart.min.js'));
-        $.getScript(chrome.extension.getURL('js/rawdeflate.js'));
-        $.getScript(chrome.extension.getURL('js/platuml_encode.js'));
-        $.getScript(chrome.extension.getURL('js/runMathJax.js'));
-    }
-
     function postRender() {
         if (location.hash) {
             window.setTimeout(function() {
@@ -53,15 +69,35 @@
         }
     }
 
+    function drawSeq(id) {
+        var divSeq = document.getElementById(id);
+        var txt = divSeq.getAttribute('seq');
+        if(txt) {
+            var diagram = Diagram.parse(txt);
+            diagram.drawSVG(id, {theme: 'hand'});
+        }
+    }
+
+    function drawFlow(id) {
+        var divFlow = document.getElementById(id);
+        var txt = divFlow.getAttribute('flow');
+        if(txt) {
+            var diagram = flowchart.parse(txt);
+            diagram.drawSVG(id, flowStyle);
+        }
+    }
+
+
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
-        storage.get(['mathjax', 'html', 'toc'], function(items) {
-            // Convert MarkDown to HTML without MathJax typesetting.
-            // This is done to make page responsiveness.  The HTML body
-            // is replaced after MathJax typesetting.
+        storage.get(['katex', 'html', 'toc'], function(items) {
+            // Convert MarkDown to HTML 
             if (items.html) {
                 config.markedOptions.sanitize = false;
+            }
+            if (items.katex) {
+                config.markedOptions.katex = true;
             }
             marked.setOptions(config.markedOptions);
             var html = marked(data);
@@ -75,11 +111,6 @@
                 addTOC();
             }
             
-            // Apply MathJax typesetting
-            if (items.mathjax) {
-                runMathjax(data);
-            }
-
             for (i = 1; i <= g_seq_id; ++i) {
                 var seqid = make_seq_id(i);
                 drawSeq(seqid);
@@ -193,21 +224,15 @@
         });
     }
 
-    storage.get(['exclude_exts', 'disable_markdown', 'mathjax', 'html', 'enable_latex_delimiters'], function(items) {
+    storage.get(['exclude_exts', 'disable_markdown', 'katex', 'html'], function(items) {
         if (items.disable_markdown) {
             return;
         }
 
-        if (items.enable_latex_delimiters) {
-            config.enableLatexDelimiters();
-        }
-
-        if (items.mathjax) {
-            // Enable MathJAX LaTeX delimiters
-            // Add MathJax configuration and js to document head
-            $.getScript('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML');
-            var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
-                .html("MathJax.Hub.Config(" + JSON.stringify(config.mathjaxConfig) + ");");
+        if (items.katex) {
+            var mjc = document.createElement('link');
+            mjc.rel = 'stylesheet';
+            mjc.href = chrome.extension.getURL('theme/katex.min.css');
             $(document.head).append(mjc);
         }
 
