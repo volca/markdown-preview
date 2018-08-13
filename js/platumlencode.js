@@ -1,3 +1,6 @@
+var platumlEncoder = {};
+
+(function() {
 function encode64(data) {
     r = "";
     for (i=0; i<data.length; i+=3) {
@@ -48,11 +51,16 @@ function encode6bit(b) {
     return '?';
 }
 
-function done_deflating(e) {
+function doneDeflating(e) {
     return "http://www.plantuml.com/plantuml/img/"+encode64(e.data);
 }
 
-function platuml_compress(s) {
+function platumlCompress(s) {
     s = unescape(encodeURIComponent(s));
-    return done_deflating({ data: deflate(s) });
+    return doneDeflating({ data: deflate(s) });
 }
+
+//EXPOSE
+platumlEncoder.platumlCompress = platumlCompress;
+
+})();

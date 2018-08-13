@@ -4,73 +4,6 @@
  * https://github.com/chjj/marked
  */
 
-var flowStyle = {
-    'x': 0,
-    'y': 0,
-    'line-width': 3,
-    'line-length': 50,
-    'text-margin': 10,
-    'font-size': 14,
-    'font-color': 'black',
-    'line-color': 'black',
-    'element-color': 'black',
-    'fill': 'white',
-    'yes-text': 'yes',
-    'no-text': 'no',
-    'arrow-end': 'block',
-    'scale': 1,
-    // style symbol types
-    'symbols': {
-        'start': {
-            'font-color': 'red',
-            'element-color': 'green',
-            'fill': 'yellow'
-        },
-        'end':{
-            'class': 'end-element'
-        }
-    },
-    // even flowstate support ;-)
-    'flowstate' : {
-        'past' : { 'fill' : '#CCCCCC', 'font-size' : 12},
-        'current' : {'fill' : 'yellow', 'font-color' : 'red', 'font-weight' : 'bold'},
-        'future' : { 'fill' : '#FFFF99'},
-        'request' : { 'fill' : 'blue'},
-        'invalid': {'fill' : '#444444'},
-        'approved' : { 'fill' : '#58C4A3', 'font-size' : 12, 'yes-text' : 'APPROVED', 'no-text' : 'n/a' },
-        'rejected' : { 'fill' : '#C45879', 'font-size' : 12, 'yes-text' : 'n/a', 'no-text' : 'REJECTED' }
-    }
-};
-
-var g_seq_id = 0;
-var g_flow_id = 0;
-
-function make_seq_id(id) {
-    return 'diag_seq_id' + id.toString();
-}
-
-function make_flow_id(id) {
-    return 'diag_flow_id' + id.toString();
-}
-
-function drawSeq(id) {
-    var divSeq = document.getElementById(id);
-    var txt = divSeq.getAttribute('seq');
-    if(txt) {
-        var diagram = Diagram.parse(txt);
-        diagram.drawSVG(id, {theme: 'hand'});
-    }
-}
-
-function drawFlow(id) {
-    var divFlow = document.getElementById(id);
-    var txt = divFlow.getAttribute('flow');
-    if(txt) {
-        var diagram = flowchart.parse(txt);
-        diagram.drawSVG(id, flowStyle);
-    }
-}
-
 ;(function() {
 
 /**
@@ -844,19 +777,19 @@ function Renderer(options) {
 
 Renderer.prototype.code = function(code, lang, escaped) {
   if (lang == 'sequence') {
-      g_seq_id += 1;
-      var seqid = make_seq_id(g_seq_id);
+      flowSeq.seqDivId += 1;
+      var seqid = flowSeq.makeSeqId(flowSeq.seqDivId);
       var out = '<div id=\"' + seqid + '\" seq=\"' + code + '\"></div>\n';
       return out;
   }
   else if (lang == 'flow') {
-      g_flow_id += 1;
-      var flowid = make_flow_id(g_flow_id);
+      flowSeq.flowDivId += 1;
+      var flowid = flowSeq.makeFlowId(flowSeq.flowDivId);
       var out = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
       return out;
   }
   else if (lang == 'puml' && window.navigator.onLine) {
-      var umlCode = platuml_compress(code);
+      var umlCode = platumlEncoder.platumlCompress(code);
       var out = '<img src=\"' + umlCode + '\">\n';
       return out;
   }
@@ -1259,8 +1192,8 @@ function merge(obj) {
  */
 
 function marked(src, opt, callback) {
-  g_seq_id = 0;
-  g_flow_id = 0;
+    flowSeq.resetDivId();
+
   if (callback || typeof opt === 'function') {
     if (!callback) {
       callback = opt;

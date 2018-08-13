@@ -37,8 +37,9 @@
         $.getScript(chrome.extension.getURL('js/sequence-diagram-min.js'));
         $.getScript(chrome.extension.getURL('js/raphael.min.js'));
         $.getScript(chrome.extension.getURL('js/flowchart.min.js'));
+        $.getScript(chrome.extension.getURL('js/flowseq.js'));
         $.getScript(chrome.extension.getURL('js/rawdeflate.js'));
-        $.getScript(chrome.extension.getURL('js/platuml_encode.js'));
+        $.getScript(chrome.extension.getURL('js/platumlencode.js'));
         $.getScript(chrome.extension.getURL('js/runMathJax.js'));
     }
 
@@ -80,15 +81,8 @@
                 runMathjax(data);
             }
 
-            for (i = 1; i <= g_seq_id; ++i) {
-                var seqid = make_seq_id(i);
-                drawSeq(seqid);
-            }
-
-            for (i = 1; i <= g_flow_id; ++i) {
-                var flowid = make_flow_id(i);
-                drawFlow(flowid);
-            }
+            flowSeq.drawAllSeq();
+            flowSeq.drawAllFlow();
 
             postRender();
         });
