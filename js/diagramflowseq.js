@@ -1,9 +1,6 @@
-var flowSeq = {};
+var diagramFlowSeq = {seqDivId : 0,  flowDivId : 0};
 
 (function (){
-
-var seqDivId = 0;
-var flowDivId = 0;
 
 var flowStyle = {
     'x': 0,
@@ -51,6 +48,16 @@ function makeFlowId(id) {
     return 'diagFlowId' + id.toString();
 }
 
+function genNextSeqDivId() {
+    diagramFlowSeq.seqDivId += 1;
+    return makeSeqId(diagramFlowSeq.seqDivId);
+}
+
+function genNextFlowDivId() {
+    diagramFlowSeq.flowDivId += 1;
+    return makeFlowId(diagramFlowSeq.flowDivId);
+}
+
 function drawSeq(id) {
     var divSeq = document.getElementById(id);
     var txt = divSeq.getAttribute('seq');
@@ -61,7 +68,6 @@ function drawSeq(id) {
 }
 
 function drawFlow(id) {
-
     var divFlow = document.getElementById(id);
     var txt = divFlow.getAttribute('flow');
     if(txt) {
@@ -71,31 +77,31 @@ function drawFlow(id) {
 }
 
 function resetDivId() {
-    seqDivId = 0;
-    flowDivId = 0;
+    diagramFlowSeq.seqDivId = 0;
+    diagramFlowSeq.flowDivId = 0;
 }
 
 function drawAllSeq() {
-    for (var i = 1; i <= seqDivId; ++i) {
+    for (var i = 1; i <= diagramFlowSeq.seqDivId; ++i) {
         var seqid = makeSeqId(i);
         drawSeq(seqid);
     }
 }
 
 function drawAllFlow() {
-    for (var i = 1; i <= flowDivId; ++i) {
+    for (var i = 1; i <= diagramFlowSeq.flowDivId; ++i) {
         var flowid = makeFlowId(i);
         drawFlow(flowid);
     }
 }
 
 //Expose
-flowSeq.seqDivId = seqDivId;
-flowSeq.flowDivId = flowDivId;
-flowSeq.makeSeqId = makeSeqId;
-flowSeq.makeFlowId = makeFlowId;
-flowSeq.drawAllSeq = drawAllSeq;
-flowSeq.drawAllFlow = drawAllFlow;
-flowSeq.resetDivId = resetDivId;
+diagramFlowSeq.genNextSeqDivId = genNextSeqDivId;
+diagramFlowSeq.genNextFlowDivId = genNextFlowDivId;
+diagramFlowSeq.makeSeqId = makeSeqId;
+diagramFlowSeq.makeFlowId = makeFlowId;
+diagramFlowSeq.drawAllSeq = drawAllSeq;
+diagramFlowSeq.drawAllFlow = drawAllFlow;
+diagramFlowSeq.resetDivId = resetDivId;
 
 })();

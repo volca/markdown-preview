@@ -777,14 +777,12 @@ function Renderer(options) {
 
 Renderer.prototype.code = function(code, lang, escaped) {
   if (lang == 'sequence') {
-      flowSeq.seqDivId += 1;
-      var seqid = flowSeq.makeSeqId(flowSeq.seqDivId);
+      var seqid = diagramFlowSeq.genNextSeqDivId();
       var out = '<div id=\"' + seqid + '\" seq=\"' + code + '\"></div>\n';
       return out;
   }
   else if (lang == 'flow') {
-      flowSeq.flowDivId += 1;
-      var flowid = flowSeq.makeFlowId(flowSeq.flowDivId);
+      var flowid = diagramFlowSeq.genNextFlowDivId();
       var out = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
       return out;
   }
@@ -910,7 +908,7 @@ Renderer.prototype.del = function(text) {
 Renderer.prototype.link = function(href, title, text) {
   if (this.options.sanitize) {
     try {
-      var prot = decodeURIComponent(marked_unescape(href))
+      var prot = decodeURIComponent(markedUnescape(href))
         .replace(/[^\w:]/g, '')
         .toLowerCase();
     } catch (e) {
@@ -1140,7 +1138,7 @@ function escape(html, encode) {
     .replace(/'/g, '&#39;');
 }
 
-function marked_unescape(html) {
+function markedUnescape(html) {
 	// explicitly match decimal, hex, and named HTML entities 
   return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/g, function(_, n) {
     n = n.toLowerCase();
@@ -1192,7 +1190,7 @@ function merge(obj) {
  */
 
 function marked(src, opt, callback) {
-    flowSeq.resetDivId();
+  diagramFlowSeq.resetDivId();
 
   if (callback || typeof opt === 'function') {
     if (!callback) {

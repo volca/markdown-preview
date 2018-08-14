@@ -45,8 +45,7 @@
                 "js/flowchart.min.js",
                 "js/rawdeflate.js",
                 "js/platumlencode.js",
-                "js/runMathJax.js",
-                "js/flowseq.js"
+                "js/diagramflowseq.js"
             ],
             "run_at": "document_end"
         }
@@ -86,7 +85,7 @@
         "js/flowchart.min.js",
         "js/rawdeflate.js",
         "js/platumlencode.js",
-        "js/flowseq.js"
+        "js/diagramflowseq.js"
     ],
     "browser_action": {
         "default_icon" : "images/icon.png",

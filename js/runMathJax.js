@@ -25,8 +25,8 @@
             // Remove div used for MathJax processing
             mathjaxDiv.remove();
 
-            flowSeq.drawAllSeq();
-            flowSeq.drawAllFlow();
+            diagramFlowSeq.drawAllSeq();
+            diagramFlowSeq.drawAllFlow();
         });
 
     }

@@ -37,7 +37,7 @@
         $.getScript(chrome.extension.getURL('js/sequence-diagram-min.js'));
         $.getScript(chrome.extension.getURL('js/raphael.min.js'));
         $.getScript(chrome.extension.getURL('js/flowchart.min.js'));
-        $.getScript(chrome.extension.getURL('js/flowseq.js'));
+        $.getScript(chrome.extension.getURL('js/diagramflowseq.js'));
         $.getScript(chrome.extension.getURL('js/rawdeflate.js'));
         $.getScript(chrome.extension.getURL('js/platumlencode.js'));
         $.getScript(chrome.extension.getURL('js/runMathJax.js'));
@@ -81,8 +81,8 @@
                 runMathjax(data);
             }
 
-            flowSeq.drawAllSeq();
-            flowSeq.drawAllFlow();
+            diagramFlowSeq.drawAllSeq();
+            diagramFlowSeq.drawAllFlow();
 
             postRender();
         });
@@ -422,7 +422,7 @@
         var clientheight = document.compatMode=="CSS1Compat" ? document.documentElement.clientHeight : document.body.clientHeight;
         $.each(headerTops, function(i, n){
             var distance = n - scrollTop;
-            if(distance > 0 && headerNavs[i]){
+            if(distance > 0){
                 var item = $(headerNavs[i])[0];
                 var curItemTop = $(headerNavs[i]).position().top;
                 var dist2Top = distance + item.offsetHeight;
