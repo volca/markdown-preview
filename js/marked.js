@@ -4,17 +4,6 @@
  * https://github.com/markedjs/marked
  */
 
-var g_seq_id = 0;
-var g_flow_id = 0;
-
-function make_seq_id(id) {
-    return 'diag_seq_id' + id.toString();
-}
-
-function make_flow_id(id) {
-    return 'diag_flow_id' + id.toString();
-}
-
 ;(function(root) {
 'use strict';
 
@@ -938,19 +927,17 @@ function replaceMathString(src) {
 
 Renderer.prototype.code = function(code, lang, escaped) {
     if (lang == 'sequence') {
-        g_seq_id += 1;
-        var seqid = make_seq_id(g_seq_id);
+        var seqid = diagramFlowSeq.genNextSeqDivId();
         var out = '<div id=\"' + seqid + '\" seq=\"' + code + '\"></div>\n';
         return out;
     }
     else if (lang == 'flow') {
-        g_flow_id += 1;
-        var flowid = make_flow_id(g_flow_id);
+        var flowid = diagramFlowSeq.genNextFlowDivId();
         var out = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
         return out;
     }
     else if (lang == 'puml' && window.navigator.onLine) {
-        var umlCode = platuml_compress(code);
+        var umlCode = platumlEncoder.platumlCompress(code);
         var out = '<img src=\"' + umlCode + '\">\n';
         return out;
     }
@@ -1440,8 +1427,7 @@ function splitCells(tableRow, count) {
  */
 
 function marked(src, opt, callback) {
-  g_seq_id = 0;
-  g_flow_id = 0;
+  diagramFlowSeq.resetDivId();
   // throw error in case of non string input
   if (typeof src === 'undefined' || src === null) {
     throw new Error('marked(): input parameter is undefined or null');

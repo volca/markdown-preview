@@ -43,9 +43,10 @@
                 "js/sequence-diagram-min.js",
                 "js/raphael.min.js",
                 "js/flowchart.min.js",
+                "js/diagramflowseq.js",
                 "js/katex.min.js",
                 "js/rawdeflate.js",
-                "js/platuml_encode.js"
+                "js/platumlencode.js"
             ],
             "run_at": "document_end"
         }
