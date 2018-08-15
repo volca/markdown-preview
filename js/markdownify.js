@@ -20,6 +20,29 @@
         }
     }
 
+    function runMathjax(data) {
+        // Create hidden div to use for MathJax processing
+        var mathjaxDiv = $("<div/>").attr("id", config.mathjaxProcessingElementId)
+                            .text(data)
+                            .hide();
+        $(document.body).append(mathjaxDiv);
+
+        $.getScript(chrome.extension.getURL('js/marked.js'));
+        $.getScript(chrome.extension.getURL('js/highlight.js'), function() {
+            $.getScript(chrome.extension.getURL('js/config.js'));
+        });
+        $.getScript(chrome.extension.getURL('js/webfont.js'));
+        $.getScript(chrome.extension.getURL('js/snap.svg-min.js'));
+        $.getScript(chrome.extension.getURL('js/underscore-min.js'));
+        $.getScript(chrome.extension.getURL('js/sequence-diagram-min.js'));
+        $.getScript(chrome.extension.getURL('js/raphael.min.js'));
+        $.getScript(chrome.extension.getURL('js/flowchart.min.js'));
+        $.getScript(chrome.extension.getURL('js/diagramflowseq.js'));
+        $.getScript(chrome.extension.getURL('js/rawdeflate.js'));
+        $.getScript(chrome.extension.getURL('js/platumlencode.js'));
+        $.getScript(chrome.extension.getURL('js/runMathJax.js'));
+    }
+
     function postRender() {
         if (location.hash) {
             window.setTimeout(function() {
@@ -34,14 +57,12 @@
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
-        storage.get(['katex', 'html', 'toc'], function(items) {
+        storage.get(['supportMath', 'mathEngine', 'html', 'toc'], function(items) {
             // Convert MarkDown to HTML 
             if (items.html) {
                 config.markedOptions.sanitize = false;
             }
-            if (items.katex) {
-                config.markedOptions.katex = true;
-            }
+            config.markedOptions.katex = (items.supportMath && items.mathEngine && items.mathEngine === 'katex');
             marked.setOptions(config.markedOptions);
             var html = marked(data);
             $(document.body).html(html);
@@ -51,9 +72,13 @@
             });
 
             if (items.toc) {
-                addTOC();
+                addTOC()
             }
-            
+
+            if (items.supportMath && items.mathEngine && items.mathEngine === 'mathjax') {
+                runMathjax(data);
+            }
+
             diagramFlowSeq.drawAllFlow();
             diagramFlowSeq.drawAllSeq();
 
@@ -160,16 +185,26 @@
         });
     }
 
-    storage.get(['exclude_exts', 'disable_markdown', 'katex', 'html'], function(items) {
+    storage.get(['exclude_exts', 'disable_markdown', 'supportMath', 'mathEngine', 'html'], function(items) {
         if (items.disable_markdown) {
             return;
         }
 
-        if (items.katex) {
-            var mjc = document.createElement('link');
-            mjc.rel = 'stylesheet';
-            mjc.href = chrome.extension.getURL('theme/katex.min.css');
-            $(document.head).append(mjc);
+        if (items.supportMath && items.mathEngine) {
+            if(items.mathEngine === 'katex') {
+                var mjc = document.createElement('link');
+                mjc.rel = 'stylesheet';
+                mjc.href = chrome.extension.getURL('theme/katex.min.css');
+                $(document.head).append(mjc);
+            }
+            else if(items.mathEngine  === 'mathjax') {
+                // Enable MathJAX LaTeX delimiters
+                // Add MathJax configuration and js to document head
+                $.getScript('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML');
+                var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
+                    .html("MathJax.Hub.Config(" + JSON.stringify(config.mathjaxConfig) + ");");
+                $(document.head).append(mjc);
+            }
         }
 
         var allExtentions = ["md", "text", "markdown", "mdown", "txt", "mkd", "rst", "rmd"];

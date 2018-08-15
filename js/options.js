@@ -15,13 +15,27 @@ function message(text, type) {
     }, 3000);
 }
 
-storage.get(['katex', 'html', 'toc'], function(items) {
-    if(items.katex) {
-        $('#katex').prop('checked', 'checked');
+storage.get(['supportMath', 'mathEngine'], function(items) {
+    if(items.supportMath) {
+        $('#MathEngineDiv').show();
+        $('#supportMath').prop('checked', 'checked');
+        $('#mathjaxMemo').hide();
+        $('#katexMemo').hide();
+        if(items.mathEngine) {
+            $('#mathEngine').val(items.mathEngine);
+            $('#' + items.mathEngine + 'Memo').show();
+        } else {
+            $('#mathEngine').val('mathjax');
+            $('#mathjaxMemo').show();
+            storage.set({'mathEngine': 'mathjax'});
+        }
     } else {
-        $('#katex').removeProp('checked');
+        $('#MathEngineDiv').hide();
+        $('#supportMath').removeProp('checked');
     }
+});
 
+storage.get(['html', 'toc'], function(items) {
     if(items.toc) {
         $('#toc').prop('checked', 'checked');
     } else {
@@ -52,14 +66,34 @@ $('#html').change(function() {
     }
 });
 
-$('#katex').change(function() {
+$('#supportMath').change(function() {
     if($(this).prop('checked')) {
-        storage.set({'katex' :1});
-        // Auto enable HTML
-        $('#html').prop("checked", "checked");
-        storage.set({'html' :1});
+        $('#MathEngineDiv').show();
+        $('#html').prop('checked', 'checked');
+        var engine = $('#mathEngine').val();
+        if(!engine) {
+            $('#mathEngine').val('mathjax');
+            $('#mathjaxMemo').show();
+            $('#katexMemo').hide();
+            storage.set({'mathEngine': 'mathjax'});
+        }
+        storage.set({'supportMath': 1});
+        storage.set({'html': 1});
     } else {
-        storage.remove('katex');
+        storage.remove('supportMath');
+        $('#MathEngineDiv').hide();
+    }
+});
+
+$('#mathEngine').change(function() {
+    var engine = $('#mathEngine').val();
+    storage.set({'mathEngine': engine});
+    if(engine === 'mathjax') {
+        $('#mathjaxMemo').show();
+        $('#katexMemo').hide();
+    } else {
+        $('#mathjaxMemo').hide();
+        $('#katexMemo').show();
     }
 });
 
