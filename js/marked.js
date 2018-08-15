@@ -879,10 +879,18 @@ function Renderer(options) {
 
 function replaceMathString(src) {
     var out = src;
-    var pattern = RegExp(/(\${1,2})((?:[^\$])*)\1|(\\\[)((?:\\.|[\s\S])*)(\\])|(\\\()((?:\\.|[\s\S])*)(\\\))/g);
+    var pattern = /(\${1,2})((?:\\.|[\s\S])+?)\1|(\\\[)((?:\\.|[\s\S])+?)(\\])|(\\\()((?:\\.|[\s\S])+?)(\\\))/g;
     var mc = null;
     var codeBegin = src.search('<code>');
     var codeEnd = src.search('</code>');
+    var unEscape = function(html) {
+        return html
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, '\'');
+    }
     while (null != (mc = pattern.exec(src))) {
         //I don't know how to build the regular expression to exclude the Code tag.
         if(codeBegin > -1 && codeEnd > -1 && mc.index > codeBegin && mc.index < codeEnd) {
@@ -910,6 +918,7 @@ function replaceMathString(src) {
             }
 
             var repMath = "";
+            srcMath = unEscape(srcMath);
             try {
                 repMath = katex.renderToString(srcMath, {displayMode: isDisplay});
             }
