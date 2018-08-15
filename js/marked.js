@@ -776,7 +776,22 @@ function Renderer(options) {
 }
 
 Renderer.prototype.code = function(code, lang, escaped) {
-  if (this.options.highlight) {
+  if (lang == 'sequence') {
+      var seqid = diagramFlowSeq.genNextSeqDivId();
+      var out = '<div id=\"' + seqid + '\" seq=\"' + code + '\"></div>\n';
+      return out;
+  }
+  else if (lang == 'flow') {
+      var flowid = diagramFlowSeq.genNextFlowDivId();
+      var out = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
+      return out;
+  }
+  else if (lang == 'puml' && window.navigator.onLine) {
+      var umlCode = platumlEncoder.platumlCompress(code);
+      var out = '<img src=\"' + umlCode + '\">\n';
+      return out;
+  }
+  else if (this.options.highlight) {
     var out = this.options.highlight(code, lang);
     if (out != null && out !== code) {
       escaped = true;
@@ -893,7 +908,7 @@ Renderer.prototype.del = function(text) {
 Renderer.prototype.link = function(href, title, text) {
   if (this.options.sanitize) {
     try {
-      var prot = decodeURIComponent(unescape(href))
+      var prot = decodeURIComponent(markedUnescape(href))
         .replace(/[^\w:]/g, '')
         .toLowerCase();
     } catch (e) {
@@ -1123,7 +1138,7 @@ function escape(html, encode) {
     .replace(/'/g, '&#39;');
 }
 
-function unescape(html) {
+function markedUnescape(html) {
 	// explicitly match decimal, hex, and named HTML entities 
   return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/g, function(_, n) {
     n = n.toLowerCase();
@@ -1175,6 +1190,8 @@ function merge(obj) {
  */
 
 function marked(src, opt, callback) {
+  diagramFlowSeq.resetDivId();
+
   if (callback || typeof opt === 'function') {
     if (!callback) {
       callback = opt;

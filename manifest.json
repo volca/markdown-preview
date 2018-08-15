@@ -1,79 +1,97 @@
 {
-  "name": "Markdown Preview Plus",
-  "version": "0.6.7",
-  "manifest_version": 2,
+    "name": "Markdown Preview Plus patch sequence/flow",
+    "version": "0.6.7.1",
+    "manifest_version": 2,
 
-  "description": "Converts and previews markdown files (.md, .markdown) to HTML(include TOC) right inside Chrome and support live reload",
-  "icons": {
-    "128": "images/icon.png",
-    "48": "images/icon.png",
-    "16": "images/icon.png"
-  },
+    "description": "Converts and previews markdown files (.md, .markdown) to HTML(include TOC) right inside Chrome and support live reload",
+    "icons": {
+        "128": "images/icon.png",
+        "48": "images/icon.png",
+        "16": "images/icon.png"
+    },
 
-  "content_scripts": [
-    {
-      "matches": [
-        "file://*/*.*md*",
-        "file://*/*.*MD*",
-        "file://*/*.text",
-        "file://*/*.markdown*",
-        "file://*/*.mdown*",
-        "file://*/*.txt*",
-        "file://*/*.mkd*",
-        "file://*/*.rst*",
-        "*://*/*.*md*",
-        "*://*/*.*MD*",
-        "*://*/*.text",
-        "*://*/*.markdown*",
-        "*://*/*.mdown*",
-        "*://*/*.txt*",
-        "*://*/*.mkd*",
-        "*://*/*.rst*"
-      ],
-      "css": ["theme/MarkdownTOC.css"],
-      "js": [
-          "js/jquery.js",
-          "js/marked.js",
-          "js/highlight.js",
-          "js/config.js",
-          "js/markdownify.js"
-      ],
-      "run_at": "document_end"
-    }
-  ],
-  "permissions": [
-      "storage",
-      "clipboardWrite",
-      "<all_urls>"
-  ],
-  "web_accessible_resources": [
-      "bootstrap.css",
-      "theme/Clearness.css",
-      "theme/ClearnessDark.css",
-      "theme/Github.css",
-      "theme/MarkdownTOC.css",
-      "theme/TopMarks.css",
-      "theme/YetAnotherGithub.css",
-      "theme/GithubLeft.css",
-      "theme/i/cal.png",
-      "theme/i/compass.png",
-      "theme/i/doc.png",
-      "theme/i/email.png",
-      "theme/i/folder.png",
-      "js/highlight.js",
-      "js/popup.js",
-      "js/config.js",
-      "js/runMathJax.js",
-      "js/marked.js",
-      "js/options.js",
-	  "js/jquery.js",
-      "js/markdownTOC.js"
-  ],
-  "browser_action": {
-      "default_icon" : "images/icon.png",
-      "default_title" : "Markdown Preview Plus",
-      "default_popup" : "popup.html"
-  },
-  "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdnjs.cloudflare.com/; object-src 'self'",
-  "options_page": "options.html"
+    "content_scripts": [
+        {
+            "matches": [
+                "file://*/*.*md*",
+                "file://*/*.*MD*",
+                "file://*/*.text",
+                "file://*/*.markdown*",
+                "file://*/*.mdown*",
+                "file://*/*.txt*",
+                "file://*/*.mkd*",
+                "file://*/*.rst*",
+                "*://*/*.*md*",
+                "*://*/*.*MD*",
+                "*://*/*.text",
+                "*://*/*.markdown*",
+                "*://*/*.mdown*",
+                "*://*/*.txt*",
+                "*://*/*.mkd*",
+                "*://*/*.rst*"
+            ],
+            "css": ["theme/MarkdownTOC.css"],
+            "js": [
+                "js/jquery.js",
+                "js/marked.js",
+                "js/highlight.js",
+                "js/config.js",
+                "js/markdownify.js",
+                "js/webfont.js",
+                "js/snap.svg-min.js",
+                "js/underscore-min.js",
+                "js/sequence-diagram-min.js",
+                "js/raphael.min.js",
+                "js/flowchart.min.js",
+                "js/rawdeflate.js",
+                "js/platumlencode.js",
+                "js/diagramflowseq.js"
+            ],
+            "run_at": "document_end"
+        }
+    ],
+    "permissions": [
+        "storage",
+        "clipboardWrite",
+        "<all_urls>"
+    ],
+    "web_accessible_resources": [
+        "bootstrap.css",
+        "theme/Clearness.css",
+        "theme/ClearnessDark.css",
+        "theme/Github.css",
+        "theme/MarkdownTOC.css",
+        "theme/TopMarks.css",
+        "theme/YetAnotherGithub.css",
+        "theme/GithubLeft.css",
+        "theme/i/cal.png",
+        "theme/i/compass.png",
+        "theme/i/doc.png",
+        "theme/i/email.png",
+        "theme/i/folder.png",
+        "js/highlight.js",
+        "js/popup.js",
+        "js/config.js",
+        "js/runMathJax.js",
+        "js/marked.js",
+        "js/options.js",
+        "js/jquery.js",
+        "js/markdownTOC.js",
+        "js/webfont.js",
+        "js/snap.svg-min.js",
+        "js/underscore-min.js",
+        "js/sequence-diagram-min.js",
+        "js/raphael.min.js",
+        "js/flowchart.min.js",
+        "js/rawdeflate.js",
+        "js/platumlencode.js",
+        "js/diagramflowseq.js"
+    ],
+    "browser_action": {
+        "default_icon" : "images/icon.png",
+        "default_title" : "Markdown Preview Plus",
+        "default_popup" : "popup.html"
+    },
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdnjs.cloudflare.com/; object-src 'self'",
+    "options_page": "options.html"
 }
