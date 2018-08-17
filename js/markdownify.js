@@ -248,6 +248,10 @@
                 }
             } else if(key == 'disable_markdown') {
                 location.reload();
+            } else if(key == 'supportMath') {
+                location.reload();
+            } else if(key == 'mathEngine') {
+                location.reload();
             }
         }
     });

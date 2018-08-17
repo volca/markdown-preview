@@ -507,7 +507,7 @@ Lexer.prototype.token = function(src, top) {
  */
 
 var inline = {
-  escape: /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,
+  escape: /^\\([!"#$%&'*+,\-./:;<=>?@\\^_`{|}~])/,
   autolink: /^<(scheme:[^\s\x00-\x1f<>]*|email)>/,
   url: noop,
   tag: '^comment'
@@ -913,7 +913,7 @@ function replaceMathString(src) {
                 srcMath = mc[4];
             }
             else if (mc[6]) { //match \\( \\)
-                isDisplay = true;
+                isDisplay = false;
                 srcMath = mc[7];
             }
 
