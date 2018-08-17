@@ -72,7 +72,7 @@
             });
 
             if (items.toc) {
-                addTOC()
+                addTOC();
             }
 
             if (items.supportMath && items.mathEngine && items.mathEngine === 'mathjax') {
