@@ -935,27 +935,26 @@ function replaceMathString(src) {
 }
 
 Renderer.prototype.code = function(code, lang, escaped) {
-    if (lang == 'sequence') {
-        var seqid = diagramFlowSeq.genNextSeqDivId();
-        var out = '<div id=\"' + seqid + '\" seq=\"' + code + '\"></div>\n';
-        return out;
-    }
-    else if (lang == 'flow') {
-        var flowid = diagramFlowSeq.genNextFlowDivId();
-        var out = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
-        return out;
-    }
-    else if (lang == 'puml' && window.navigator.onLine) {
-        var umlCode = platumlEncoder.platumlCompress(code);
-        var out = '<img src=\"' + umlCode + '\">\n';
-        return out;
-    }
-    else if (this.options.highlight) {
-        var out = this.options.highlight(code, lang);
-        if (out != null && out !== code) {
-            escaped = true;
-            code = out;
-        }
+  if (lang == 'sequence') {
+      var seqid = diagramFlowSeq.genNextSeqDivId();
+      var out = '<div id=\"' + seqid + '\" seq=\"' + code + '\"></div>\n';
+      return out;
+  }
+  else if (lang == 'flow') {
+      var flowid = diagramFlowSeq.genNextFlowDivId();
+      var out = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
+      return out;
+  }
+  else if (lang == 'puml' && window.navigator.onLine) {
+      var umlCode = platumlEncoder.platumlCompress(code);
+      var out = '<img src=\"' + umlCode + '\">\n';
+      return out;
+  }
+  else if (this.options.highlight) {
+    var out = this.options.highlight(code, lang);
+    if (out != null && out !== code) {
+      escaped = true;
+      code = out;
     }
 
     if (!lang) {
@@ -1074,7 +1073,7 @@ Renderer.prototype.del = function(text) {
 Renderer.prototype.link = function(href, title, text) {
   if (this.options.sanitize) {
     try {
-      var prot = decodeURIComponent(unescape(href))
+      var prot = decodeURIComponent(markedUnescape(href))
         .replace(/[^\w:]/g, '')
         .toLowerCase();
     } catch (e) {
@@ -1341,9 +1340,9 @@ function escape(html, encode) {
     .replace(/'/g, '&#39;');
 }
 
-function unescape(html) {
-  // explicitly match decimal, hex, and named HTML entities
-  return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig, function(_, n) {
+function markedUnescape(html) {
+	// explicitly match decimal, hex, and named HTML entities 
+  return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/g, function(_, n) {
     n = n.toLowerCase();
     if (n === 'colon') return ':';
     if (n.charAt(0) === '#') {

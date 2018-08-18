@@ -428,7 +428,7 @@
         var clientheight = document.compatMode=="CSS1Compat" ? document.documentElement.clientHeight : document.body.clientHeight;
         $.each(headerTops, function(i, n){
             var distance = n - scrollTop;
-            if(distance > 0 && headerNavs[i]){
+            if(distance > 0){
                 var item = $(headerNavs[i])[0];
                 var curItemTop = $(headerNavs[i]).position().top;
                 var dist2Top = distance + item.offsetHeight;
