@@ -27,6 +27,7 @@ storage.get(['supportMath', 'mathEngine'], function(items) {
         $('#MathEngineDiv').show();
         $('#supportMath').prop('checked', 'checked');
         if(items.mathEngine) {
+            $('#mathEngine').val(items.mathEngine);
             setMathEngine(items.mathEngine);
         } else {
             setMathEngine('mathjax');
