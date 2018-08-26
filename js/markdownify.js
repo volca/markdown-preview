@@ -20,29 +20,6 @@
         }
     }
 
-    function runMathjax(data) {
-        // Create hidden div to use for MathJax processing
-        var mathjaxDiv = $("<div/>").attr("id", config.mathjaxProcessingElementId)
-                            .text(data)
-                            .hide();
-        $(document.body).append(mathjaxDiv);
-
-        $.getScript(chrome.extension.getURL('js/marked.js'));
-        $.getScript(chrome.extension.getURL('js/highlight.js'), function() {
-            $.getScript(chrome.extension.getURL('js/config.js'));
-        });
-        $.getScript(chrome.extension.getURL('js/webfont.js'));
-        $.getScript(chrome.extension.getURL('js/snap.svg-min.js'));
-        $.getScript(chrome.extension.getURL('js/underscore-min.js'));
-        $.getScript(chrome.extension.getURL('js/sequence-diagram-min.js'));
-        $.getScript(chrome.extension.getURL('js/raphael.min.js'));
-        $.getScript(chrome.extension.getURL('js/flowchart.min.js'));
-        $.getScript(chrome.extension.getURL('js/diagramflowseq.js'));
-        $.getScript(chrome.extension.getURL('js/rawdeflate.js'));
-        $.getScript(chrome.extension.getURL('js/platumlencode.js'));
-        $.getScript(chrome.extension.getURL('js/runMathJax.js'));
-    }
-
     function postRender() {
         if (location.hash) {
             window.setTimeout(function() {
@@ -57,12 +34,14 @@
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
-        storage.get(['supportMath', 'mathEngine', 'html', 'toc'], function(items) {
-            // Convert MarkDown to HTML 
+        storage.get(['supportMath', 'katex', 'html', 'toc'], function(items) {
+            // Convert MarkDown to HTML
             if (items.html) {
                 config.markedOptions.sanitize = false;
             }
-            config.markedOptions.katex = (items.supportMath && items.mathEngine && items.mathEngine === 'katex');
+            if (items.katex) {
+                config.markedOptions.katex = true;
+            }
             marked.setOptions(config.markedOptions);
             var html = marked(data);
             $(document.body).html(html);
@@ -73,10 +52,6 @@
 
             if (items.toc) {
                 addTOC();
-            }
-
-            if (items.supportMath && items.mathEngine && items.mathEngine === 'mathjax') {
-                runMathjax(data);
             }
 
             diagramFlowSeq.drawAllFlow();
@@ -185,26 +160,16 @@
         });
     }
 
-    storage.get(['exclude_exts', 'disable_markdown', 'supportMath', 'mathEngine', 'html'], function(items) {
+    storage.get(['exclude_exts', 'disable_markdown', 'katex', 'html'], function(items) {
         if (items.disable_markdown) {
             return;
         }
 
-        if (items.supportMath && items.mathEngine) {
-            if(items.mathEngine === 'katex') {
-                var mjc = document.createElement('link');
-                mjc.rel = 'stylesheet';
-                mjc.href = chrome.extension.getURL('theme/katex.min.css');
-                $(document.head).append(mjc);
-            }
-            else if(items.mathEngine  === 'mathjax') {
-                // Enable MathJAX LaTeX delimiters
-                // Add MathJax configuration and js to document head
-                $.getScript('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML');
-                var mjc = $('<script/>').attr('type', 'text/x-mathjax-config')
-                    .html("MathJax.Hub.Config(" + JSON.stringify(config.mathjaxConfig) + ");");
-                $(document.head).append(mjc);
-            }
+        if (items.katex) {
+            var mjc = document.createElement('link');
+            mjc.rel = 'stylesheet';
+            mjc.href = chrome.extension.getURL('theme/katex.min.css');
+            $(document.head).append(mjc);
         }
 
         var allExtentions = ["md", "text", "markdown", "mdown", "txt", "mkd", "rst", "rmd"];
@@ -215,7 +180,7 @@
         }
 
         var fileExt = getExtension(location.href);
-        if (($.inArray(fileExt, allExtentions) != -1) && 
+        if (($.inArray(fileExt, allExtentions) != -1) &&
             (typeof exts[fileExt] == "undefined")) {
             render();
         }
@@ -250,7 +215,7 @@
                 location.reload();
             } else if(key == 'supportMath') {
                 location.reload();
-            } else if(key == 'mathEngine') {
+            } else if(key == 'katex') {
                 location.reload();
             }
         }
@@ -260,7 +225,7 @@
     var showNavBar = true;
     var expandNavBar = true;
     var hasNavItem = true;
-    var vH1Tag = null, vH2Tag = null, vH3Tag = null, 
+    var vH1Tag = null, vH2Tag = null, vH3Tag = null,
         vH4Tag = null, vH5Tag = null, vH6Tag = null;
     var headerNavs;
     var headerTops = [];
@@ -287,10 +252,10 @@
         makeTOC();
         if(showNavBar && hasNavItem){
             if(hasScroll("AnchorContent")){
-                $("#AnchorContent").hover(function (){  
-                    $("#AnchorContent").preventScroll();  
-                },function (){  
-                });  
+                $("#AnchorContent").hover(function (){
+                    $("#AnchorContent").preventScroll();
+                },function (){
+                });
             }
             setTimeout(calcBounds, 100);
         }
@@ -338,17 +303,17 @@
         }
 
         if($(".BlogAnchor").length == 0){
-            $("body").append('<div class="BlogAnchor">' + 
+            $("body").append('<div class="BlogAnchor">' +
                 '<span style="color:red;position:absolute;top:-3px;left:3px;cursor:pointer;" ' +
                 'onclick="document.getElementsByClassName(\'BlogAnchor\')[0].style.display = \'none\';">X</span>' + '<p>' +
-                '<b id="AnchorContentToggle" title="Expand" style="cursor:pointer;">Content▲</b>' + 
+                '<b id="AnchorContentToggle" title="Expand" style="cursor:pointer;">Content▲</b>' +
                 '</p>' + '<div class="AnchorContent" id="AnchorContent"> </div>' + '</div>' );
             var clientheight = document.compatMode=="CSS1Compat" ?
                     document.documentElement.clientHeight : document.body.clientHeight;
             $("#AnchorContent").css('max-height', (clientheight - 160) + 'px');
         }
 
-        var vH1Index = 0, vH2Index = 0, vH3Index = 0, 
+        var vH1Index = 0, vH2Index = 0, vH3Index = 0,
             vH4Index = 0, vH5Index = 0, vH6Index = 0;
         $("body").find("h1,h2,h3,h4,h5,h6").each(function(i,item){
             var id = '';
@@ -407,10 +372,10 @@
         });
 
         $(".anchor-link").click(function(){
-            $(".BlogAnchor li .nav_item.current").removeClass('current'); 
+            $(".BlogAnchor li .nav_item.current").removeClass('current');
             $(this).addClass('current');
             $(window).off('scroll', doScroll);
-            $("html,body").animate({scrollTop: $($(this).attr("link")).offset().top}, 100, 
+            $("html,body").animate({scrollTop: $($(this).attr("link")).offset().top}, 100,
                 function(){ $(window).on('scroll', doScroll); });
         });
 
@@ -494,40 +459,40 @@
         headerNavs.each(function(i, n){
             tocTops.push($(n).offset().top);
         });
-        
+
         $(window).on('scroll', doScroll);
         doScroll();
     }
 
     function hasScroll(Id){
         var obj=document.getElementById(Id);
-        if(obj && obj.scrollHeight > obj.clientHeight){ 
+        if(obj && obj.scrollHeight > obj.clientHeight){
             return true;
-        } else { 
+        } else {
             return false;
-        } 
+        }
     }
 
     //for preventDefault()
-    $.fn.extend({  
-        "preventScroll":function(){  
-            $(this).each(function(){  
-                var _this = this;  
-                if(navigator.userAgent.indexOf('Firefox') >= 0){   //firefox  
-                    _this.addEventListener('DOMMouseScroll',function(e){  
-                        _this.scrollTop += e.detail > 0 ? 50 : -50;     
-                        e.preventDefault();  
-                    },false);   
-                }else{  
-                    _this.onmousewheel = function(e){     
-                        e = e || window.event;     
-                        _this.scrollTop += e.wheelDelta > 0 ? -50 : 50;     
-                        return false;  
+    $.fn.extend({
+        "preventScroll":function(){
+            $(this).each(function(){
+                var _this = this;
+                if(navigator.userAgent.indexOf('Firefox') >= 0){   //firefox
+                    _this.addEventListener('DOMMouseScroll',function(e){
+                        _this.scrollTop += e.detail > 0 ? 50 : -50;
+                        e.preventDefault();
+                    },false);
+                }else{
+                    _this.onmousewheel = function(e){
+                        e = e || window.event;
+                        _this.scrollTop += e.wheelDelta > 0 ? -50 : 50;
+                        return false;
                     };
-                }  
-            })    
-        }  
-    });  
+                }
+            })
+        }
+    });
     // }}} End of TOC code
 
 }(document));

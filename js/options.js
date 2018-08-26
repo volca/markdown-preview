@@ -15,30 +15,12 @@ function message(text, type) {
     }, 3000);
 }
 
-function setMathEngine(engine) {
-    $('#mathjaxMemo').hide();
-    $('#katexMemo').hide();
-    $('#' + engine + 'Memo').show();
-    storage.set({'mathEngine': engine});
-}
-
-storage.get(['supportMath', 'mathEngine'], function(items) {
-    if(items.supportMath) {
-        $('#MathEngineDiv').show();
-        $('#supportMath').prop('checked', 'checked');
-        if(items.mathEngine) {
-            $('#mathEngine').val(items.mathEngine);
-            setMathEngine(items.mathEngine);
-        } else {
-            setMathEngine('mathjax');
-        }
+storage.get(['katex', 'html', 'toc'], function(items) {
+    if(items.katex) {
+        $('#katex').prop('checked', 'checked');
     } else {
-        $('#MathEngineDiv').hide();
-        $('#supportMath').removeProp('checked');
+        $('#katex').removeProp('checked');
     }
-});
-
-storage.get(['html', 'toc'], function(items) {
     if(items.toc) {
         $('#toc').prop('checked', 'checked');
     } else {
@@ -69,26 +51,11 @@ $('#html').change(function() {
     }
 });
 
-$('#supportMath').change(function() {
+$('#katex').change(function() {
     if($(this).prop('checked')) {
-        $('#MathEngineDiv').show();
-        $('#html').prop('checked', 'checked');
-        var engine = $('#mathEngine').val();
-        if(engine) {
-            setMathEngine(engine);
-        }
-        storage.set({'supportMath': 1});
-        storage.set({'html': 1});
+        storage.set({'katex' : 1});
     } else {
-        storage.remove('supportMath');
-        $('#MathEngineDiv').hide();
-    }
-});
-
-$('#mathEngine').change(function() {
-    var engine = $('#mathEngine').val();
-    if(engine) {
-        setMathEngine(engine);
+        storage.remove('katex');
     }
 });
 

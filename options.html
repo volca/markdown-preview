@@ -19,19 +19,7 @@
             <h2>Miscs</h2>
         </div>
         <p>
-        <label class="checkbox"><input type="checkbox" id="supportMath">Enable Math formula Render</label>
-        <div id="MathEngineDiv">
-            <select id="mathEngine">
-                <option value="mathjax">MathJax</option>
-                <option value="katex">KaTeX</option>
-            </select>
-            <p id="mathjaxMemo">MathJax enable LaTeX delimiters: <code>$math$</code>, <code>\(math\)</code>,
-          <code>\[math\]</code>. <strong>Note</strong>: LaTeX environments (e.g., <code>equation</code> and 
-          <code>eqnarray</code>) are always (even if LaTeX delimiters are disabled). The option conflict with php code block. </p>
-            <p id="katexMemo">KaTeX only support inline(<code>$math$ or \(math\)</code>) and line(<code>$$math$$ or \[math\]</code>)</p>
-        </div>
-        </p>
-        <p>
+        <label class="checkbox"><input type="checkbox" id="katex">KaTeX support inline(<code>$math$ or \(math\)</code>) and line(<code>$$math$$ or \[math\]</code></label>
         <label class="checkbox"><input type="checkbox" id="html"> Enable HTML content <strong>Note:</strong> Take care for XSS attack if you enable this option</label>
         <label class="checkbox"><input type="checkbox" id="auto-reload"> Enable auto-reload</label>
         <label class="checkbox"><input type="checkbox" id="toc"> Enable Table Of Content</label>

@@ -935,17 +935,17 @@ function replaceMathString(src) {
 }
 
 Renderer.prototype.code = function(code, lang, escaped) {
-  if (lang == 'sequence') {
+  if (lang === 'sequence') {
       var seqid = diagramFlowSeq.genNextSeqDivId();
       var out = '<div id=\"' + seqid + '\" seq=\"' + code + '\"></div>\n';
       return out;
   }
-  else if (lang == 'flow') {
+  else if (lang === 'flow') {
       var flowid = diagramFlowSeq.genNextFlowDivId();
       var out = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
       return out;
   }
-  else if (lang == 'puml' && window.navigator.onLine) {
+  else if (lang === 'puml' && window.navigator.onLine) {
       var umlCode = platumlEncoder.platumlCompress(code);
       var out = '<img src=\"' + umlCode + '\">\n';
       return out;
@@ -956,6 +956,7 @@ Renderer.prototype.code = function(code, lang, escaped) {
       escaped = true;
       code = out;
     }
+  }
 
     if (!lang) {
         return '<pre><code>'
