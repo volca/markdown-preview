@@ -14,7 +14,7 @@ Features
 3. Customize theme for every md file.
 4. Support github flavored markdown.
 5. Export nicely formatted HTML.
-6. Support MathJax.
+6. Support KaTex.
 
 Usage
 -----
@@ -58,14 +58,6 @@ with Markdown syntax.  LaTeX syntax can be enabled in the options.
 
 * __Double Dollar Signs__:
   <code class="tex2jax_ignore">`$$math$$`</code>
-
-* __LaTeX Environments__ (always available when MathJax is enabled)
-
-  * <code class="tex2jax_ignore">`\begin{equation}math\end{equation}`</code>
-
-  * <code class="tex2jax_ignore">`\begin{eqnarray}math\end{eqnarray}`</code>
-
-  * ...
 
 Thanks
 ------

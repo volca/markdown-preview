@@ -1,5 +1,5 @@
 
-## sql ##
+## SQL ##
 
 ```
 -- comment
