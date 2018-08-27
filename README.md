@@ -27,9 +27,9 @@ Usage
 Math Syntax
 -----------
 
-Markdown Preview Plus uses the MathJax engine to support rendering of
+Markdown Preview Plus uses the KaTex engine to support rendering of
 mathematical expressions.  Markdown Preview Plus supports the following math
-syntax.  To minimize interference between Markdown and MathJax, some standard
+syntax.  To minimize interference between Markdown and KaTex, some standard
 LaTeX delimiters (indicated below) are disabled by default to avoid conflict
 with Markdown syntax.  LaTeX syntax can be enabled in the options.
 
