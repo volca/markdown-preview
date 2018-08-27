@@ -1,5 +1,6 @@
 use KaTex formula test
 -------------------
+
 * inline data $Z_{0..n}$ and formula $\frac{1}{x}$ mix test
 
 * mix inline formula $Z_{0..n}$ outline formula \\[ A_i = B_i + C_{i} \sum_{k=0}^{i} D_k E^k + dx \\]
