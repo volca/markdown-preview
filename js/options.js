@@ -15,27 +15,16 @@ function message(text, type) {
     }, 3000);
 }
 
-// mathjax
-storage.get(['mathjax', 'enable_latex_delimiters', 'html', 'toc'], function(items) {
-    if(items.mathjax) {
-        $('#mathjax').prop('checked', 'checked');
+storage.get(['katex', 'html', 'toc'], function(items) {
+    if(items.katex) {
+        $('#katex').prop('checked', 'checked');
     } else {
-        $('#mathjax').removeProp('checked');
+        $('#katex').removeProp('checked');
     }
-
     if(items.toc) {
         $('#toc').prop('checked', 'checked');
     } else {
         $('#toc').removeProp('checked');
-    }
-
-    if(items.enable_latex_delimiters) {
-        $('#enable-latex-delimiters').prop('checked', 'checked');
-        // Automaticaly enable MathJax
-        storage.set({'mathjax' :1});
-        $('#mathjax').prop('checked', 'checked');
-    } else {
-        $('#enable-latex-delimiters').removeProp('checked');
     }
 
     if(items.html) {
@@ -62,29 +51,11 @@ $('#html').change(function() {
     }
 });
 
-$('#mathjax').change(function() {
+$('#katex').change(function() {
     if($(this).prop('checked')) {
-        storage.set({'mathjax' :1});
-        // Auto enable HTML
-        $('#html').prop("checked", "checked");
-        storage.set({'html' :1});
+        storage.set({'katex' : 1});
     } else {
-        storage.remove('mathjax');
-
-        // Automatically disable LaTeX delimiters
-        storage.remove('enable_latex_delimiters');
-        $('#enable-latex-delimiters').removeProp('checked');
-    }
-});
-
-$('#enable-latex-delimiters').change(function() {
-    if($(this).prop('checked')) {
-        storage.set({'enable_latex_delimiters' :1});
-        // Automatically enable MathJax
-        $('#mathjax').prop('checked', 'checked');
-        storage.set({'mathjax' :1});
-    } else {
-        storage.remove('enable_latex_delimiters');
+        storage.remove('katex');
     }
 });
 
