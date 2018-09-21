@@ -23,9 +23,16 @@
     function postRender() {
         if (location.hash) {
             window.setTimeout(function() {
+                var target = $(location.hash);
+                if (target.length == 0) {
+                    target = $('a[name="' + location.hash.substring(1) + '"]');
+                } 
+                if (target.length == 0) {
+                    target = $('html');
+                }
                 $('html, body').animate({
-                    scrollTop: $(location.hash).offset().top
-                }, 100);
+                    scrollTop: target.offset().top
+                }, 200);
             }, 300);
 
         }

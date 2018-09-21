@@ -229,7 +229,6 @@ Output:
     <p>I start my morning with a cup of coffee and
     <a href="http://www.nytimes.com/">The New York Times</a>.</p>
 
-
 ### Images ###
 
 Image syntax is very much like link syntax.
@@ -247,7 +246,6 @@ Reference-style:
 Both of the above examples produce the same output:
 
     <img src="/path/to/img.jpg" alt="alt text" title="Title" />
-
 
 
 ### Code ###
