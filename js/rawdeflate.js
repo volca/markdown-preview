@@ -1668,6 +1668,10 @@ var deflate = (function() {
 })();
 
 onmessage = function worker(m) {
+    // filter out postMessage data from Evernote Web Clip extension
+    if (!m.data.length) {
+        return;
+    }
     postMessage(deflate(m.data, 9));
 };
 
