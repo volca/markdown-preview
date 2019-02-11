@@ -95,6 +95,63 @@ function drawAllFlow() {
     }
 }
 
+function replaceMathString(src) {
+    var out = src;
+    var pattern = /(\${1,2})((?:\\.|[\s\S])+?)\1|(\\\[)((?:\\.|[\s\S])+?)(\\])|(\\\()((?:\\.|[\s\S])+?)(\\\))/g;
+    var mc = null;
+    var codeBegin = src.search('<code>');
+    var codeEnd = src.search('</code>');
+    var unEscape = function(html) {
+        return html
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, '\'');
+    }
+    while (null != (mc = pattern.exec(src))) {
+        //I don't know how to build the regular expression to exclude the Code tag.
+        if(codeBegin > -1 && codeEnd > -1 && mc.index > codeBegin && mc.index < codeEnd) {
+            console.debug("math string[" + mc[0] + "] in code tag!");
+        }
+        else {
+            var srcMath = "";
+            var isDisplay = false;
+            if (mc[1]) { //match $ or $$
+                srcMath = mc[2];
+                if(mc[1] === '$$') {
+                    isDisplay = true;
+                }
+                else {
+                    isDisplay = false;
+                }
+            }
+            else if (mc[3]) { //match \\[ \\]
+                isDisplay = true;
+                srcMath = mc[4];
+            }
+            else if (mc[6]) { //match \\( \\)
+                isDisplay = false;
+                srcMath = mc[7];
+            }
+
+            var repMath = "";
+            srcMath = unEscape(srcMath);
+            try {
+                repMath = katex.renderToString(srcMath, {displayMode: isDisplay});
+            }
+            catch(err) {
+                console.error("kate parse math string[" + srcMath + "] failed! throw error: " + err);
+                repMath = "";
+            }
+            if (repMath && repMath.length != 0) {
+                out = out.replace(mc[0], repMath);
+            }
+        }
+    }
+    return out;
+}
+
 //Expose
 diagramFlowSeq.genNextSeqDivId = genNextSeqDivId;
 diagramFlowSeq.genNextFlowDivId = genNextFlowDivId;
@@ -103,5 +160,6 @@ diagramFlowSeq.makeFlowId = makeFlowId;
 diagramFlowSeq.drawAllSeq = drawAllSeq;
 diagramFlowSeq.drawAllFlow = drawAllFlow;
 diagramFlowSeq.resetDivId = resetDivId;
+diagramFlowSeq.replaceMathString = replaceMathString; 
 
 })();
