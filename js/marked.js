@@ -300,29 +300,25 @@
     }, r.prototype.html = function(e) {
         return e
     }, r.prototype.heading = function(e, t, n, r) {
-        var mathSrc = this.options.katex ? diagramFlowSeq.replaceMathString(e) : e;
-        return this.options.headerIds ? "<h" + t + ' id="' + this.options.headerPrefix + r.slug(n) + '">' + mathSrc + "</h" + t + ">\n" : "<h" + t + ">" + mathSrc + "</h" + t + ">\n"
+        return this.options.headerIds ? "<h" + t + ' id="' + this.options.headerPrefix + r.slug(n) + '">' + e + "</h" + t + ">\n" : "<h" + t + ">" + e + "</h" + t + ">\n"
     }, r.prototype.hr = function() {
         return this.options.xhtml ? "<hr/>\n" : "<hr>\n"
     }, r.prototype.list = function(e, t, n) {
         var r = t ? "ol" : "ul";
         return "<" + r + (t && 1 !== n ? ' start="' + n + '"' : "") + ">\n" + e + "</" + r + ">\n"
     }, r.prototype.listitem = function(e) {
-        var mathSrc = this.options.katex ? diagramFlowSeq.replaceMathString(e) : e;
-        return "<li>" + mathSrc + "</li>\n"
+        return "<li>" + e + "</li>\n"
     }, r.prototype.checkbox = function(e) {
         return "<input " + (e ? 'checked="" ' : "") + 'disabled="" type="checkbox"' + (this.options.xhtml ? " /" : "") + "> "
     }, r.prototype.paragraph = function(e) {
-        var mathSrc = this.options.katex ? diagramFlowSeq.replaceMathString(e) : e;
-        return "<p>" + mathSrc + "</p>\n"
+        return "<p>" + e + "</p>\n"
     }, r.prototype.table = function(e, t) {
         return t && (t = "<tbody>" + t + "</tbody>"), "<table>\n<thead>\n" + e + "</thead>\n" + t + "</table>\n"
     }, r.prototype.tablerow = function(e) {
         return "<tr>\n" + e + "</tr>\n"
     }, r.prototype.tablecell = function(e, t) {
-        var mathSrc = this.options.katex ? diagramFlowSeq.replaceMathString(e) : e;
         var n = t.header ? "th" : "td";
-        return (t.align ? "<" + n + ' align="' + t.align + '">' : "<" + n + ">") + mathSrc + "</" + n + ">\n"
+        return (t.align ? "<" + n + ' align="' + t.align + '">' : "<" + n + ">") + e + "</" + n + ">\n"
     }, r.prototype.strong = function(e) {
         return "<strong>" + e + "</strong>"
     }, r.prototype.em = function(e) {
