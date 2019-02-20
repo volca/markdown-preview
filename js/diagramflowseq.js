@@ -95,6 +95,112 @@ function drawAllFlow() {
     }
 }
 
+function replaceMathString(src) {
+    var out = src;
+    var pattern = /(\${1,2})((?:\\.|[\s\S])+?)\1|(\\\[)((?:\\.|[\s\S])+?)(\\])|(\\\()((?:\\.|[\s\S])+?)(\\\))/g;
+    var mc = null;
+    var codeBegin = src.search('<code>');
+    var codeEnd = src.search('</code>');
+    var unEscape = function(html) {
+        return html
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, '\'')
+                .replace(/\\$/g, '');
+    }
+    while (null != (mc = pattern.exec(src))) {
+        //I don't know how to build the regular expression to exclude the Code tag.
+        if(codeBegin > -1 && codeEnd > -1 && mc.index > codeBegin && mc.index < codeEnd) {
+            console.debug("math string[" + mc[0] + "] in code tag!");
+        }
+        else {
+            var srcMath = "";
+            var isDisplay = false;
+            if (mc[1]) { //match $ or $$
+                srcMath = mc[2];
+                if(mc[1] === '$$') {
+                    isDisplay = true;
+                }
+                else {
+                    isDisplay = false;
+                }
+            }
+            else if (mc[3]) { //match \\[ \\]
+                isDisplay = true;
+                srcMath = mc[4];
+            }
+            else if (mc[6]) { //match \\( \\)
+                isDisplay = false;
+                srcMath = mc[7];
+            }
+
+            var repMath = "";
+            srcMath = unEscape(srcMath);
+            try {
+                repMath = katex.renderToString(srcMath, {displayMode: isDisplay});
+                repMath = repMath.replace(/\n/g, '');
+            }
+            catch(err) {
+                console.error("kate parse math string[" + srcMath + "] failed! throw error: " + err);
+                repMath = "";
+            }
+            if (repMath && repMath.length != 0) {
+                out = out.replace(mc[0], repMath);
+            }
+        }
+    }
+    return out.replace(/\\<span/g, '<span');
+}
+
+function isStartCode(src) {
+    var lang = null;
+    var pattern = /^(`{3,})(\w+)/g;
+    var mc = null;
+    if (null != (mc = pattern.exec(src))) {
+        lang = mc[2];
+    }
+    return lang;
+}
+
+function isEndCode(src) {
+    var isEnd = false;
+    var pattern = /^`{3,}/g;
+    var mc = null;
+    if (null != pattern.exec(src)) {
+        isEnd = true;
+    }
+    return isEnd;
+}
+
+
+function prepareDiagram(data, config) {
+    var lines = data.split('\n');
+    var retStr = "";
+    var isInCode = false;
+    var lang = "";
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+        if (isInCode && isEndCode(line)) {
+            isInCode = false;
+        }
+        else if (null != (lang = isStartCode(line))) {
+            isInCode = true;
+            //proc lang
+        }
+
+        if (!isInCode && config.markedOptions.katex) {
+            var mathSrc = replaceMathString(line);
+            retStr += (mathSrc + '\n');
+        }
+        else {
+            retStr += (line + '\n');
+        }
+    }
+    return retStr;
+}
+
 //Expose
 diagramFlowSeq.genNextSeqDivId = genNextSeqDivId;
 diagramFlowSeq.genNextFlowDivId = genNextFlowDivId;
@@ -103,5 +209,6 @@ diagramFlowSeq.makeFlowId = makeFlowId;
 diagramFlowSeq.drawAllSeq = drawAllSeq;
 diagramFlowSeq.drawAllFlow = drawAllFlow;
 diagramFlowSeq.resetDivId = resetDivId;
+diagramFlowSeq.prepareDiagram = prepareDiagram;
 
 })();
