@@ -26,7 +26,7 @@
                 var target = $(location.hash);
                 if (target.length == 0) {
                     target = $('a[name="' + location.hash.substring(1) + '"]');
-                } 
+                }
                 if (target.length == 0) {
                     target = $('html');
                 }
@@ -50,7 +50,8 @@
                 config.markedOptions.katex = true;
             }
             marked.setOptions(config.markedOptions);
-            var html = marked(data);
+            var preHtml = diagramFlowSeq.prepareDiagram(data, config);
+            var html = marked(preHtml);
             $(document.body).html(html);
 
             $('img').on("error", function() {
