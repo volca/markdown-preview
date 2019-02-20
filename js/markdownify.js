@@ -43,14 +43,15 @@
     function makeHtml(data) {
         storage.get(['supportMath', 'katex', 'html', 'toc'], function(items) {
             // Convert MarkDown to HTML
+            var preHtml = data;
             if (items.html) {
                 config.markedOptions.sanitize = false;
             }
             if (items.katex) {
                 config.markedOptions.katex = true;
+                preHtml = diagramFlowSeq.prepareDiagram(data);
             }
             marked.setOptions(config.markedOptions);
-            var preHtml = diagramFlowSeq.prepareDiagram(data, config);
             var html = marked(preHtml);
             $(document.body).html(html);
 
