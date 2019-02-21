@@ -80,6 +80,15 @@ $('#toc').change(function() {
 });
 
 // theme
+function loadThemeButton() {
+    var selected = $('#theme option:selected');
+    if (selected.parent().attr('label') == 'Custom themes') {
+        $('#btn-remove-css').show();
+    } else {
+        $('#btn-remove-css').hide();
+    }
+}
+
 function getThemes() {
     storage.get(['custom_themes', 'theme'], function(items) {
         if(items.custom_themes) {
@@ -96,17 +105,48 @@ function getThemes() {
 
         if(items.theme) {
             $('#theme').val(items.theme);
+            loadThemeButton();
+        } else {
+            $('#theme').prop("selectedIndex", 0);
+            $('#theme').trigger('change');
         }
     });
 }
 
-getThemes();
 $('#theme').change(function() {
     storage.set({'theme' : $(this).val()}, function() {
-        message('You changed the default css.');
+        message('Theme is changed');
+    });
+
+    loadThemeButton();
+});
+getThemes();
+
+$('#btn-remove-css').click(function() {
+    var selected = $('#theme option:selected').val();
+    storage.get(['custom_themes', 'theme'], function(items) {
+        if(items.theme == selected) {
+            storage.remove(['theme']);
+        }
+
+        if(items.custom_themes) {
+            var themes = items.custom_themes,
+                idx = themes.indexOf(selected);
+
+            if (idx > -1) {
+                themes.splice(idx, 1);
+            }
+
+            var obj = {'custom_themes' : themes},
+                cssFile = themePrefix + selected;
+
+            storage.set(obj, function() {
+                getThemes();
+            });
+            storage.remove([cssFile]);
+        }
     });
 });
-
 
 $('#btn-add-css').click(function() {
     var file = $('#css-file')[0].files[0],
@@ -118,7 +158,7 @@ $('#btn-add-css').click(function() {
     }
 
     if(file.size > maxCustomCssSize) {
-        message('Oops, only support the css file that size less than ' + (maxCustomCssSize / 1024) + '.', 'error');
+        message('Oops, only support the css file that size less than ' + (maxCustomCssSize / 1024) + 'kB.', 'error');
         return;
     }
 
@@ -141,7 +181,7 @@ $('#btn-add-css').click(function() {
             obj[themePrefix + filename] = fileString;
             storage.set(obj, function() {
                 getThemes();
-                message('Well done! You added a custom css.');
+                message('Custom theme is added.');
                 $('#css-file').val('');
             });
         });
