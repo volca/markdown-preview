@@ -154,61 +154,93 @@ function replaceMathString(src) {
     return out.replace(/\\<span/g, '<span');
 }
 
-function isStartCode(src) {
-    var lang = null;
-    var pattern = /^(`{3,})(\w+)/g;
-    var mc = null;
-    if (null != (mc = pattern.exec(src))) {
-        lang = mc[2];
-    }
-    return lang;
-}
-
-function isEndCode(src) {
-    var isEnd = false;
-    var pattern = /^`{3,}/g;
-    var mc = null;
-    if (null != pattern.exec(src)) {
-        isEnd = true;
-    }
-    return isEnd;
-}
-
-
-function prepareDiagram(data, config) {
+function prepareDiagram(data) {
     var lines = data.split('\n');
     var retStr = "";
     var isInCode = false;
+    var preLangs = ["flow", "sequence", "puml"];
     var lang = "";
+    var isPrepareLang = function() {
+        return preLangs.indexOf(lang) != -1;
+    }
+    var isStartCode = function(src) {
+        var pattern = /^(`{3,})(\w*)/g;
+        var mc = null;
+        var ret = false;
+        if (null != (mc = pattern.exec(src))) {
+            lang = mc[2];
+            ret = true;
+        }
+        return ret;
+    }
+    var isEndCode = function(src) {
+        var pattern = /^(`{3,})(\w*)/g;
+        var mc = null;
+        var ret = false;
+        if (null != (mc = pattern.exec(src))) {
+            ret = true;
+        }
+        return ret;
+    }
+
+    resetDivId();
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i];
+
         if (isInCode && isEndCode(line)) {
             isInCode = false;
-        }
-        else if (null != (lang = isStartCode(line))) {
-            isInCode = true;
-            //proc lang
+            if (lang === "sequence") {
+                var seqid = genNextSeqDivId();
+                retStr += '<div id=\"' + seqid + '\" seq=\"' + tmpCode + '\"></div>\n';
+                line = "\n";
+            }
+            else if (lang === "flow") {
+                var flowid = genNextFlowDivId();
+                retStr += '<div id=\"' + flowid + '\" flow=\"' + tmpCode + '\"></div>\n';
+                line = "\n";
+            }
+            else if (lang === "puml") {
+                if (window.navigator.onLine) {
+                    var umlCode = platumlEncoder.platumlCompress(e);
+                    retStr += '<img src=\"' + umlCode + '\">\n';
+                }
+                else {
+                    retStr += '<code>' + tmpCode + '</code>\n';
+                }
+                line = "\n";
+            }
         }
 
-        if (!isInCode && config.markedOptions.katex) {
+        if (!isInCode && isStartCode(line)) {
+            isInCode = true;
+            if (isPrepareLang()) {
+                tmpCode = "";
+                line = "\n";
+            }
+        }
+
+        if (!isInCode) {
             var mathSrc = replaceMathString(line);
             retStr += (mathSrc + '\n');
         }
         else {
-            retStr += (line + '\n');
+            if (isPrepareLang()) {
+                line = line.replace(/(\n[\s\t]*\r*\n)/g, '\n').replace(/^[\n\r\n\t]*|[\n\r\n\t]*$/g, '');
+                if (line.length > 0) {
+                    tmpCode += (line + '\n');
+                }
+            }
+            else {
+                retStr += (line + '\n');
+            }
         }
     }
     return retStr;
 }
 
 //Expose
-diagramFlowSeq.genNextSeqDivId = genNextSeqDivId;
-diagramFlowSeq.genNextFlowDivId = genNextFlowDivId;
-diagramFlowSeq.makeSeqId = makeSeqId;
-diagramFlowSeq.makeFlowId = makeFlowId;
 diagramFlowSeq.drawAllSeq = drawAllSeq;
 diagramFlowSeq.drawAllFlow = drawAllFlow;
-diagramFlowSeq.resetDivId = resetDivId;
 diagramFlowSeq.prepareDiagram = prepareDiagram;
 
 })();

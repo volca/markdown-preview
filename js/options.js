@@ -48,12 +48,16 @@ $('#html').change(function() {
         storage.set({'html' : 1});
     } else {
         storage.remove('html');
+        $('#katex').removeProp('checked');
+        storage.remove('katex');
     }
 });
 
 $('#katex').change(function() {
     if($(this).prop('checked')) {
         storage.set({'katex' : 1});
+        $('#html').prop('checked', 'checked');
+        storage.set({'html' : 1});
     } else {
         storage.remove('katex');
     }
