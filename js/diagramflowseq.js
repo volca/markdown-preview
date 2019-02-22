@@ -1,4 +1,4 @@
-var diagramFlowSeq = {seqDivId : 0,  flowDivId : 0};
+var diagramFlowSeq = {seqDivId: 0, flowDivId: 0};
 
 (function (){
 
@@ -38,7 +38,10 @@ var flowStyle = {
         'approved' : { 'fill' : '#58C4A3', 'font-size' : 12, 'yes-text' : 'APPROVED', 'no-text' : 'n/a' },
         'rejected' : { 'fill' : '#C45879', 'font-size' : 12, 'yes-text' : 'n/a', 'no-text' : 'REJECTED' }
     }
-};
+}
+var codeStatus = "InCodeStatus";
+var multiMathStatus = "InMultiMath";
+var emptyStatus = "" ;
 
 function makeSeqId(id) {
     return 'diagSeqId' + id.toString();
@@ -154,12 +157,65 @@ function replaceMathString(src) {
     return out.replace(/\\<span/g, '<span');
 }
 
+function prepareSpecialCode(lang, code) {
+    var retStr = "";
+    if (lang === "sequence") {
+        var seqid = genNextSeqDivId();
+        retStr = '<div id=\"' + seqid + '\" seq=\"' + code + '\"></div>\n';
+    }
+    else if (lang === "flow") {
+        var flowid = genNextFlowDivId();
+        retStr = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
+    }
+    else if (lang === "puml") {
+        if (window.navigator.onLine) {
+            var umlCode = platumlEncoder.platumlCompress(code);
+            retStr = '<img src=\"' + umlCode + '\">\n';
+        }
+        else {
+            retStr = '<code>' + code + '</code>\n';
+        }
+    }
+    return retStr;
+}
+
+function isStartMultiMath(src) {
+    var pattern = /^(\s*)(\${2})|^(\s*)(\\\[)/g;
+    var npt = /(\${2})((?:\\.|[\s\S])+?)\1|(\\\[)((?:\\.|[\s\S])+?)(\\])/g;
+    var mc = null;
+    var ret = false;
+    if (null != (mc = pattern.exec(src)) && null == npt.exec(src)) {
+        ret = true;
+    }
+    return ret;
+}
+
+function isEndMultiMath(src) {
+    var pattern = /(\${2})(\s*)$|(\\])(\s*)$/g;
+    var mc = null;
+    var ret = false;
+    if (null != (mc = pattern.exec(src))) {
+        ret = true;
+    }
+    return ret;
+}
+
 function prepareDiagram(data) {
     var lines = data.split('\n');
     var retStr = "";
-    var isInCode = false;
+    var curStatus = "";
     var preLangs = ["flow", "sequence", "puml"];
     var lang = "";
+    var tmpCode = "";
+    var isInCode = function () { 
+        return curStatus === codeStatus; 
+    }
+    var isInMultiMath = function () {
+        return curStatus === multiMathStatus; 
+    }
+    var setCurStatus = function(status) {
+        curStatus = status;
+    }
     var isPrepareLang = function() {
         return preLangs.indexOf(lang) != -1;
     }
@@ -187,44 +243,44 @@ function prepareDiagram(data) {
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i];
 
-        if (isInCode && isEndCode(line)) {
-            isInCode = false;
-            if (lang === "sequence") {
-                var seqid = genNextSeqDivId();
-                retStr += '<div id=\"' + seqid + '\" seq=\"' + tmpCode + '\"></div>\n';
-                line = "\n";
+        if (isInCode() && isEndCode(line)) {
+            var specialCode = prepareSpecialCode(lang, tmpCode);
+            if (specialCode.length > 0) {
+                retStr += specialCode;
             }
-            else if (lang === "flow") {
-                var flowid = genNextFlowDivId();
-                retStr += '<div id=\"' + flowid + '\" flow=\"' + tmpCode + '\"></div>\n';
-                line = "\n";
+            else {
+                retStr += line + "\n";
             }
-            else if (lang === "puml") {
-                if (window.navigator.onLine) {
-                    var umlCode = platumlEncoder.platumlCompress(e);
-                    retStr += '<img src=\"' + umlCode + '\">\n';
-                }
-                else {
-                    retStr += '<code>' + tmpCode + '</code>\n';
-                }
-                line = "\n";
-            }
+            line = "\n";
+            setCurStatus(emptyStatus);
+        }
+        if (isInMultiMath() && isEndMultiMath(line)) {
+            tmpCode += line;
+            retStr += replaceMathString(tmpCode.replace("\n", "\t")) + "\n";
+            line = "\n";
+            setCurStatus(emptyStatus);
         }
 
-        if (!isInCode && isStartCode(line)) {
-            isInCode = true;
+        if (!isInCode() && isStartCode(line)) {
+            setCurStatus(codeStatus);
             if (isPrepareLang()) {
                 tmpCode = "";
                 line = "\n";
             }
         }
+        if (!isInMultiMath() && isStartMultiMath(line)) {
+            setCurStatus(multiMathStatus);
+            tmpCode = line;
+            lang = "";
+            line = "\n";
+        }
 
-        if (!isInCode) {
+        if (!isInCode() && !isInMultiMath()) {
             var mathSrc = replaceMathString(line);
             retStr += (mathSrc + '\n');
         }
         else {
-            if (isPrepareLang()) {
+            if (isPrepareLang() || isInMultiMath()) {
                 line = line.replace(/(\n[\s\t]*\r*\n)/g, '\n').replace(/^[\n\r\n\t]*|[\n\r\n\t]*$/g, '');
                 if (line.length > 0) {
                     tmpCode += (line + '\n');

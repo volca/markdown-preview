@@ -24,6 +24,26 @@ $$ \Gamma(x) = \int_{0}^{+\infty} t^{x-1}e^{-t}dt $$
 * Single backslash with brackets.
   \[  A_i = B_i + C_i \sum_{k=0}^{i} D_k E^k + dx \]
 
+
+* Test multi-row formula
+$$
+  \begin{matrix}
+   1 & 2 & 3 \\
+   4 & 5 & 6 \\
+   7 & 8 & 9
+  \end{matrix} \tag{1}
+$$
+
+\[
+ \left\{
+ \begin{matrix}
+   1 & 2 & 3 \\
+   4 & 5 & 6 \\
+   7 & 8 & 9
+  \end{matrix}
+  \right\} \tag{2}
+\]
+
 * test formula in php code 
 
 ```php
