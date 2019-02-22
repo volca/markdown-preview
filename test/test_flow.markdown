@@ -1,4 +1,4 @@
-# 试一下flowchart
+# just test flowchart
 ```flow
 st=>start: 开始|past:>http://www.google.com[blank]
 e=>end: End|future:>http://www.google.com
@@ -14,4 +14,13 @@ cond(yes, right)->c2
 cond(no)->sub1(left)->op1
 c2(yes)->io->e
 c2(no)->op2->e
+```
+
+# just test puml
+```puml
+class Car
+
+Driver - Car : drives >
+Car *- Wheel : have 4 >
+Car -- Person : < owns
 ```
