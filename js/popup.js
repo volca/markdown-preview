@@ -33,7 +33,7 @@ function getThemes() {
 }
 
 chrome.tabs.query({active: true, currentWindow: true}, function(tab) {
-    pageKey = specialThemePrefix + tab.url;
+    pageKey = specialThemePrefix + tab[0].url;
     getThemes();
     $('#theme').change(function() {
         var obj = {};
