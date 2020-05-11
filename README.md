@@ -47,6 +47,9 @@ with Markdown syntax.  LaTeX syntax can be enabled in the options.
 * __Double Backslash with Parentheses__:
   <code class="tex2jax_ignore">`\\(math\\)`</code>
 
+* __Single Dollar with Backquote__:
+  <code class="tex2jax_ignore">``$`math`$``</code>
+
 ### Display Math ###
 
 * __Single Backslash with Brackets__ (requires LaTeX delimiters):
@@ -58,6 +61,13 @@ with Markdown syntax.  LaTeX syntax can be enabled in the options.
 
 * __Double Dollar Signs__:
   <code class="tex2jax_ignore">`$$math$$`</code>
+
+* __Math Code Block__:
+  ````
+  ```math
+  math
+  ```
+  ````
 
 Thanks
 ------
