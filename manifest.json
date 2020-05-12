@@ -137,6 +137,5 @@
         "default_title" : "Markdown Preview Plus",
         "default_popup" : "popup.html"
     },
-    "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdnjs.cloudflare.com/; object-src 'self'",
     "options_page": "options.html"
 }
