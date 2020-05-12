@@ -131,28 +131,23 @@ function replaceMathString(src) {
         //I don't know how to build the regular expression to exclude the Code tag.
         if(codeBegin > -1 && codeEnd > -1 && mc.index > codeBegin && mc.index < codeEnd) {
             console.debug("math string[" + mc[0] + "] in code tag!");
-        }
-        else {
+        } else {
             var srcMath = "";
             var isDisplay = false;
             if (mc[1]) { //match $` `$
                 isDisplay = false;
                 srcMath = mc[2];
-            }
-            else if (mc[4]) { //match $ or $$
+            } else if (mc[4]) { //match $ or $$
                 srcMath = mc[5];
                 if(mc[4] === '$$') {
                     isDisplay = true;
-                }
-                else {
+                } else {
                     isDisplay = false;
                 }
-            }
-            else if (mc[6]) { //match \\[ \\]
+            } else if (mc[6]) { //match \\[ \\]
                 isDisplay = true;
                 srcMath = mc[7];
-            }
-            else if (mc[9]) { //match \\( \\)
+            } else if (mc[9]) { //match \\( \\)
                 isDisplay = false;
                 srcMath = mc[10];
             }
@@ -171,21 +166,17 @@ function prepareSpecialCode(lang, code) {
     if (lang === "sequence") {
         var seqid = genNextSeqDivId();
         retStr = '<div id=\"' + seqid + '\" seq=\"' + code + '\"></div>\n';
-    }
-    else if (lang === "flow") {
+    } else if (lang === "flow") {
         var flowid = genNextFlowDivId();
         retStr = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
-    }
-    else if (lang === "puml") {
+    } else if (lang === "puml") {
         if (window.navigator.onLine) {
             var umlCode = platumlEncoder.platumlCompress(code);
             retStr = '<img src=\"' + umlCode + '\">\n';
-        }
-        else {
+        } else {
             retStr = '<code>' + code + '</code>\n';
         }
-    }
-    else if (lang === "math") {
+    } else if (lang === "math") {
         retStr = renderKatex(code, true);
     }
     return retStr;
@@ -259,8 +250,7 @@ function prepareDiagram(data) {
             var specialCode = prepareSpecialCode(lang, tmpCode);
             if (specialCode.length > 0) {
                 retStr += specialCode;
-            }
-            else {
+            } else {
                 retStr += line + "\n";
             }
             line = "\n";
@@ -290,15 +280,13 @@ function prepareDiagram(data) {
         if (!isInCode() && !isInMultiMath()) {
             var mathSrc = replaceMathString(line);
             retStr += (mathSrc + '\n');
-        }
-        else {
+        } else {
             if (isPrepareLang() || isInMultiMath()) {
                 line = line.replace(/(\n[\s\t]*\r*\n)/g, '\n').replace(/^[\n\r\n\t]*|[\n\r\n\t]*$/g, '');
                 if (line.length > 0) {
                     tmpCode += (line + '\n');
                 }
-            }
-            else {
+            } else {
                 retStr += (line + '\n');
             }
         }
