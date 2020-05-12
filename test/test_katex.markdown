@@ -1,7 +1,7 @@
 use KaTex formula test
 -------------------
 
-* inline data $Z_{0..n}$ and formula $\frac{1}{x}$ mix test
+* inline data $`Z_{0..n}`$ and formula $\frac{1}{x}$ mix test
 
 * mix inline formula $Z_{0..n}$ outline formula \\[ A_i = B_i + C_{i} \sum_{k=0}^{i} D_k E^k + dx \\]
 and few formual in Paragraph test
@@ -24,6 +24,9 @@ $$ \Gamma(x) = \int_{0}^{+\infty} t^{x-1}e^{-t}dt $$
 * Single backslash with brackets.
   \[  A_i = B_i + C_i \sum_{k=0}^{i} D_k E^k + dx \]
 
+* Single dollar and backquote
+  $`  A_i = B_i + C_i \sum_{k=0}^{i} D_k E^k + dx + dy `$
+
 
 * Test multi-row formula
 $$
@@ -43,6 +46,16 @@ $$
   \end{matrix}
   \right\} \tag{2}
 \]
+
+```math
+ \left[
+ \begin{matrix}
+   1 & 2 & 3 \\
+   4 & 5 & 6 \\
+   7 & 8 & 9
+  \end{matrix}
+  \right] \tag{3}
+```
 
 * test formula in php code 
 
