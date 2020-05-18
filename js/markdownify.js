@@ -133,7 +133,6 @@
     }
 
     function startAutoReload() {
-        console.log("autoload");
         stopAutoReload();
 
         var freq = defaultReloadFreq;
