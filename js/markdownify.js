@@ -1,9 +1,28 @@
 (function(document) {
 
-    var interval,
+    var mpp = {},
+        interval,
         defaultReloadFreq = 3,
         previousText,
         storage = chrome.storage.local;
+
+    mpp.ajax = (options) => {
+        if (options.url.protocol == "file:") {
+            chrome.runtime.sendMessage({message: "autoreload", url: options.url}, (response) => {
+                options.complete(response);
+            })
+        } else {
+            var finish = options.complete;
+            options.complete = null;
+            $.ajax(options).done((data, textStatus, xhr) => {
+                finish({
+                    data: data,
+                    textStatus: textStatus,
+                    contentType: xhr.getResponseHeader('Content-Type')
+                });
+            });
+        }
+    };
 
     function getExtension(url) {
         url = url.substr(1 + url.lastIndexOf("/"))
@@ -114,6 +133,7 @@
     }
 
     function startAutoReload() {
+        console.log("autoload");
         stopAutoReload();
 
         var freq = defaultReloadFreq;
@@ -124,10 +144,11 @@
         });
 
         interval = setInterval(function() {
-            $.ajax({
-                url: location.href,
+            mpp.ajax({
+                url: location,
                 cache: false,
-                success: function(data) {
+                complete: (response) => {
+                    var data = response.data;
                     if (previousText == data) {
                         return;
                     }
@@ -139,11 +160,11 @@
     }
 
     function render() {
-        $.ajax({
-            url: location.href,
+        mpp.ajax({
+            url: location,
             cache: false,
-            complete: function(xhr, textStatus) {
-                var contentType = xhr.getResponseHeader('Content-Type');
+            complete: function(response) {
+                var contentType = response.contentType;
                 if(contentType && (contentType.indexOf('html') > -1)) {
                     return;
                 }

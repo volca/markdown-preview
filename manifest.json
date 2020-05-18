@@ -1,15 +1,13 @@
 {
     "name": "Markdown Preview Plus",
-    "version": "0.7.7",
+    "version": "0.7.8",
     "manifest_version": 2,
-
     "description": "Converts and previews markdown files (.md, .markdown) to HTML(include TOC) right inside Chrome and support live reload",
     "icons": {
         "128": "images/icon.png",
         "48": "images/icon.png",
         "16": "images/icon.png"
     },
-
     "content_scripts": [
         {
             "matches": [
@@ -51,6 +49,13 @@
             "run_at": "document_end"
         }
     ],
+    "background":{
+        "scripts": [
+            "js/jquery.js",
+            "js/background/background.js"
+        ],
+        "persistent": false
+    },
     "permissions": [
         "storage",
         "clipboardWrite",
@@ -58,79 +63,13 @@
     ],
     "web_accessible_resources": [
         "bootstrap.css",
-        "theme/Clearness.css",
-        "theme/ClearnessDark.css",
-        "theme/Github.css",
-        "theme/MarkdownTOC.css",
-        "theme/TopMarks.css",
-        "theme/YetAnotherGithub.css",
-        "theme/GithubLeft.css",
-        "theme/katex.min.css",
+        "theme/*.css",
         "theme/i/cal.png",
         "theme/i/compass.png",
         "theme/i/doc.png",
         "theme/i/email.png",
         "theme/i/folder.png",
-        "theme/fonts/KaTeX_AMS-Regular.ttf",
-        "theme/fonts/KaTeX_AMS-Regular.woff",
-        "theme/fonts/KaTeX_AMS-Regular.woff2",
-        "theme/fonts/KaTeX_Caligraphic-Bold.ttf",
-        "theme/fonts/KaTeX_Caligraphic-Bold.woff",
-        "theme/fonts/KaTeX_Caligraphic-Bold.woff2",
-        "theme/fonts/KaTeX_Caligraphic-Regular.ttf",
-        "theme/fonts/KaTeX_Caligraphic-Regular.woff",
-        "theme/fonts/KaTeX_Caligraphic-Regular.woff2",
-        "theme/fonts/KaTeX_Fraktur-Bold.ttf",
-        "theme/fonts/KaTeX_Fraktur-Bold.woff",
-        "theme/fonts/KaTeX_Fraktur-Bold.woff2",
-        "theme/fonts/KaTeX_Fraktur-Regular.ttf",
-        "theme/fonts/KaTeX_Fraktur-Regular.woff",
-        "theme/fonts/KaTeX_Fraktur-Regular.woff2",
-        "theme/fonts/KaTeX_Main-Bold.ttf",
-        "theme/fonts/KaTeX_Main-Bold.woff",
-        "theme/fonts/KaTeX_Main-Bold.woff2",
-        "theme/fonts/KaTeX_Main-BoldItalic.ttf",
-        "theme/fonts/KaTeX_Main-BoldItalic.woff",
-        "theme/fonts/KaTeX_Main-BoldItalic.woff2",
-        "theme/fonts/KaTeX_Main-Italic.ttf",
-        "theme/fonts/KaTeX_Main-Italic.woff",
-        "theme/fonts/KaTeX_Main-Italic.woff2",
-        "theme/fonts/KaTeX_Main-Regular.ttf",
-        "theme/fonts/KaTeX_Main-Regular.woff",
-        "theme/fonts/KaTeX_Main-Regular.woff2",
-        "theme/fonts/KaTeX_Math-BoldItalic.ttf",
-        "theme/fonts/KaTeX_Math-BoldItalic.woff",
-        "theme/fonts/KaTeX_Math-BoldItalic.woff2",
-        "theme/fonts/KaTeX_Math-Italic.ttf",
-        "theme/fonts/KaTeX_Math-Italic.woff",
-        "theme/fonts/KaTeX_Math-Italic.woff2",
-        "theme/fonts/KaTeX_SansSerif-Bold.ttf",
-        "theme/fonts/KaTeX_SansSerif-Bold.woff",
-        "theme/fonts/KaTeX_SansSerif-Bold.woff2",
-        "theme/fonts/KaTeX_SansSerif-Italic.ttf",
-        "theme/fonts/KaTeX_SansSerif-Italic.woff",
-        "theme/fonts/KaTeX_SansSerif-Italic.woff2",
-        "theme/fonts/KaTeX_SansSerif-Regular.ttf",
-        "theme/fonts/KaTeX_SansSerif-Regular.woff",
-        "theme/fonts/KaTeX_SansSerif-Regular.woff2",
-        "theme/fonts/KaTeX_Script-Regular.ttf",
-        "theme/fonts/KaTeX_Script-Regular.woff",
-        "theme/fonts/KaTeX_Script-Regular.woff2",
-        "theme/fonts/KaTeX_Size1-Regular.ttf",
-        "theme/fonts/KaTeX_Size1-Regular.woff",
-        "theme/fonts/KaTeX_Size1-Regular.woff2",
-        "theme/fonts/KaTeX_Size2-Regular.ttf",
-        "theme/fonts/KaTeX_Size2-Regular.woff",
-        "theme/fonts/KaTeX_Size2-Regular.woff2",
-        "theme/fonts/KaTeX_Size3-Regular.ttf",
-        "theme/fonts/KaTeX_Size3-Regular.woff",
-        "theme/fonts/KaTeX_Size3-Regular.woff2",
-        "theme/fonts/KaTeX_Size4-Regular.ttf",
-        "theme/fonts/KaTeX_Size4-Regular.woff",
-        "theme/fonts/KaTeX_Size4-Regular.woff2",
-        "theme/fonts/KaTeX_Typewriter-Regular.ttf",
-        "theme/fonts/KaTeX_Typewriter-Regular.woff",
-        "theme/fonts/KaTeX_Typewriter-Regular.woff2"
+        "theme/fonts/*"
     ],
     "browser_action": {
         "default_icon" : "images/icon.png",
