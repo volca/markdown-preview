@@ -44,7 +44,8 @@
                 "js/diagramflowseq.js",
                 "js/katex.min.js",
                 "js/rawdeflate.js",
-                "js/platumlencode.js"
+                "js/platumlencode.js",
+                "js/mermaid.min.js"
             ],
             "run_at": "document_end"
         }

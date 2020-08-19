@@ -84,6 +84,7 @@
 
             diagramFlowSeq.drawAllFlow();
             diagramFlowSeq.drawAllSeq();
+            diagramFlowSeq.drawAllMermaid();
 
             postRender();
         });

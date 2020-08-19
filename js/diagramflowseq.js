@@ -1,4 +1,4 @@
-var diagramFlowSeq = {seqDivId: 0, flowDivId: 0};
+var diagramFlowSeq = {seqDivId: 0, flowDivId: 0, mermaidDivId: 0};
 
 (function (){
 
@@ -51,6 +51,10 @@ function makeFlowId(id) {
     return 'diagFlowId' + id.toString();
 }
 
+function makeMermaidId(id) {
+    return 'mermaidId' + id.toString();
+}
+
 function genNextSeqDivId() {
     diagramFlowSeq.seqDivId += 1;
     return makeSeqId(diagramFlowSeq.seqDivId);
@@ -59,6 +63,11 @@ function genNextSeqDivId() {
 function genNextFlowDivId() {
     diagramFlowSeq.flowDivId += 1;
     return makeFlowId(diagramFlowSeq.flowDivId);
+}
+
+function genNextMermaidDivId() {
+    diagramFlowSeq.mermaidDivId += 1;
+    return makeMermaidId(diagramFlowSeq.mermaidDivId);
 }
 
 function drawSeq(id) {
@@ -79,9 +88,22 @@ function drawFlow(id) {
     }
 }
 
+function drawMermaid(id) {
+    var divMermaid = document.getElementById(id);
+    var txt = divMermaid.textContent;
+    var tmpRendId = 'tmpMerId' + id;
+    var tmpDiv = document.createElement('div');
+    tmpDiv.id = tmpRendId;
+    document.body.appendChild(tmpDiv);
+    if (txt) {
+        divMermaid.innerHTML = mermaid.mermaidAPI.render(tmpDiv.id, txt, function(svgCode, bindFunctions) {});
+    }
+}
+
 function resetDivId() {
     diagramFlowSeq.seqDivId = 0;
     diagramFlowSeq.flowDivId = 0;
+    diagramFlowSeq.mermaidDivId = 0;
 }
 
 function drawAllSeq() {
@@ -98,6 +120,13 @@ function drawAllFlow() {
     }
 }
 
+function drawAllMermaid() {
+    for (var i = 1; i <= diagramFlowSeq.mermaidDivId; ++i) {
+        var mermaidId = makeMermaidId(i);
+        drawMermaid(mermaidId);
+    }
+}
+
 function renderKatex(srcMath, isDisplay) {
     var unEscape = function(html) {
         return html
@@ -107,7 +136,7 @@ function renderKatex(srcMath, isDisplay) {
                 .replace(/&quot;/g, '"')
                 .replace(/&#39;/g, '\'')
                 .replace(/\\$/g, '');
-    }
+    };
     var repMath = "";
     srcMath = unEscape(srcMath);
     try {
@@ -178,6 +207,9 @@ function prepareSpecialCode(lang, code) {
         }
     } else if (lang === "math") {
         retStr = renderKatex(code, true);
+    } else if (lang === "mermaid") {
+        var mermiadId = genNextMermaidDivId();
+        retStr = '<div id=\"' + mermiadId + '\">' + code + '</div>\n';
     }
     return retStr;
 }
@@ -207,7 +239,7 @@ function prepareDiagram(data) {
     var lines = data.split('\n');
     var retStr = "";
     var curStatus = "";
-    var preLangs = ["flow", "sequence", "puml", "math"];
+    var preLangs = ["flow", "sequence", "puml", "math", "mermaid"];
     var lang = "";
     var tmpCode = "";
     var isInCode = function () { 
@@ -297,6 +329,7 @@ function prepareDiagram(data) {
 //Expose
 diagramFlowSeq.drawAllSeq = drawAllSeq;
 diagramFlowSeq.drawAllFlow = drawAllFlow;
+diagramFlowSeq.drawAllMermaid = drawAllMermaid;
 diagramFlowSeq.prepareDiagram = prepareDiagram;
 
 })();
