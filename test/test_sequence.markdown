@@ -1,8 +1,8 @@
-# 试一下Seqence
+# Test Seqence
 ```sequence
 Title: Here is a title
-A->B: 正常的连接
+A->B: Normal link
 B-->C: Dashed line
 C->>D: Open arrow
-D-->>A: 虚线 open arrow
+D-->>A: dotted line open arrow
 ```
