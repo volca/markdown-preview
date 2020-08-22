@@ -128,20 +128,19 @@ function drawAllMermaid() {
 }
 
 function renderKatex(srcMath, isDisplay) {
-    var unEscape = function(html) {
+    const unEscape = function (html) {
         return html
-                .replace(/&amp;/g, '&')
-                .replace(/&lt;/g, '<')
-                .replace(/&gt;/g, '>')
-                .replace(/&quot;/g, '"')
-                .replace(/&#39;/g, '\'')
-                .replace(/\\$/g, '');
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, '\'')
+            .replace(/\\$/g, '');
     };
-    var repMath = "";
+    let repMath = "";
     srcMath = unEscape(srcMath);
     try {
         repMath = katex.renderToString(srcMath, {displayMode: isDisplay});
-        repMath = repMath.replace(/\n/g, '');
     }
     catch(err) {
         console.error("katex parse math string[" + srcMath + "] failed! throw error: " + err);
@@ -168,11 +167,7 @@ function replaceMathString(src) {
                 srcMath = mc[2];
             } else if (mc[4]) { //match $ or $$
                 srcMath = mc[5];
-                if(mc[4] === '$$') {
-                    isDisplay = true;
-                } else {
-                    isDisplay = false;
-                }
+                isDisplay = mc[4] === '$$';
             } else if (mc[6]) { //match \\[ \\]
                 isDisplay = true;
                 srcMath = mc[7];
@@ -182,7 +177,7 @@ function replaceMathString(src) {
             }
 
             var repMath = renderKatex(srcMath, isDisplay);
-            if (repMath && repMath.length != 0) {
+            if (repMath && repMath.length !== 0) {
                 out = out.replace(mc[0], repMath);
             }
         }

@@ -14,6 +14,7 @@ formula in bolb **$\frac{e^2}{1-x}$**
 
 * test for double dorllar formula test
 $$ \Gamma(x) = \int_{0}^{+\infty} t^{x-1}e^{-t}dt $$
+$$ f(x) = \sqrt{\sum_0^{100}n} $$
 
 * Double backslash with parentheses.
   \\( A_i = B_i + C_i \sum_{k=0}^{i} D_k E^k \\)
