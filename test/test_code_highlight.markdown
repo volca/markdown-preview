@@ -38,7 +38,5 @@ if ('plain' == $text) {
 ### plaintext ###
 
 ```text
-total 344
--rw-r--r--   1 hello  staff    3657 Nov 27  2018 CONTRIBUTING.md
--rw-r--r--   1 hello  staff    1067 Jan  2  2020 LICENSE
-```
+-rw-r--r-- 1 root root ...
+````
