@@ -34,3 +34,11 @@ if ('plain' == $text) {
 <script src="/path/to/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 ```
+
+### plaintext ###
+
+```text
+total 344
+-rw-r--r--   1 hello  staff    3657 Nov 27  2018 CONTRIBUTING.md
+-rw-r--r--   1 hello  staff    1067 Jan  2  2020 LICENSE
+```
