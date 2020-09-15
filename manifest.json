@@ -28,7 +28,10 @@
                 "*://*/*.mkd*",
                 "*://*/*.rst*"
             ],
-            "css": ["theme/MarkdownTOC.css"],
+            "css": [
+                "theme/MarkdownTOC.css",
+                "theme/highlight.css"
+            ],
             "js": [
                 "js/jquery.js",
                 "js/marked.js",
