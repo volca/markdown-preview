@@ -9,8 +9,9 @@ window.config = (function(hljs) {
         breaks: false,
         sanitize: true,
         katex: false,
-        highlight: function(code) {
-            return hljs.highlightAuto(code).value;
+        highlight: function(code, language) {
+            const languageSubset = language ? [language]: null;
+            return hljs.highlightAuto(code, languageSubset).value;
         }
     };
 
