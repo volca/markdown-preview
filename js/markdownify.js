@@ -55,13 +55,16 @@
     function makeHtml(data) {
         storage.get(['supportMath', 'katex', 'toc'], function(items) {
             // Convert MarkDown to HTML
-            var preHtml = DOMPurify.sanitize(data);
+            var preHtml = data;
             if (items.katex) {
                 config.markedOptions.katex = true;
                 preHtml = diagramFlowSeq.prepareDiagram(preHtml);
             }
             marked.setOptions(config.markedOptions);
             var html = marked(preHtml);
+            html = DOMPurify.sanitize(html, {
+                ADD_ATTR: ['flow']
+            });
             $(document.body).html(html);
 
             $('img').on("error", () => resolveImg(this));
