@@ -6,22 +6,15 @@
         previousText,
         storage = chrome.storage.local;
 
+    mpp.isText = () => {
+        var value = document.contentType;
+        return value && /text\/(?:x-)?(markdown|plain)/i.test(value);
+    };
+
     mpp.ajax = (options) => {
-        if (options.url.protocol == "file:") {
-            chrome.runtime.sendMessage({message: "autoreload", url: options.url}, (response) => {
-                options.complete(response);
-            })
-        } else {
-            var finish = options.complete;
-            options.complete = null;
-            $.ajax(options).done((data, textStatus, xhr) => {
-                finish({
-                    data: data,
-                    textStatus: textStatus,
-                    contentType: xhr.getResponseHeader('Content-Type')
-                });
-            });
-        }
+        chrome.runtime.sendMessage({message: "autoreload", url: options.url}, (response) => {
+            options.complete(response);
+        });
     };
 
     function getExtension(url) {
@@ -60,23 +53,18 @@
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
-        storage.get(['supportMath', 'katex', 'html', 'toc'], function(items) {
+        storage.get(['supportMath', 'katex', 'toc'], function(items) {
             // Convert MarkDown to HTML
-            var preHtml = data;
-            if (items.html) {
-                config.markedOptions.sanitize = false;
-            }
+            var preHtml = DOMPurify.sanitize(data);
             if (items.katex) {
                 config.markedOptions.katex = true;
-                preHtml = diagramFlowSeq.prepareDiagram(data);
+                preHtml = diagramFlowSeq.prepareDiagram(preHtml);
             }
             marked.setOptions(config.markedOptions);
             var html = marked(preHtml);
             $(document.body).html(html);
 
-            $('img').on("error", function() {
-                resolveImg(this);
-            });
+            $('img').on("error", () => resolveImg(this));
 
             if (items.toc) {
                 addTOC();
@@ -160,6 +148,10 @@
     }
 
     function render() {
+        if (!mpp.isText()) {
+            return;
+        }
+
         mpp.ajax({
             url: location,
             cache: false,

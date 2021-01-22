@@ -7,7 +7,6 @@ window.config = (function(hljs) {
         gfm: true,
         tables: true,
         breaks: false,
-        sanitize: true,
         katex: false,
         highlight: function(code, language) {
             const languageSubset = language ? [language]: null;
