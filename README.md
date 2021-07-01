@@ -1,5 +1,7 @@
 # Markdown Preview Plus
 
+[![PayPal_Me][paypal-me-shield]][paypal-me]
+
 Automatically parses markdown files (.md) into HTML. This is useful
 if you're writing markdown (ultimately targeting HTML) and want a quick
 preview.
@@ -89,3 +91,5 @@ Links
 
 * [Change Log](https://github.com/volca/markdown-preview/wiki/Changelog)
 
+[paypal-me-shield]: https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal
+[paypal-me]: https://www.paypal.me/yanc888
