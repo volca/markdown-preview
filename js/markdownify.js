@@ -63,7 +63,8 @@
             marked.setOptions(config.markedOptions);
             var html = marked(preHtml);
             html = DOMPurify.sanitize(html, {
-                ADD_ATTR: ['flow']
+                ADD_ATTR: ['flow'],
+                SANITIZE_DOM: false
             });
             $(document.body).html(html);
 
