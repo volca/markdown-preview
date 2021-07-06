@@ -43,20 +43,8 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tab) {
 });
 
 $('#btn-copy').click(function() {
-    var exeCode = `
-        var cdnPrefix = 'https://cdn.jsdelivr.net/gh/volca/markdown-preview/';
-        var cssFile = $('link#theme').attr('href').split('/').pop()
-        $('link#theme').attr('href',  cdnPrefix + 'theme/' + cssFile);
-        var html = $('html').html()
-        var s = $("<textarea/>").text(html);
-        $(document.body).append(s);
-        s.select();
-        document.execCommand("copy"); 
-        s.remove(); 
-        alert("Copied to clipboard");
-    `;
     chrome.tabs.executeScript({
-        code: exeCode
+        file: '/js/copyhtml.js'
     });
 });
 
