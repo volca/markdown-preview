@@ -82,6 +82,7 @@
             }
 
             if (items.toc) {
+                toc = [];
                 const renderer = new marked.Renderer()
                 const slugger = new marked.Slugger()
                 const r = {
