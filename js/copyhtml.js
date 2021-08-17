@@ -1,6 +1,8 @@
 var cdnPrefix = 'https://cdn.jsdelivr.net/gh/volca/markdown-preview/';
-var cssFile = $('link#theme').attr('href').split('/').pop()
-$('link#theme').attr('href',  cdnPrefix + 'theme/' + cssFile);
+if (typeof $('link#theme').attr('href') != "undefined") {
+    var cssFile = $('link#theme').attr('href').split('/').pop()
+    $('link#theme').attr('href',  cdnPrefix + 'theme/' + cssFile);
+}
 
 chrome.storage.local.get('toc', value => {
     if ((typeof value['toc'] != 'undefined') || (value['toc'] != 0)) {
