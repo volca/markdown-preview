@@ -47,6 +47,7 @@
                 "js/flowchart.min.js",
                 "js/diagramflowseq.js",
                 "js/katex.min.js",
+                "js/asciimath.js",
                 "js/rawdeflate.js",
                 "js/platumlencode.js",
                 "js/mermaid.min.js"
