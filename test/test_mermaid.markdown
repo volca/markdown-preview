@@ -58,3 +58,22 @@ journey
       Sit down: 5: Me
 
 ```
+
+## test class
+
+```mermaid
+flowchart LR
+
+subgraph Sub1
+    A --> B
+end
+
+subgraph Sub2
+    C --> D
+end
+
+B & D --> E --> F
+
+classDef Colored stroke-width:3px,fill:#F99,stroke:#C33
+class B,D Colored
+```
