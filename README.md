@@ -12,11 +12,13 @@ Features
 --------
 
 1. Support auto reload.
-2. Support external css file.
-3. Customize theme for every md file.
-4. Support github flavored markdown.
-5. Export nicely formatted HTML.
-6. Support KaTex.
+1. Support external css file.
+1. Customize theme for every md file.
+1. Support github flavored markdown.
+1. Export nicely formatted HTML.
+1. KaTex support
+1. MathJax support
+1. Mermaid support
 
 Usage
 -----
@@ -71,20 +73,16 @@ with Markdown syntax.  LaTeX syntax can be enabled in the options.
   ```
   ````
 
-Thanks
-------
+Credits
+-----
 
-Thanks to Kevin Burke for his [markdown-friendly stylesheet][style],
-to chjj for his [JavaScript markdown processor][marked],
-to Boris Smus for his [Markdown Preview][mp] and to
-Swartz and Gruber for [Markdown][md].
+This extension uses the following open source components:
 
-[webstore]: https://chrome.google.com/webstore/detail/markdown-preview-plus/febilkbfcbhebfnokafefeacimjdckgl
-[style]: http://kevinburke.bitbucket.org/markdowncss
-[marked]: https://github.com/chjj/marked
-[md]: http://en.wikipedia.org/wiki/Markdown
-[mp]: https://github.com/borismus/markdown-preview
-
+* [Marked][marked] - A markdown parser written in JavaScript
+* [markdown-friendly stylesheet][style] - The themes are based on the "Swiss" theme
+* [markdown preview][mp] - The original markdown preview
+* [mermaid][mermaid] - A Javascript based diagramming and charting tool
+* [MathJax][mathjax] - A JavaScript display engine for LaTeX, MathML, and AsciiMath notation
 
 Links
 -----------------
@@ -93,3 +91,11 @@ Links
 
 [paypal-me-shield]: https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal
 [paypal-me]: https://www.paypal.me/yanc888
+[webstore]: https://chrome.google.com/webstore/detail/markdown-preview-plus/febilkbfcbhebfnokafefeacimjdckgl
+[style]: http://kevinburke.bitbucket.org/markdowncss
+[marked]: https://github.com/chjj/marked
+[md]: http://en.wikipedia.org/wiki/Markdown
+[mp]: https://github.com/borismus/markdown-preview
+[mermaid]: https://github.com/mermaid-js/mermaid
+[mathjax]: https://github.com/mathjax/MathJax
+
