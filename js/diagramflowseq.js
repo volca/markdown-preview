@@ -127,7 +127,7 @@ function drawAllMermaid() {
     }
 }
 
-function renderKatex(srcMath, isDisplay) {
+function renderKatex(srcMath, isDisplay, useAM) {
     const unEscape = function (html) {
         return html
             .replace(/&amp;/g, '&')
@@ -139,7 +139,11 @@ function renderKatex(srcMath, isDisplay) {
     };
     let repMath = "";
     srcMath = unEscape(srcMath);
+
     try {
+        if (useAM && renderKatex.AMenabled) {
+            srcMath = asciimath.am2tex(srcMath, isDisplay);
+        }
         repMath = katex.renderToString(srcMath, {displayMode: isDisplay});
     }
     catch(err) {
@@ -151,7 +155,7 @@ function renderKatex(srcMath, isDisplay) {
 
 function replaceMathString(src) {
     var out = src;
-    var pattern = /(\$`)((?:\\.|[\s\S])+?)(`\$)|(\${1,2})((?:\\.|[\s\S])+?)\4|(\\\[)((?:\\.|[\s\S])+?)(\\])|(\\\()((?:\\.|[\s\S])+?)(\\\))/g;
+    var pattern = /(\$`)((?:\\.|[\s\S])+?)(`\$)|(\${1,2})((?:\\.|[\s\S])+?)\4|(\\\[)((?:\\.|[\s\S])+?)(\\])|(\\\()((?:\\.|[\s\S])+?)(\\\))|(``)([^]+?)(``)/g;
     var mc = null;
     var codeBegin = src.search('<code>');
     var codeEnd = src.search('</code>');
@@ -162,6 +166,7 @@ function replaceMathString(src) {
         } else {
             var srcMath = "";
             var isDisplay = false;
+            var useAM = false;
             if (mc[1]) { //match $` `$
                 isDisplay = false;
                 srcMath = mc[2];
@@ -174,15 +179,20 @@ function replaceMathString(src) {
             } else if (mc[9]) { //match \\( \\)
                 isDisplay = false;
                 srcMath = mc[10];
+            } else if (mc[12]) { //match ``
+                isDisplay = false;
+                srcMath = mc[13];
+                useAM = true;
             }
 
-            var repMath = renderKatex(srcMath, isDisplay);
+            var repMath = renderKatex(srcMath, isDisplay, useAM);
             if (repMath && repMath.length !== 0) {
                 out = out.replace(mc[0], repMath);
             }
         }
     }
-    return out.replace(/\\<span/g, '<span');
+    return out.replace(/\\<span/g, '<span')
+              .replace(/<annotation[^<]*<\/annotation>/g, '')
 }
 
 function prepareSpecialCode(lang, code) {
@@ -202,6 +212,8 @@ function prepareSpecialCode(lang, code) {
         }
     } else if (lang === "math") {
         retStr = renderKatex(code, true);
+    } else if (lang === "asciimath" || lang === "AM") {
+        retStr = renderKatex(code, true, true);
     } else if (lang === "mermaid") {
         var mermiadId = genNextMermaidDivId();
         retStr = '<div id=\"' + mermiadId + '\">' + code + '</div>\n';
@@ -212,29 +224,20 @@ function prepareSpecialCode(lang, code) {
 function isStartMultiMath(src) {
     var pattern = /^(\s*)(\${2})|^(\s*)(\\\[)/g;
     var npt = /(\${2})((?:\\.|[\s\S])+?)\1|(\\\[)((?:\\.|[\s\S])+?)(\\])/g;
-    var mc = null;
-    var ret = false;
-    if (null != (mc = pattern.exec(src)) && null == npt.exec(src)) {
-        ret = true;
-    }
-    return ret;
+    return pattern.test(src) && !npt.test(src);
 }
 
 function isEndMultiMath(src) {
-    var pattern = /(\${2})(\s*)$|(\\])(\s*)$/g;
-    var mc = null;
-    var ret = false;
-    if (null != (mc = pattern.exec(src))) {
-        ret = true;
-    }
-    return ret;
+    var pattern = /(\${2})(\s*)$|(\\])(\s*)$|(``)(\s*)$/g;
+    return pattern.test(src);
 }
 
-function prepareDiagram(data) {
+function prepareDiagram(data, AMenabled) {
+    renderKatex.AMenabled = AMenabled
     var lines = data.split('\n');
     var retStr = "";
     var curStatus = "";
-    var preLangs = ["flow", "sequence", "puml", "math", "mermaid"];
+    var preLangs = ["flow", "sequence", "puml", "math", "mermaid", "asciimath", "AM"];
     var lang = "";
     var tmpCode = "";
     var isInCode = function () { 
@@ -250,7 +253,7 @@ function prepareDiagram(data) {
         return preLangs.indexOf(lang) != -1;
     }
     var isStartCode = function(src) {
-        var pattern = /^(`{3,})(\w*)/g;
+        var pattern = /^\s*(`{3,})(\w*)/g;
         var mc = null;
         var ret = false;
         if (null != (mc = pattern.exec(src))) {
@@ -260,13 +263,8 @@ function prepareDiagram(data) {
         return ret;
     }
     var isEndCode = function(src) {
-        var pattern = /^(`{3,})(\w*)/g;
-        var mc = null;
-        var ret = false;
-        if (null != (mc = pattern.exec(src))) {
-            ret = true;
-        }
-        return ret;
+        var pattern = /^\s*(`{3,})(\w*)/g;
+        return pattern.test(src)
     }
 
     resetDivId();

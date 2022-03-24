@@ -73,12 +73,12 @@
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
-        storage.get(['supportMath', 'katex', 'toc'], function(items) {
+        storage.get(['supportMath', 'katex', 'toc', 'asciimath'], function(items) {
             // Convert MarkDown to HTML
             var preHtml = data;
             if (items.katex) {
                 config.markedOptions.katex = true;
-                preHtml = diagramFlowSeq.prepareDiagram(preHtml);
+                preHtml = diagramFlowSeq.prepareDiagram(preHtml, items.asciimath);
             }
 
             if (items.toc) {
@@ -233,7 +233,7 @@
         });
     }
 
-    storage.get(['exclude_exts', 'disable_markdown', 'katex', 'html'], function(items) {
+    storage.get(['exclude_exts', 'disable_markdown', 'katex', 'html', 'asciimath'], function(items) {
         if (items.disable_markdown) {
             return;
         }
@@ -284,11 +284,11 @@
                 } else {
                     stopAutoReload();
                 }
-            } else if(key == 'disable_markdown') {
-                location.reload();
-            } else if(key == 'supportMath') {
-                location.reload();
-            } else if(key == 'katex') {
+            } else if(key === 'disable_markdown'
+              || key === 'supportMath'
+              || key === 'katex'
+              || key === 'asciimath'
+            ) {
                 location.reload();
             }
         }

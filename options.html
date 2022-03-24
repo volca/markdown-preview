@@ -18,7 +18,21 @@
             <h2>Miscs</h2>
         </div>
         <div class="form-group checkbox-inline">
-        <label class="checkbox"><input type="checkbox" id="katex">KaTeX support inline(<code>$math$ or \(math\)</code>) and line(<code>$$math$$ or \[math\]</code></label>
+        <label class="checkbox">
+          <input type="checkbox" id="katex">
+          KaTeX support: inline <code>$math$ or \(math\)</code>,
+          block <code>$$math$$</code>, <code>\[math\]</code> or <pre>
+```math
+math
+```</pre>
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" id="asciimath">
+          Asciimath support: inline <code>``math``</code>, block: <pre>
+```AM
+math
+```</pre>
+        </label>
         <label class="checkbox"><input type="checkbox" id="auto-reload"> Enable auto-reload</label>
         <label class="checkbox"><input type="checkbox" id="toc"> Enable Table Of Content</label>
         </div>

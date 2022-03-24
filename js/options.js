@@ -15,23 +15,15 @@ function message(text, type) {
     }, 3000);
 }
 
-storage.get(['katex', 'html', 'toc'], function(items) {
-    if(items.katex) {
-        $('#katex').prop('checked', 'checked');
-    } else {
-        $('#katex').removeProp('checked');
-    }
-    if(items.toc) {
-        $('#toc').prop('checked', 'checked');
-    } else {
-        $('#toc').removeProp('checked');
-    }
-
-    if(items.html) {
-        $('#html').prop('checked', 'checked');
-    } else {
-        $('#html').removeProp('checked');
-    }
+var options = ['katex', 'html', 'toc', 'asciimath']
+storage.get(options, function(items) {
+    options.forEach(function(key) {
+      if (items[key]) {
+        $('#' + key).prop('checked', 'checked');
+      } else {
+        $('#' + key).removeProp('checked');
+      }
+    });
 });
 
 // auto-reload
@@ -48,20 +40,36 @@ $('#html').change(function() {
         storage.set({'html' : 1});
     } else {
         storage.remove('html');
-        $('#katex').removeProp('checked');
         storage.remove('katex');
+        storage.remove('asciimath');
+        $('#katex').prop('checked', false);
+        $('#asciimath').prop('checked', false);
     }
 });
 
 $('#katex').change(function() {
     if($(this).prop('checked')) {
         storage.set({'katex' : 1});
-        $('#html').prop('checked', 'checked');
         storage.set({'html' : 1});
+        $('#html').prop('checked', true);
     } else {
         storage.remove('katex');
+        storage.remove('asciimath');
+        $('#asciimath').prop('checked', false);
     }
 });
+
+$('#asciimath').change(function() {
+    if($(this).prop('checked')) {
+        storage.set({'html' : 1});
+        storage.set({'katex' : 1});
+        storage.set({'asciimath': 1});
+        $('#html').prop('checked', true);
+        $('#katex').prop('checked', true);
+    } else {
+        storage.remove('asciimath');
+    }
+})
 
 $('#auto-reload').change(function() {
     if($(this).prop('checked')) {
