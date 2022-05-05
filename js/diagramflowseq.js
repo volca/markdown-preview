@@ -150,16 +150,30 @@ function renderKatex(srcMath, isDisplay) {
 }
 
 function replaceMathString(src) {
-    var out = src;
-    var pattern = /(\$`)((?:\\.|[\s\S])+?)(`\$)|(\${1,2})((?:\\.|[\s\S])+?)\4|(\\\[)((?:\\.|[\s\S])+?)(\\])|(\\\()((?:\\.|[\s\S])+?)(\\\))/g;
-    var mc = null;
-    var codeBegin = src.search('<code>');
-    var codeEnd = src.search('</code>');
-    while (null != (mc = pattern.exec(src))) {
-        //I don't know how to build the regular expression to exclude the Code tag.
-        if(codeBegin > -1 && codeEnd > -1 && mc.index > codeBegin && mc.index < codeEnd) {
-            console.debug("math string[" + mc[0] + "] in code tag!");
-        } else {
+    // patch: Troy Daniel
+    // A regex expression to exclude the code tag with the help of look-around operation is not preferred, due to:
+    // This is a <code>$x$</code> to produce $x$, and a <code>$y$</code> to produce $y$,
+    // If we apply the look-around, the first capture will be '$</code> to produce $', which is not correct
+    // Therefore, a simple way, split the src at 'code block',
+	// Known bugs:
+	// \`$abcd$\` and \<code>$abcd$\</code>  won't render, actually, I don't hnow what's the espected result.
+    var reCode = /(`|<code[^>]*>)\s*(\\.|.)*?(`|<\/code>)/g;
+    var codes = [...src.matchAll(reCode)];
+    var parts = [];
+    var startIndex = 0;
+    for(const g of codes){
+        parts.push(RenderInlineMath(src.substring(startIndex, g.index)));
+        parts.push(src.substr(g.index, g[0].length));
+        startIndex = g.index + g[0].length;
+    }
+    parts.push(RenderInlineMath(src.substring(startIndex)));
+    return parts.join("");
+
+    function RenderInlineMath(plainStr){
+        var out = plainStr;
+        var pattern = /(\$`)((?:\\.|[\s\S])+?)(`\$)|(\${1,2})((?:\\.|[\s\S])+?)\4|(\\\[)((?:\\.|[\s\S])+?)(\\])|(\\\()((?:\\.|[\s\S])+?)(\\\))/g;
+        var mc = null;
+        while (null != (mc = pattern.exec(plainStr))) {
             var srcMath = "";
             var isDisplay = false;
             if (mc[1]) { //match $` `$
@@ -167,7 +181,7 @@ function replaceMathString(src) {
                 srcMath = mc[2];
             } else if (mc[4]) { //match $ or $$
                 srcMath = mc[5];
-                isDisplay = mc[4] === '$$';
+                isDisplay = (mc[4] === '$$');
             } else if (mc[6]) { //match \\[ \\]
                 isDisplay = true;
                 srcMath = mc[7];
@@ -177,12 +191,12 @@ function replaceMathString(src) {
             }
 
             var repMath = renderKatex(srcMath, isDisplay);
-            if (repMath && repMath.length !== 0) {
+            if (repMath && repMath.length != 0) {
                 out = out.replace(mc[0], repMath);
             }
         }
+        return out.replace(/\\<span/g, '<span');
     }
-    return out.replace(/\\<span/g, '<span');
 }
 
 function prepareSpecialCode(lang, code) {
