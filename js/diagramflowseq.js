@@ -155,21 +155,21 @@ function replaceMathString(src) {
     // This is a <code>$x$</code> to produce $x$, and a <code>$y$</code> to produce $y$,
     // If we apply the look-around, the first capture will be '$</code> to produce $', which is not correct
     // Therefore, a simple way, split the src at 'code block',
-	// Known bugs:
-	// \`$abcd$\` and \<code>$abcd$\</code>  won't render, actually, I don't hnow what's the espected result.
+    // Known bugs:
+    // \`$abcd$\` and \<code>$abcd$\</code>  won't render, actually, I don't hnow what's the espected result.
     var reCode = /(`|<code[^>]*>)\s*(\\.|.)*?(`|<\/code>)/g;
     var codes = [...src.matchAll(reCode)];
     var parts = [];
     var startIndex = 0;
     for(const g of codes){
-        parts.push(RenderInlineMath(src.substring(startIndex, g.index)));
+        parts.push(renderInlineMath(src.substring(startIndex, g.index)));
         parts.push(src.substr(g.index, g[0].length));
         startIndex = g.index + g[0].length;
     }
-    parts.push(RenderInlineMath(src.substring(startIndex)));
+    parts.push(renderInlineMath(src.substring(startIndex)));
     return parts.join("");
 
-    function RenderInlineMath(plainStr){
+    function renderInlineMath(plainStr){
         var out = plainStr;
         var pattern = /(\$`)((?:\\.|[\s\S])+?)(`\$)|(\${1,2})((?:\\.|[\s\S])+?)\4|(\\\[)((?:\\.|[\s\S])+?)(\\])|(\\\()((?:\\.|[\s\S])+?)(\\\))/g;
         var mc = null;
