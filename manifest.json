@@ -1,6 +1,6 @@
 {
     "name": "Markdown Preview Plus",
-    "version": "0.7.20",
+    "version": "0.7.21",
     "manifest_version": 2,
     "description": "Converts and previews markdown files (.md, .markdown) to HTML(include TOC) right inside Chrome and support live reload",
     "icons": {
@@ -29,14 +29,15 @@
                 "*://*/*.rst*"
             ],
             "css": [
-                "theme/MarkdownTOC.css",
-                "theme/highlight.css"
+                "css/MarkdownTOC.css",
+                "css/highlight.css",
+                "css/katex.min.css"
             ],
             "js": [
                 "js/jquery.js",
-                "js/marked.js",
+                "js/marked.min.js",
                 "js/purify.js",
-                "js/highlight.js",
+                "js/highlight.min.js",
                 "js/config.js",
                 "js/markdownify.js",
                 "js/webfont.js",

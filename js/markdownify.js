@@ -103,8 +103,9 @@
                 config.markedOptions.renderer = renderer;
             }
 
+            console.log(marked)
             marked.setOptions(config.markedOptions);
-            var html = marked(preHtml);
+            var html = marked.parse(preHtml);
             html = DOMPurify.sanitize(html, {
                 ADD_ATTR: ['flow'],
                 SANITIZE_DOM: false
@@ -239,10 +240,12 @@
         }
 
         if (items.katex) {
+            /*
             var mjc = document.createElement('link');
             mjc.rel = 'stylesheet';
-            mjc.href = chrome.extension.getURL('theme/katex.min.css');
+            mjc.href = chrome.extension.getURL('css/katex.min.css');
             $(document.head).append(mjc);
+            */
         }
 
         var allExtentions = ["md", "text", "markdown", "mdown", "txt", "mkd", "rst", "rmd"];

@@ -1,6 +1,6 @@
 * [ ] foo
 * bar
 * [x] baz
-* [] bam
+* [ ] bam
   * [ ] bim
   * [ ] lim
