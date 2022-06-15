@@ -103,7 +103,6 @@
                 config.markedOptions.renderer = renderer;
             }
 
-            console.log(marked)
             marked.setOptions(config.markedOptions);
             var html = marked.parse(preHtml);
             html = DOMPurify.sanitize(html, {
