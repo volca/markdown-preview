@@ -2,3 +2,4 @@
 *.swp
 .tern-project
 build
+node_modules

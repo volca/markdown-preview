@@ -1,0 +1,14 @@
+{
+	"dependencies": {
+		"jquery": "^3.6.1",
+		"marked": "^4.2.3",
+		"mermaid": "^9.2.2"
+	},
+	"scripts": {
+		"build": "git archive --format zip --output build/markdown_preview.zip master",
+		"add-lib": "node js/add-lib.js"
+	},
+	"devDependencies": {
+		"copyfiles": "^2.4.1"
+	}
+}
