@@ -1,7 +1,5 @@
 # Markdown Preview Plus
 
-[![PayPal_Me][paypal-me-shield]][paypal-me]
-
 Automatically parses markdown files (.md) into HTML. This is useful
 if you're writing markdown (ultimately targeting HTML) and want a quick
 preview.
@@ -99,3 +97,9 @@ Links
 [mermaid]: https://github.com/mermaid-js/mermaid
 [mathjax]: https://github.com/mathjax/MathJax
 
+Donate
+-----------------
+
+Feel free to help me invest in more time to test and add faster new features to this extension!
+
+[![PayPal_Me][paypal-me-shield]][paypal-me]
