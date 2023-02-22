@@ -3,8 +3,7 @@
 var storage = chrome.storage.local,
     themePrefix = 'theme_',
     maxCustomCssSize = 8192,
-    defaultReloadFreq = 3,
-    defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'GithubLeft', 'TopMarks', 'YetAnotherGithub'];
+    defaultReloadFreq = 3;
 
 function message(text, type) {
     var msgType = type || 'success',
@@ -90,6 +89,11 @@ function loadThemeButton() {
 }
 
 function getThemes() {
+    $('#default-themes').empty()
+    for (var t in window.config.themes) {
+        $('#default-themes').append($(`<option>${t}</option>`))
+    }
+
     storage.get(['custom_themes', 'theme'], function(items) {
         if(items.custom_themes) {
             var k, v, themes = items.custom_themes;

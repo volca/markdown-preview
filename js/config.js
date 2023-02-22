@@ -16,5 +16,14 @@ window.config = (function(hljs) {
         }
     };
 
+    module.themes = {
+        'Clearness': 'Clearness.js', 
+        'ClearnessDark': 'ClearnessDark.css',
+        'Github': 'Github.css', 
+        'GithubLeft': 'GithubLeft.css',
+        'YetAnotherGithub': 'YetAnotherGithub.css',
+        'TopMarks': 'TopMarks' 
+    };
+
     return module;
 }(hljs));

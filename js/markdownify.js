@@ -134,16 +134,13 @@
     }
 
     function setTheme(theme) {
-        var defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'TopMarks', 'YetAnotherGithub'];
-
-        if($.inArray(theme, defaultThemes) != -1) {
+        if (typeof config.themes[theme] != 'undefined') {
             var link = $('#theme');
             $('#custom-theme').remove();
             if(!link.length) {
                 var ss = document.createElement('link');
                 ss.rel = 'stylesheet';
                 ss.id = 'theme';
-                //ss.media = "print";
                 ss.href = getThemeCss(theme);
                 document.head.appendChild(ss);
             } else {

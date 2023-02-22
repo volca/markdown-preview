@@ -3,8 +3,7 @@
 var pageKey, 
     storage = chrome.storage.local,
     themePrefix = 'theme_',
-    specialThemePrefix = 'special_',
-    defaultThemes = ['Clearness', 'ClearnessDark', 'Github', 'GithubLeft', 'TopMarks', 'YetAnotherGithub'];
+    specialThemePrefix = 'special_';
 
 storage.get('theme', function(items) {
     var theme = items.theme ? items.theme : 'Clearness';
@@ -13,6 +12,11 @@ storage.get('theme', function(items) {
 
 // theme
 function getThemes() {
+    $('#default-themes').empty()
+    for (var t in window.config.themes) {
+        $('#default-themes').append($(`<option>${t}</option>`))
+    }
+
     storage.get(['custom_themes', pageKey], function(items) {
         if(items.custom_themes) {
             var k, v, themes = items.custom_themes;
