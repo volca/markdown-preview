@@ -22,7 +22,7 @@ window.config = (function(hljs) {
         'Github': 'Github.css', 
         'GithubLeft': 'GithubLeft.css',
         'YetAnotherGithub': 'YetAnotherGithub.css',
-        'TopMarks': 'TopMarks' 
+        'TopMarks': 'TopMarks.css' 
     };
 
     return module;
