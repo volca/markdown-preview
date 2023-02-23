@@ -1,0 +1,327 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Verdana, 'Trebuchet MS', Tahoma, Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #282a36;
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #fff;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h1,
+h2 {
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.25em;
+  line-height: 1.5;
+}
+
+h2 {
+  margin-top: 2em;
+  font-size: 1.5rem;
+}
+
+h3 {
+  margin-top: 2em;
+  font-size: 1.25rem;
+}
+
+h4 {
+  font-size: 1rem;
+}
+
+h5 {
+  font-size: 0.938rem;
+}
+
+h6 {
+  font-size: 0.875rem;
+}
+
+li {
+  line-height: 1.4;
+}
+
+a {
+  color: #59acf3;
+  transition: color 400ms ease, text-decoration 400ms ease;
+}
+
+a:hover {
+  color: #a7d8ff;
+  text-decoration: none;
+}
+
+a img {
+  border: none;
+}
+
+p {
+  margin-bottom: 0.75em;
+  line-height: 1.4;
+}
+
+table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow: auto;
+  font-size: inherit;
+  margin-bottom: 2em;
+}
+
+table tr:nth-child(even) {
+  background-color: #444;
+}
+
+table th {
+  border-top: 2px solid #888;
+  border-bottom: 2px solid #888;
+  border-left: 2px solid #888;
+  padding: 0.25em 0.5em;
+}
+
+table th:last-child {
+  border-right: 2px solid #888;
+}
+
+table td {
+  border-bottom: 1px solid #888;
+  border-left: 1px solid #888;
+  padding: 0.25em 0.5em;
+}
+
+table td:last-child {
+  border-right: 1px solid #888;
+}
+
+hr {
+  height: 0.188em;
+  padding: 0;
+  margin: 1.5em 0;
+  background-color: #ccc;
+  border: none;
+}
+
+blockquote {
+  padding: 0.25em 0 0.75em 2.5em;
+  margin: 1em 0;
+  font-family: Georgia, Palatino, 'Lucida Bright', Garamond, Didot,
+    'Times New Roman', serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  border-left: 4px solid #59acf3;
+}
+
+blockquote:before {
+  content: '\201C';
+  font-size: 2.5rem;
+  margin-left: -0.75em;
+  font-family: Georgia, Palatino, 'Lucida Bright', Garamond, Didot,
+    'Times New Roman', serif;
+  color: #eee;
+}
+
+blockquote p {
+  font-size: 1.25rem;
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 0;
+  font-style: italic;
+}
+
+code,
+pre {
+  font-family: 'Courier New', Courier, 'Lucida Console', Consolas, Monaco,
+    'Lucida Sans Typewriter', monospace;
+}
+
+code {
+  color: #f5f5f5;
+  background-color: #131313;
+  display: inline-block;
+  padding: 0.063em 0.188em;
+  font-size: 90%;
+  border-radius: 3px;
+}
+
+pre {
+  display: block;
+  padding: 1.25em 1.5em;
+  margin: 1.125em 0;
+  line-height: 1.1;
+  font-size: 1rem;
+  border-radius: 0.75em;
+  border: 1px solid #666;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+pre code {
+  background-color: #282a36;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0;
+}
+
+kbd {
+  display: inline-block;
+  font-size: 87.5%;
+  line-height: 1;
+  color: #e1ebf5;
+  background-color: #333;
+  padding: 0.0625em 0.1875em;
+  border: 1px solid #888;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+summary {
+  margin-bottom: 1em;
+}
+
+@media screen and (min-width: 768px) {
+  body {
+    width: 80%;
+    max-width: 1000px;
+    margin: 0.75em auto;
+  }
+}
+
+/**
+ * obsidian.css
+ * Obsidian style
+ * ported by Alexander Marenin (http://github.com/ioncreature)
+ * (The above comments are from ClearnessDark so I left it)
+ */
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #282b2e;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-selector-id {
+  color: #93c763;
+}
+
+.hljs-number {
+  color: #ffcd22;
+}
+
+.hljs {
+  color: #e0e2e4;
+}
+
+.hljs-attribute {
+  color: #668bb0;
+}
+
+.hljs-code,
+.hljs-class .hljs-title,
+.hljs-section {
+  color: white;
+}
+
+/* Can't read the red text, so I had to add the following 2 rules: */
+.hljs-title.function_ {
+  color: #bae9ff !important;
+}
+
+.hljs-title {
+  color: #bae9ff !important;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #d39745;
+}
+
+.hljs-meta {
+  color: #557182;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-bullet,
+.hljs-subst,
+.hljs-emphasis,
+.hljs-type,
+.hljs-built_in,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+  color: #8cbbad;
+}
+
+.hljs-string,
+.hljs-symbol {
+  color: #ec7600;
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion {
+  color: #818e96;
+  color: #a1aeb6;
+}
+
+.hljs-selector-class {
+  color: #a082bd;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-doctag,
+.hljs-title,
+.hljs-section,
+.hljs-type,
+.hljs-name,
+.hljs-strong {
+  font-weight: bold;
+}
+
+.task-list-item-checkbox {
+  margin: 0 0.2em 0.25em -1.6em;
+  vertical-align: middle;
+  color: #333;
+}
