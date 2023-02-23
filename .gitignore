@@ -3,3 +3,4 @@
 .tern-project
 build
 node_modules
+package.lock.json
