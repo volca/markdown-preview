@@ -22,7 +22,8 @@ window.config = (function(hljs) {
         'Github': 'Github.css', 
         'GithubLeft': 'GithubLeft.css',
         'YetAnotherGithub': 'YetAnotherGithub.css',
-        'TopMarks': 'TopMarks.css' 
+        'TopMarks': 'TopMarks.css',
+        'ClearnessDarkLg': 'ClearnessDarkLg.css'
     };
 
     return module;
