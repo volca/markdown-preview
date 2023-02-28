@@ -2,7 +2,7 @@
 	"dependencies": {
 		"jquery": "^3.6.1",
 		"marked": "^4.2.3",
-		"mermaid": "^9.2.2"
+		"mermaid": "^9.4.0"
 	},
 	"scripts": {
 		"build": "git archive --format zip --output build/markdown_preview.zip master",
