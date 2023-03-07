@@ -102,4 +102,4 @@ Donate
 
 Feel free to help me invest in more time to test and add faster new features to this extension!
 
-[![PayPal_Me][paypal-me-shield]][paypal-me]
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/volcas)
