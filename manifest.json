@@ -1,7 +1,7 @@
 {
     "name": "Markdown Preview Plus",
-    "version": "0.7.25",
-    "manifest_version": 2,
+    "version": "0.8.0",
+    "manifest_version": 3,
     "description": "Converts and previews markdown files (.md, .markdown) to HTML(include TOC) right inside Chrome and support live reload",
     "icons": {
         "128": "images/icon.png",
@@ -56,26 +56,37 @@
         }
     ],
     "background":{
-        "scripts": [
-            "js/jquery.js",
-            "js/background/background.js"
-        ],
-        "persistent": false
+        "service_worker": "js/background.js"
     },
     "permissions": [
         "storage",
         "clipboardWrite",
+        "scripting",
         "<all_urls>"
     ],
+    "host_permissions": [
+        "file:///*"
+    ],
+    "optional_host_permissions": [
+        "*://*/"
+    ],
+    "optional_permissions": [
+        "webRequest"
+    ],
     "web_accessible_resources": [
-        "bootstrap.css",
-        "theme/*.css",
-        "theme/i/cal.png",
-        "theme/i/compass.png",
-        "theme/i/doc.png",
-        "theme/i/email.png",
-        "theme/i/folder.png",
-        "theme/fonts/*"
+        {
+            "matches": ["<all_urls>"],
+            "resources": [
+                "bootstrap.css",
+                "theme/*.css",
+                "theme/i/cal.png",
+                "theme/i/compass.png",
+                "theme/i/doc.png",
+                "theme/i/email.png",
+                "theme/i/folder.png",
+                "theme/fonts/*"
+            ]
+        }
     ],
     "browser_action": {
         "default_icon" : "images/icon.png",
