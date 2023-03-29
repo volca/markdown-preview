@@ -12,8 +12,8 @@
         return value && /text\/(?:x-)?(markdown|plain)/i.test(value);
     };
 
-    mpp.ajax = (options) => {
-        chrome.runtime.sendMessage({message: "autoreload", url: options.url}, (response) => {
+    mpp.ajax = options => {
+        chrome.runtime.sendMessage({message: "autoreload", url: options.url}, response => {
             options.complete(response);
         });
     };
@@ -184,7 +184,7 @@
                 url: location,
                 cache: false,
                 complete: (response) => {
-                    var data = response.data;
+                    var data = response.text();
                     if (previousText == data) {
                         return;
                     }
@@ -204,10 +204,13 @@
             url: location,
             cache: false,
             complete: function(response) {
-                var contentType = response.contentType;
+                console.log(response)
+                /*
+                var contentType = response.headers['Content-Type']
                 if(contentType && (contentType.indexOf('html') > -1)) {
                     return;
                 }
+                */
 
                 previousText = document.body.innerText;
                 makeHtml(document.body.innerText);

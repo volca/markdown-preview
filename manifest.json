@@ -61,8 +61,7 @@
     "permissions": [
         "storage",
         "clipboardWrite",
-        "scripting",
-        "<all_urls>"
+        "scripting"
     ],
     "host_permissions": [
         "file:///*"
@@ -88,7 +87,7 @@
             ]
         }
     ],
-    "browser_action": {
+    "action": {
         "default_icon" : "images/icon.png",
         "default_title" : "Markdown Preview Plus",
         "default_popup" : "popup.html"

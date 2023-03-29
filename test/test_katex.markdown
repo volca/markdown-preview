@@ -10,11 +10,11 @@ formula in bolb **$\frac{e^2}{1-x}$**
 
 * gt formula $Re(z) > 0$test, lt $Re(z) < [0];$ test
 
-* test one dorllar \$200 est
+* test one dorllar \$20000000 est
 
 * test for double dorllar formula test
 $$ \Gamma(x) = \int_{0}^{+\infty} t^{x-1}e^{-t}dt $$
-$$ f(x) = \sqrt{\sum_0^{100}n} $$
+$$ f(x) + f(y) + f(z) = \sqrt{\sum_0^{100}n} + \sqrt{\sum_n + 100} $$
 
 * Double backslash with parentheses.
   \\( A_i = B_i + C_i \sum_{k=0}^{i} D_k E^k \\)
