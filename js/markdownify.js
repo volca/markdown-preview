@@ -130,7 +130,7 @@
     }
 
     function getThemeCss(theme) {
-        return chrome.extension.getURL('theme/' + theme + '.css');
+        return chrome.runtime.getURL('theme/' + theme + '.css');
     }
 
     function setTheme(theme) {
@@ -182,9 +182,8 @@
         interval = setInterval(function() {
             mpp.ajax({
                 url: location,
-                cache: false,
                 complete: (response) => {
-                    var data = response.text();
+                    var data = response.data
                     if (previousText == data) {
                         return;
                     }
@@ -204,14 +203,6 @@
             url: location,
             cache: false,
             complete: function(response) {
-                console.log(response)
-                /*
-                var contentType = response.headers['Content-Type']
-                if(contentType && (contentType.indexOf('html') > -1)) {
-                    return;
-                }
-                */
-
                 previousText = document.body.innerText;
                 makeHtml(document.body.innerText);
                 var specialThemePrefix = 'special_',
