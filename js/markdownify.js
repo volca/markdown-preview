@@ -230,12 +230,10 @@
         }
 
         if (items.katex) {
-            /*
             var mjc = document.createElement('link');
             mjc.rel = 'stylesheet';
-            mjc.href = chrome.extension.getURL('css/katex.min.css');
+            mjc.href = chrome.runtime.getURL('css/katex.min.css');
             $(document.head).append(mjc);
-            */
         }
 
         var allExtentions = ["md", "text", "markdown", "mdown", "txt", "mkd", "rst", "rmd"];

@@ -30,8 +30,7 @@
             ],
             "css": [
                 "css/MarkdownTOC.css",
-                "css/highlight.css",
-                "css/katex.min.css"
+                "css/highlight.css"
             ],
             "js": [
                 "js/jquery.js",
@@ -78,12 +77,9 @@
             "resources": [
                 "bootstrap.css",
                 "theme/*.css",
-                "theme/i/cal.png",
-                "theme/i/compass.png",
-                "theme/i/doc.png",
-                "theme/i/email.png",
-                "theme/i/folder.png",
-                "theme/fonts/*"
+                "css/*.css",
+                "css/fonts/*",
+                "theme/i/*.png"
             ]
         }
     ],
