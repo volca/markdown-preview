@@ -5,7 +5,7 @@
 		"mermaid": "^9.4.3"
 	},
 	"scripts": {
-		"build": "mkdir -f build && git archive --format zip --output build/archive.zip master",
+		"build": "mkdir -p build && git archive --format zip --output build/archive.zip master",
 		"add-lib": "node js/add-lib.js"
 	},
 	"devDependencies": {
