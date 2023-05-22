@@ -10,9 +10,8 @@ window.config = (function(hljs) {
         katex: false,
         headerIds: true,
         headerPrefix: '',
-        highlight: function(code, language) {
-            const languageSubset = language ? [language]: null;
-            return hljs.highlightAuto(code, languageSubset).value;
+        highlight: function(code, lang) {
+            return hljs.highlightAuto(code).value;
         }
     };
 
