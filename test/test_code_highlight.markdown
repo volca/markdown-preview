@@ -40,3 +40,27 @@ if ('plain' == $text) {
 ```text
 -rw-r--r-- 1 root root ...
 ````
+
+### c ###
+
+```c
+int main(int argc, char *argv[]) {
+    while(1) {}
+    return 0;
+}
+
+```
+
+### cpp ###
+
+```cpp
+int main(int argc, char *argv[]) {
+    return 0;
+}
+```
+
+```c++
+int main(int argc, char *argv[]) {
+    return 0;
+}
+```
