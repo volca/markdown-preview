@@ -59,17 +59,13 @@
     },
     "permissions": [
         "storage",
-        "clipboardWrite",
-        "scripting"
+        "clipboardWrite"
     ],
     "host_permissions": [
         "file:///*"
     ],
     "optional_host_permissions": [
         "*://*/"
-    ],
-    "optional_permissions": [
-        "webRequest"
     ],
     "web_accessible_resources": [
         {
