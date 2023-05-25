@@ -1,6 +1,6 @@
 {
     "name": "Markdown Preview Plus",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "manifest_version": 3,
     "description": "Converts and previews markdown files (.md, .markdown) to HTML(include TOC) right inside Chrome and support live reload",
     "icons": {
@@ -59,6 +59,7 @@
     },
     "permissions": [
         "storage",
+        "alarms",
         "clipboardWrite"
     ],
     "host_permissions": [

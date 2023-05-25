@@ -96,7 +96,10 @@ function drawMermaid(id) {
     tmpDiv.id = tmpRendId;
     document.body.appendChild(tmpDiv);
     if (txt) {
-        divMermaid.innerHTML = mermaid.mermaidAPI.render(tmpDiv.id, txt, function(svgCode, bindFunctions) {});
+        (async () => {
+            const { svg } = await mermaid.render(tmpDiv.id, txt)
+            divMermaid.innerHTML = svg
+        })()
     }
 }
 

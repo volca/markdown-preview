@@ -1,8 +1,8 @@
 {
 	"dependencies": {
 		"jquery": "^3.6.4",
-		"marked": "^4.3.0",
-		"mermaid": "^9.4.3"
+		"marked": "^5.0.2",
+		"mermaid": "^10.2.0"
 	},
 	"scripts": {
 		"build": "mkdir -p build && git archive --format zip --output build/archive.zip master",
