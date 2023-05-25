@@ -33,6 +33,7 @@
                 "css/highlight.css"
             ],
             "js": [
+                "js/katex.min.js",
                 "js/config.js",
                 "js/jquery.js",
                 "js/marked.min.js",
@@ -43,7 +44,6 @@
                 "js/webfont.js",
                 "js/underscore-min.js",
                 "js/diagramflowseq.js",
-                "js/katex.min.js",
                 "js/mermaid.min.js"
             ],
             "run_at": "document_end"
