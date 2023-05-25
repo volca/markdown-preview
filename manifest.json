@@ -41,7 +41,6 @@
                 "js/purify.js",
                 "js/highlight.min.js",
                 "js/markdownify.js",
-                "js/webfont.js",
                 "js/underscore-min.js",
                 "js/diagramflowseq.js",
                 "js/mermaid.min.js"
