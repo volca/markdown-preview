@@ -104,6 +104,12 @@
             }
 
             marked.setOptions(config.markedOptions);
+            marked.use(markedHighlight({
+              langPrefix: 'hljs language-',
+              highlight(code, lang) {
+                return hljs.highlightAuto(code).value;
+              }
+            }));
             var html = marked.parse(preHtml);
             html = DOMPurify.sanitize(html, {
                 ADD_ATTR: ['flow'],

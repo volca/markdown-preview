@@ -7,6 +7,9 @@ dependencies:
   marked:
     specifier: ^5.0.2
     version: 5.0.2
+  marked-highlight:
+    specifier: ^2.0.0
+    version: 2.0.0(marked@5.0.2)
   mermaid:
     specifier: ^10.2.0
     version: 10.2.0
@@ -549,6 +552,14 @@ packages:
 
   /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: false
+
+  /marked-highlight@2.0.0(marked@5.0.2):
+    resolution: {integrity: sha512-UjpDrs8TJh7dWdKzdnkt/aXdQEQ1FW5Jy6tRTjvWdUgsev2srAAgh8l04JoQUyzD3qP8UDrhHAa6seHUyPXg/w==}
+    peerDependencies:
+      marked: ^4 || ^5
+    dependencies:
+      marked: 5.0.2
     dev: false
 
   /marked@5.0.2:

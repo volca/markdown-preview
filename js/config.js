@@ -1,4 +1,6 @@
-window.config = (function(hljs) {
+window.exports = {}
+
+window.config = (function() {
     // Define module
     var module = {};
 
@@ -7,12 +9,8 @@ window.config = (function(hljs) {
         gfm: true,
         tables: true,
         breaks: false,
-        katex: false,
-        headerIds: true,
         headerPrefix: '',
-        highlight: function(code, lang) {
-            return hljs.highlightAuto(code).value;
-        }
+        katex: false
     };
 
     module.themes = {
@@ -26,4 +24,4 @@ window.config = (function(hljs) {
     };
 
     return module;
-}(hljs));
+}());

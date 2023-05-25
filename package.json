@@ -2,6 +2,7 @@
 	"dependencies": {
 		"jquery": "^3.6.4",
 		"marked": "^5.0.2",
+		"marked-highlight": "^2.0.0",
 		"mermaid": "^10.2.0"
 	},
 	"scripts": {
