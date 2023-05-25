@@ -121,8 +121,6 @@
 
             $('img').on("error", () => resolveImg(this));
 
-            diagramFlowSeq.drawAllFlow();
-            diagramFlowSeq.drawAllSeq();
             diagramFlowSeq.drawAllMermaid();
 
             postRender();

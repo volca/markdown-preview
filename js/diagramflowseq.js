@@ -1,91 +1,18 @@
-var diagramFlowSeq = {seqDivId: 0, flowDivId: 0, mermaidDivId: 0};
+var diagramFlowSeq = {mermaidDivId: 0};
 
 (function (){
 
-var flowStyle = {
-    'x': 0,
-    'y': 0,
-    'line-width': 3,
-    'line-length': 50,
-    'text-margin': 10,
-    'font-size': 14,
-    'font-color': 'black',
-    'line-color': 'black',
-    'element-color': 'black',
-    'fill': 'white',
-    'yes-text': 'yes',
-    'no-text': 'no',
-    'arrow-end': 'block',
-    'scale': 1,
-    // style symbol types
-    'symbols': {
-        'start': {
-            'font-color': 'red',
-            'element-color': 'green',
-            'fill': 'yellow'
-        },
-        'end':{
-            'class': 'end-element'
-        }
-    },
-    // even flowstate support ;-)
-    'flowstate' : {
-        'past' : { 'fill' : '#CCCCCC', 'font-size' : 12},
-        'current' : {'fill' : 'yellow', 'font-color' : 'red', 'font-weight' : 'bold'},
-        'future' : { 'fill' : '#FFFF99'},
-        'request' : { 'fill' : 'blue'},
-        'invalid': {'fill' : '#444444'},
-        'approved' : { 'fill' : '#58C4A3', 'font-size' : 12, 'yes-text' : 'APPROVED', 'no-text' : 'n/a' },
-        'rejected' : { 'fill' : '#C45879', 'font-size' : 12, 'yes-text' : 'n/a', 'no-text' : 'REJECTED' }
-    }
-}
 var codeStatus = "InCodeStatus";
 var multiMathStatus = "InMultiMath";
 var emptyStatus = "" ;
-
-function makeSeqId(id) {
-    return 'diagSeqId' + id.toString();
-}
-
-function makeFlowId(id) {
-    return 'diagFlowId' + id.toString();
-}
 
 function makeMermaidId(id) {
     return 'mermaidId' + id.toString();
 }
 
-function genNextSeqDivId() {
-    diagramFlowSeq.seqDivId += 1;
-    return makeSeqId(diagramFlowSeq.seqDivId);
-}
-
-function genNextFlowDivId() {
-    diagramFlowSeq.flowDivId += 1;
-    return makeFlowId(diagramFlowSeq.flowDivId);
-}
-
 function genNextMermaidDivId() {
     diagramFlowSeq.mermaidDivId += 1;
     return makeMermaidId(diagramFlowSeq.mermaidDivId);
-}
-
-function drawSeq(id) {
-    var divSeq = document.getElementById(id);
-    var txt = divSeq.getAttribute('seq');
-    if(txt) {
-        var diagram = Diagram.parse(txt);
-        diagram.drawSVG(id, {theme: 'hand'});
-    }
-}
-
-function drawFlow(id) {
-    var divFlow = document.getElementById(id);
-    var txt = divFlow.getAttribute('flow');
-    if(txt) {
-        var diagram = flowchart.parse(txt);
-        diagram.drawSVG(id, flowStyle);
-    }
 }
 
 function drawMermaid(id) {
@@ -104,23 +31,7 @@ function drawMermaid(id) {
 }
 
 function resetDivId() {
-    diagramFlowSeq.seqDivId = 0;
-    diagramFlowSeq.flowDivId = 0;
     diagramFlowSeq.mermaidDivId = 0;
-}
-
-function drawAllSeq() {
-    for (var i = 1; i <= diagramFlowSeq.seqDivId; ++i) {
-        var seqid = makeSeqId(i);
-        drawSeq(seqid);
-    }
-}
-
-function drawAllFlow() {
-    for (var i = 1; i <= diagramFlowSeq.flowDivId; ++i) {
-        var flowid = makeFlowId(i);
-        drawFlow(flowid);
-    }
 }
 
 function drawAllMermaid() {
@@ -204,20 +115,7 @@ function replaceMathString(src) {
 
 function prepareSpecialCode(lang, code) {
     var retStr = "";
-    if (lang === "sequence") {
-        var seqid = genNextSeqDivId();
-        retStr = '<div id=\"' + seqid + '\" seq=\"' + code + '\"></div>\n';
-    } else if (lang === "flow") {
-        var flowid = genNextFlowDivId();
-        retStr = '<div id=\"' + flowid + '\" flow=\"' + code + '\"></div>\n';
-    } else if (lang === "puml") {
-        if (window.navigator.onLine) {
-            var umlCode = platumlEncoder.platumlCompress(code);
-            retStr = '<img src=\"' + umlCode + '\">\n';
-        } else {
-            retStr = '<code>' + code + '</code>\n';
-        }
-    } else if (lang === "math") {
+    if (lang === "math") {
         retStr = renderKatex(code, true);
     } else if (lang === "mermaid") {
         var mermiadId = genNextMermaidDivId();
@@ -251,7 +149,7 @@ function prepareDiagram(data) {
     var lines = data.split('\n');
     var retStr = "";
     var curStatus = "";
-    var preLangs = ["flow", "sequence", "puml", "math", "mermaid"];
+    var preLangs = ["math", "mermaid"];
     var lang = "";
     var tmpCode = "";
     var isInCode = function () { 
@@ -339,8 +237,6 @@ function prepareDiagram(data) {
 }
 
 //Expose
-diagramFlowSeq.drawAllSeq = drawAllSeq;
-diagramFlowSeq.drawAllFlow = drawAllFlow;
 diagramFlowSeq.drawAllMermaid = drawAllMermaid;
 diagramFlowSeq.prepareDiagram = prepareDiagram;
 
