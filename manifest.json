@@ -43,7 +43,9 @@
                 "js/markdownify.js",
                 "js/underscore-min.js",
                 "js/diagramflowseq.js",
-                "js/mermaid.min.js"
+                "js/mermaid.min.js",
+                "js/platumlencode.js",
+                "js/rawdeflate.js"
             ],
             "run_at": "document_end"
         }
