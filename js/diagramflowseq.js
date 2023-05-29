@@ -105,7 +105,7 @@ function replaceMathString(src) {
             }
 
             var repMath = renderKatex(srcMath, isDisplay);
-            if (repMath && repMath.length != 0) {
+            if (repMath && repMath.length !== 0) {
                 out = out.replace(mc[0], repMath);
             }
         }
@@ -120,6 +120,13 @@ function prepareSpecialCode(lang, code) {
     } else if (lang === "mermaid") {
         var mermiadId = genNextMermaidDivId();
         retStr = '<div id=\"' + mermiadId + '\">' + code + '</div>\n';
+    } else if (lang === "puml") {
+        if (window.navigator.onLine) {
+            const umlCode = platumlEncoder.platumlCompress(code);
+            retStr = '<img src=\"' + umlCode + '\">\n';
+        } else {
+            retStr = '<code>' + code + '</code>\n';
+        }
     }
     return retStr;
 }
@@ -149,7 +156,7 @@ function prepareDiagram(data) {
     var lines = data.split('\n');
     var retStr = "";
     var curStatus = "";
-    var preLangs = ["math", "mermaid"];
+    var preLangs = ["math", "mermaid", "puml"];
     var lang = "";
     var tmpCode = "";
     var isInCode = function () { 
@@ -162,7 +169,7 @@ function prepareDiagram(data) {
         curStatus = status;
     }
     var isPrepareLang = function() {
-        return preLangs.indexOf(lang) != -1;
+        return preLangs.indexOf(lang) !== -1;
     }
     var isStartCode = function(src) {
         var pattern = /^(`{3,})(\w*)/g;
