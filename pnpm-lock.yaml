@@ -8,11 +8,11 @@ dependencies:
     specifier: ^0.16.7
     version: 0.16.7
   marked:
-    specifier: ^5.0.3
-    version: 5.0.3
+    specifier: ^5.0.4
+    version: 5.0.4
   marked-highlight:
     specifier: ^2.0.0
-    version: 2.0.0(marked@5.0.3)
+    version: 2.0.0(marked@5.0.4)
   mermaid:
     specifier: ^10.2.0
     version: 10.2.0
@@ -569,16 +569,16 @@ packages:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
     dev: false
 
-  /marked-highlight@2.0.0(marked@5.0.3):
+  /marked-highlight@2.0.0(marked@5.0.4):
     resolution: {integrity: sha512-UjpDrs8TJh7dWdKzdnkt/aXdQEQ1FW5Jy6tRTjvWdUgsev2srAAgh8l04JoQUyzD3qP8UDrhHAa6seHUyPXg/w==}
     peerDependencies:
       marked: ^4 || ^5
     dependencies:
-      marked: 5.0.3
+      marked: 5.0.4
     dev: false
 
-  /marked@5.0.3:
-    resolution: {integrity: sha512-KUONa43Uk74uUNWMxh6lfaNYmSAsRMiDAaX8QBCCRVXzEufR0zX6T33vrGbvTnQLL02ungDM3KSzZtO+chJaHg==}
+  /marked@5.0.4:
+    resolution: {integrity: sha512-r0W8/DK56fAkV0qfUCO9cEt/VlFWUzoJOqEigvijmsVkTuPOHckh7ZutNJepRO1AxHhK96/9txonHg4bWd/aLA==}
     engines: {node: '>= 18'}
     hasBin: true
     dev: false

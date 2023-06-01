@@ -1,7 +1,10 @@
 (function(document) {
 
-    var mpp = {},
-        interval,
+    let mpp = {
+        markedLoaded: 0
+    }
+
+    var interval,
         defaultReloadFreq = 3,
         previousText,
         toc = [],
@@ -70,6 +73,22 @@
         return k;
     };
 
+    function initMarked() {
+        if (mpp.markedLoaded) {
+            return
+        }
+
+        marked.setOptions(config.markedOptions);
+        marked.use(markedHighlight({
+          langPrefix: 'hljs language-',
+          highlight(code, lang) {
+            return hljs.highlightAuto(code).value;
+          }
+        }));
+
+        mpp.markedLoaded = true
+    }
+
     // Onload, take the DOM of the page, get the markdown formatted text out and
     // apply the converter.
     function makeHtml(data) {
@@ -103,13 +122,7 @@
                 config.markedOptions.renderer = renderer;
             }
 
-            marked.setOptions(config.markedOptions);
-            marked.use(markedHighlight({
-              langPrefix: 'hljs language-',
-              highlight(code, lang) {
-                return hljs.highlightAuto(code).value;
-              }
-            }));
+            initMarked()
             var html = marked.parse(preHtml);
             html = DOMPurify.sanitize(html, {
                 ADD_ATTR: ['flow'],
@@ -124,11 +137,9 @@
                 html = ctx.join('') + html
             }
             $(document.body).html(html);
-
             $('img').on("error", () => resolveImg(this));
 
             diagramFlowSeq.drawAllMermaid();
-
             postRender();
         });
     }

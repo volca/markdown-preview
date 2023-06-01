@@ -2,7 +2,7 @@
 	"dependencies": {
 		"jquery": "^3.6.4",
 		"katex": "^0.16.7",
-		"marked": "^5.0.3",
+		"marked": "^5.0.4",
 		"marked-highlight": "^2.0.0",
 		"mermaid": "^10.2.0"
 	},
