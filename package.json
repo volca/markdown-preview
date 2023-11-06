@@ -8,9 +8,9 @@
 	},
 	"scripts": {
 		"build": "mkdir -p build && git archive --format zip --output build/archive.zip master",
-		"add-lib": "node js/add-lib.js"
+		"lib": "gulp lib"
 	},
 	"devDependencies": {
-		"copyfiles": "^2.4.1"
+		"gulp": "^4.0.2"
 	}
 }
