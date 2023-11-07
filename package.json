@@ -2,9 +2,9 @@
 	"dependencies": {
 		"jquery": "^3.6.4",
 		"katex": "^0.16.7",
-		"marked": "^5.0.4",
-		"marked-highlight": "^2.0.0",
-		"mermaid": "^10.2.0"
+		"marked": "^9.1.5",
+		"marked-highlight": "^2.0.6",
+		"mermaid": "^10.6.1"
 	},
 	"scripts": {
 		"build": "mkdir -p build && git archive --format zip --output build/archive.zip master",
