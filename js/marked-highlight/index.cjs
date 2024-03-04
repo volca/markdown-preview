@@ -22,13 +22,13 @@ function markedHighlight(options) {
         return;
       }
 
-      const lang = getLang(token);
+      const lang = getLang(token.lang);
 
       if (options.async) {
-        return Promise.resolve(options.highlight(token.text, lang)).then(updateToken(token));
+        return Promise.resolve(options.highlight(token.text, lang, token.lang || '')).then(updateToken(token));
       }
 
-      const code = options.highlight(token.text, lang);
+      const code = options.highlight(token.text, lang, token.lang || '');
       if (code instanceof Promise) {
         throw new Error('markedHighlight is not set to async but the highlight function is async. Set the async option to true on markedHighlight to await the async highlight function.');
       }
@@ -36,7 +36,7 @@ function markedHighlight(options) {
     },
     renderer: {
       code(code, infoString, escaped) {
-        const lang = (infoString || '').match(/\S*/)[0];
+        const lang = getLang(infoString);
         const classAttr = lang
           ? ` class="${options.langPrefix}${escape(lang)}"`
           : '';
@@ -47,8 +47,8 @@ function markedHighlight(options) {
   };
 }
 
-function getLang(token) {
-  return (token.lang || '').match(/\S*/)[0];
+function getLang(lang) {
+  return (lang || '').match(/\S*/)[0];
 }
 
 function updateToken(token) {
