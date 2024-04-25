@@ -97,9 +97,3 @@ Links
 [mermaid]: https://github.com/mermaid-js/mermaid
 [mathjax]: https://github.com/mathjax/MathJax
 
-Donate
------------------
-
-Feel free to help me invest in more time to test and add faster new features to this extension!
-
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/volcas)
