@@ -55,8 +55,7 @@ function renderKatex(srcMath, isDisplay) {
     srcMath = unEscape(srcMath);
     try {
         repMath = katex.renderToString(srcMath, {displayMode: isDisplay});
-    }
-    catch(err) {
+    } catch(err) {
         console.error("katex parse math string[" + srcMath + "] failed! throw error: " + err);
         repMath = "";
     }

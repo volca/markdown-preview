@@ -28,6 +28,8 @@ $$ f(x) + f(y) + f(z) = \sqrt{\sum_0^{100}n} + \sqrt{\sum_n + 100} $$
 * Single dollar and backquote
   $`  A_i = B_i + C_i \sum_{k=0}^{i} D_k E^k + dx + dy `$
 
+* Align
+  $\tilde{a}$
 
 * Test multi-row formula
 $$
