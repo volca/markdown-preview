@@ -6,10 +6,6 @@ gulp.task('lib', function () {
   ]).pipe(gulp.dest('js/marked-highlight'));
 
   gulp.src([
-    'node_modules/marked-katex-extension/lib/index.cjs'
-  ]).pipe(gulp.dest('js/marked-katex-extension'));
-
-  gulp.src([
     'node_modules/katex/dist/katex.min.css'
   ]).pipe(gulp.dest('css'))
 

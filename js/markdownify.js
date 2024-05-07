@@ -97,10 +97,7 @@
             var preHtml = data;
             if (items.katex) {
                 config.markedOptions.katex = true;
-                //preHtml = diagramFlowSeq.prepareDiagram(preHtml);
-                marked.use(markedKatex({
-                    throwOnError: false
-                }))
+                preHtml = diagramFlowSeq.prepareDiagram(preHtml);
             }
 
             if (items.toc) {
