@@ -4,7 +4,7 @@
 		"katex": "^0.16.10",
 		"marked": "^7.0.5",
 		"marked-highlight": "^2.1.1",
-		"mermaid": "10.8.0"
+		"mermaid": "10.9.3"
 	},
 	"scripts": {
 		"build": "mkdir -p build && git archive --format zip --output build/archive.zip master",
