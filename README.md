@@ -77,7 +77,6 @@ Credits
 This extension uses the following open source components:
 
 * [Marked][marked] - A markdown parser written in JavaScript
-* [markdown-friendly stylesheet][style] - The themes are based on the "Swiss" theme
 * [markdown preview][mp] - The original markdown preview
 * [mermaid][mermaid] - A Javascript based diagramming and charting tool
 * [MathJax][mathjax] - A JavaScript display engine for LaTeX, MathML, and AsciiMath notation
@@ -87,12 +86,8 @@ Links
 
 * [Change Log](https://github.com/volca/markdown-preview/wiki/Changelog)
 
-[paypal-me-shield]: https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal
-[paypal-me]: https://www.paypal.me/yanc888
 [webstore]: https://chrome.google.com/webstore/detail/markdown-preview-plus/febilkbfcbhebfnokafefeacimjdckgl
-[style]: http://kevinburke.bitbucket.org/markdowncss
 [marked]: https://github.com/chjj/marked
-[md]: http://en.wikipedia.org/wiki/Markdown
 [mp]: https://github.com/borismus/markdown-preview
 [mermaid]: https://github.com/mermaid-js/mermaid
 [mathjax]: https://github.com/mathjax/MathJax
