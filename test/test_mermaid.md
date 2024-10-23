@@ -82,13 +82,6 @@ class B,D Colored
 
 ```mermaid
 gitGraph:
-options
-{
-    "nodeSpacing": 150,
-    "nodeRadius": 10
-}
-end
-
 commit
 branch hotfix
 checkout hotfix
