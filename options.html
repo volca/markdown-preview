@@ -50,13 +50,16 @@
             <button id="btn-remove-css" class="btn btn-sm btn-primary" type="button">Remove CSS</button>
         </div>
 
-        <h4>Or add a customize CSS</h4>
         <div class="form-group">
-            <input type="file" id="css-file">
+            <h4>Or add a customize CSS</h4>
+            <input type="file" id="css-file" name="css_files[]" multiple>
+            <h4>Or input CSS files path. One css file per line</h4>
+            <textarea class="form-control" id="css-paths" placeholder="The URL of local or remote css file."></textarea>
             <p class="help-block">
             <button id="btn-add-css" class="btn btn-sm btn-primary" type="button">Add CSS</button>
             </p>
         </div>
+
     </section>
 
     <section>
