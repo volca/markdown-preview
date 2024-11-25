@@ -156,7 +156,6 @@
     }
 
     function insertCssPaths(paths) {
-        console.log('path:', paths)
         let cssClass = 'CUSTOM_CSS_PATH'
         $('.' + cssClass).remove()
         paths.forEach(css => {
@@ -165,7 +164,6 @@
                 .attr('rel', 'stylesheet')
                 .attr('href', css)
             $(document.head).append(cssLink)
-            console.log("I'm", css)
         })
     }
 
