@@ -214,6 +214,7 @@ $('#btn-add-css').click(function() {
     if ($('#css-paths').val().trim().length > 0) {
         readCustomCssPath()
     } else {
+        storage.remove('custom_css_paths')
         readCustomCss()
     }
 });
