@@ -152,7 +152,7 @@ $('#btn-remove-css').click(function() {
     });
 });
 
-$('#btn-add-css').click(function() {
+function readCustomCss() {
     var file = $('#css-file')[0].files[0],
         reader = new FileReader();
 
@@ -191,6 +191,31 @@ $('#btn-add-css').click(function() {
         });
     };
     reader.readAsText(file);
+}
+
+function readCustomCssPath() {
+    let text = $('#css-paths').val().trim()
+    let lines = text.split('\n')
+    let cssFilePathRegex = /^(.*\.css)$/
+    let cssPaths = []
+    lines.forEach((line, index) => {
+        if (cssFilePathRegex.test(line.trim())) {
+            cssPaths.push(line.trim())
+        }
+    })
+
+    if (cssPaths.length > 0) {
+        storage.set({custom_css_paths:  JSON.stringify(cssPaths)})
+        message('Custom CSS paths are added.');
+    }
+}
+
+$('#btn-add-css').click(function() {
+    if ($('#css-paths').val().trim().length > 0) {
+        readCustomCssPath()
+    } else {
+        readCustomCss()
+    }
 });
 
 // file extensions
@@ -242,3 +267,12 @@ storage.get('exclude_exts', function(items) {
         $('input[value="' + k + '"]').prop('checked', false);
     });
 });
+
+storage.get('custom_css_paths', function(items) {
+    let paths = items.custom_css_paths
+    if (!paths) {
+        return
+    }
+
+    $('#css-paths').val(JSON.parse(paths).join('\n'))
+})

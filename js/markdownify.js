@@ -1,5 +1,6 @@
 (function(document) {
 
+    const specialThemePrefix = 'special_'
     let mpp = {
         markedLoaded: 0
     }
@@ -27,6 +28,12 @@
             .split('#')[0];
         var ext = url.substr(1 + url.lastIndexOf("."));
         return ext.toLowerCase();
+    }
+
+    function hasValue(obj, key) {
+        return obj && 
+           obj.hasOwnProperty(key) && 
+           $.trim(obj[key]).length > 0;
     }
 
     function resolveImg(img) {
@@ -148,9 +155,23 @@
         return chrome.runtime.getURL('theme/' + theme + '.css');
     }
 
-    function setTheme(theme) {
-        if (typeof config.themes[theme] != 'undefined') {
-            var link = $('#theme');
+    function insertCssPaths(paths) {
+        console.log('path:', paths)
+        let cssClass = 'CUSTOM_CSS_PATH'
+        $('.' + cssClass).remove()
+        paths.forEach(css => {
+            let cssLink = $('<link/>').addClass(cssClass)
+            cssLink
+                .attr('rel', 'stylesheet')
+                .attr('href', css)
+            $(document.head).append(cssLink)
+            console.log("I'm", css)
+        })
+    }
+
+    function insertThemeCss(theme) {
+        if (hasValue(config.themes, theme)) {
+            var link = $('#theme')
             $('#custom-theme').remove();
             if(!link.length) {
                 var ss = document.createElement('link');
@@ -178,6 +199,23 @@
                 }
             });
         }
+    }
+
+    function setTheme() {
+        let pageKey = specialThemePrefix + location.href
+        storage.get([pageKey, 'theme', 'custom_themes', 'custom_css_paths'], function(items) {
+            if (items.length == 0) {
+                // load default theme
+                insertThemeCss('Clearness')
+            } else if (hasValue(items, pageKey)) {
+                insertThemeCss(items[pageKey])
+            } else if (hasValue(items, 'custom_css_paths')) {
+                let cssPaths = JSON.parse(items.custom_css_paths)
+                insertCssPaths(cssPaths)
+            } else if (hasValue(items, 'theme')) {
+                insertThemeCss(items.theme)
+            }
+        })
     }
 
     function stopAutoReload() {
@@ -220,15 +258,7 @@
             complete: function(response) {
                 previousText = document.body.innerText;
                 makeHtml(document.body.innerText);
-                var specialThemePrefix = 'special_',
-                    pageKey = specialThemePrefix + location.href;
-                storage.get(['theme', pageKey], function(items) {
-                    theme = items.theme ? items.theme : 'Clearness';
-                    if(items[pageKey]) {
-                        theme = items[pageKey];
-                    }
-                    setTheme(theme);
-                });
+                setTheme()
 
                 storage.get('auto_reload', function(items) {
                     if(items.auto_reload) {
@@ -266,18 +296,13 @@
     });
 
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-        var specialThemePrefix = 'special_',
-            pageKey = specialThemePrefix + location.href;
+        var pageKey = specialThemePrefix + location.href;
+
+        console.log("changes:", changes)
         for (key in changes) {
             var value = changes[key];
-            if(key == pageKey) {
-                setTheme(value.newValue);
-            } else if(key == 'theme') {
-                storage.get(pageKey, function(items) {
-                    if(!items[pageKey]) {
-                        setTheme(value.newValue);
-                    }
-                });
+            if(key == pageKey || key == 'theme' || key == 'custom_css_paths') {
+                setTheme();
             } else if(key == 'toc') {
                 location.reload();
             } else if(key == 'reload_freq') {
