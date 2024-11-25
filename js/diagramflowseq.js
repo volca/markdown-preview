@@ -15,9 +15,15 @@ function genNextMermaidDivId() {
     return makeMermaidId(diagramFlowSeq.mermaidDivId);
 }
 
+function decodeHtmlEntities(str) {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = str;
+    return textarea.value;
+}
+
 function drawMermaid(id) {
     var divMermaid = document.getElementById(id);
-    var txt = divMermaid.textContent;
+    var txt = decodeHtmlEntities(divMermaid.innerHTML);
     var tmpRendId = 'tmpMerId' + id;
     var tmpDiv = document.createElement('div');
     tmpDiv.id = tmpRendId;
