@@ -2,8 +2,8 @@
 	"dependencies": {
 		"jquery": "^3.6.4",
 		"katex": "^0.16.10",
-		"marked": "^7.0.5",
-		"marked-highlight": "^2.1.1",
+		"marked": "^15.0.2",
+		"marked-highlight": "^2.2.1",
 		"mermaid": "11.4.0"
 	},
 	"scripts": {
