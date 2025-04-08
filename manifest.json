@@ -37,7 +37,7 @@
                 "js/config.js",
                 "js/jquery.js",
                 "js/marked.min.js",
-                "js/marked-highlight/index.cjs",
+                "js/marked-highlight/index.js",
                 "js/purify.js",
                 "js/highlight.min.js",
                 "js/markdownify.js",

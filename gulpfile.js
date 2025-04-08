@@ -1,9 +1,10 @@
 const gulp = require('gulp');
+const rename = require('gulp-rename')
 
 gulp.task('lib', function () {
-  gulp.src([
-    'node_modules/marked-highlight/lib/index.cjs'
-  ]).pipe(gulp.dest('js/marked-highlight'));
+  gulp.src(['node_modules/marked-highlight/lib/index.cjs'])
+    .pipe(rename('index.js'))
+    .pipe(gulp.dest('js/marked-highlight'))
 
   gulp.src([
     'node_modules/katex/dist/katex.min.css'
