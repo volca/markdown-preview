@@ -6,6 +6,10 @@ gulp.task('lib', function () {
     .pipe(rename('index.js'))
     .pipe(gulp.dest('js/marked-highlight'))
 
+  gulp.src(['node_modules/marked-gfm-heading-id/lib/index.cjs'])
+    .pipe(rename('index.js'))
+    .pipe(gulp.dest('js/marked-gfm-heading-id'))
+
   gulp.src([
     'node_modules/katex/dist/katex.min.css'
   ]).pipe(gulp.dest('css'))

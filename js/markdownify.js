@@ -61,25 +61,6 @@
         }
     }
 
-    var buildCtx = (coll, k, level, ctx) => {
-        if (k >= coll.length || coll[k].level <= level) { return k; }
-        var node = coll[k];
-        ctx.push("<li><a href='#" + node.anchor + "'>" + node.text + "</a>");
-        k++;
-        var childCtx = [];
-        k = buildCtx(coll, k, node.level, childCtx);
-        if (childCtx.length > 0) {
-            ctx.push("<ul>");
-            childCtx.forEach(function (idm) {
-                ctx.push(idm);
-            });
-            ctx.push("</ul>");
-        }
-        ctx.push("</li>");
-        k = buildCtx(coll, k, level, ctx);
-        return k;
-    };
-
     function initMarked() {
         if (mpp.markedLoaded) {
             return
@@ -108,25 +89,21 @@
             }
 
             if (items.toc) {
-                toc = [];
-                const renderer = new marked.Renderer()
-                const slugger = new marked.Slugger()
-                const r = {
-                  heading: renderer.heading.bind(renderer),
-                };
-
-                renderer.heading = (text, level, raw, slugger) => {
-                    var anchor = config.markedOptions.headerPrefix + slugger.serialize(raw)
-
-                    toc.push({
-                        anchor: anchor,
-                        level: level,
-                        text: text
-                    });
-
-                    return r.heading(text, level, raw, slugger);
-                };
-                config.markedOptions.renderer = renderer;
+                marked.use(gfmHeadingId({prefix: config.markedOptions.headerPrefix}), {
+                    hooks: {
+                        postprocess(html) {
+                            const headings = getHeadingList()
+                            return `
+<div class="toc-list">
+<h1 id="table-of-contents">Table of Contents</h1>
+<ul>
+    ${headings.map(({id, raw, level}) => `<li><a href="#${id}" class="h${level}">${raw}</a></li>`).join('')}
+</ul>
+</div>
+${html}`;
+                        }
+                    }
+                })
             }
 
             initMarked()
@@ -136,13 +113,6 @@
                 SANITIZE_DOM: false
             });
 
-            if (items.toc) {
-                var ctx = [];
-                ctx.push('<div class="toc-list"><h1 id="table-of-contents">Table of Contents</h1>\n<ul>');
-                buildCtx(toc, 0, 0, ctx);
-                ctx.push("</ul></div>");
-                html = ctx.join('') + html
-            }
             $(document.body).html(html);
             $('img').on("error", () => resolveImg(this));
 

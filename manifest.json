@@ -38,6 +38,7 @@
                 "js/jquery.js",
                 "js/marked.min.js",
                 "js/marked-highlight/index.js",
+                "js/marked-gfm-heading-id/index.js",
                 "js/purify.js",
                 "js/highlight.min.js",
                 "js/markdownify.js",
