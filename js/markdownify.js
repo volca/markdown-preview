@@ -8,7 +8,6 @@
     var interval,
         defaultReloadFreq = 3,
         previousText,
-        toc = [],
         storage = chrome.storage.local;
 
     mpp.isText = () => {
@@ -89,10 +88,10 @@
             }
 
             if (items.toc) {
-                marked.use(gfmHeadingId({prefix: config.markedOptions.headerPrefix}), {
+                marked.use(markedGfmHeadingId.gfmHeadingId({prefix: config.markedOptions.headerPrefix}), {
                     hooks: {
                         postprocess(html) {
-                            const headings = getHeadingList()
+                            const headings = markedGfmHeadingId.getHeadingList()
                             return `
 <div class="toc-list">
 <h1 id="table-of-contents">Table of Contents</h1>

@@ -6,8 +6,8 @@ gulp.task('lib', function () {
     .pipe(rename('index.js'))
     .pipe(gulp.dest('js/marked-highlight'))
 
-  gulp.src(['node_modules/marked-gfm-heading-id/lib/index.cjs'])
-    .pipe(rename('index.js'))
+  gulp.src(['node_modules/marked-gfm-heading-id/lib/index.umd.js'])
+    .pipe(rename('index.umd.js'))
     .pipe(gulp.dest('js/marked-gfm-heading-id'))
 
   gulp.src([
