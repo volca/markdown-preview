@@ -20,7 +20,7 @@ gulp.task('lib', function () {
 
   return gulp.src([
     'node_modules/jquery/dist/jquery.js',
-    'node_modules/marked/marked.min.js',
+    'node_modules/marked/lib/marked.umd.js',
     'node_modules/mermaid/dist/mermaid.min.js',
     'node_modules/katex/dist/katex.min.js'
   ]).pipe(gulp.dest('js'));

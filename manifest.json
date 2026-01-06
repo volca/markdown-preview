@@ -36,7 +36,7 @@
                 "js/katex.min.js",
                 "js/config.js",
                 "js/jquery.js",
-                "js/marked.min.js",
+                "js/marked.umd.js",
                 "js/marked-highlight/index.js",
                 "js/marked-gfm-heading-id/index.umd.js",
                 "js/purify.js",

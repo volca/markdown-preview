@@ -1,11 +1,11 @@
 {
 	"dependencies": {
 		"jquery": "^3.6.4",
-		"katex": "^0.16.10",
-		"marked": "^15.0.8",
+		"katex": "^0.16.27",
+		"marked": "^17.0.1",
 		"marked-gfm-heading-id": "^4.1.3",
-		"marked-highlight": "^2.2.1",
-		"mermaid": "11.6.0"
+		"marked-highlight": "^2.2.3",
+		"mermaid": "11.12.2"
 	},
 	"scripts": {
 		"build": "mkdir -p build && git archive --format zip --output build/archive.zip master",
