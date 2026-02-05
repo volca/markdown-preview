@@ -10,8 +10,9 @@ gulp.task('lib', function () {
     .pipe(rename('index.umd.js'))
     .pipe(gulp.dest('js/marked-gfm-heading-id'))
 
+  // Must edit the katex-swap.css and change the fonts file URL
   gulp.src([
-    'node_modules/katex/dist/katex.min.css'
+    'node_modules/katex/dist/katex-swap.css'
   ]).pipe(gulp.dest('css'))
 
   gulp.src([

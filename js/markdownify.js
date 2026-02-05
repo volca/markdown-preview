@@ -244,7 +244,7 @@ ${html}`;
         if (items.katex) {
             var mjc = document.createElement('link');
             mjc.rel = 'stylesheet';
-            mjc.href = chrome.runtime.getURL('css/katex.min.css');
+            mjc.href = chrome.runtime.getURL('css/katex-swap.css');
             $(document.head).append(mjc);
         }
 
