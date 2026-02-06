@@ -15,9 +15,12 @@ gulp.task('lib', function () {
     'node_modules/katex/dist/katex-swap.css'
   ]).pipe(gulp.dest('css'))
 
+  // Use the CDN fonts instead
+  /*
   gulp.src([
     'node_modules/katex/dist/fonts/*'
   ]).pipe(gulp.dest('css/fonts'))
+  */
 
   return gulp.src([
     'node_modules/jquery/dist/jquery.js',
