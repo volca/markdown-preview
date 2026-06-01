@@ -108,7 +108,9 @@ ${html}`;
             initMarked()
             var html = marked.parse(preHtml);
             html = DOMPurify.sanitize(html, {
+                ADD_TAGS: ['style'],
                 ADD_ATTR: ['flow'],
+                WHOLE_DOCUMENT: true,
                 SANITIZE_DOM: false
             });
 
