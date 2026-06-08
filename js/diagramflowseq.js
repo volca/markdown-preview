@@ -70,13 +70,7 @@ function renderKatex(srcMath, isDisplay) {
 }
 
 function replaceMathString(src) {
-    // patch: Troy Daniel
-    // A regex expression to exclude the code tag with the help of look-around operation is not preferred, due to:
-    // This is a <code>$x$</code> to produce $x$, and a <code>$y$</code> to produce $y$,
-    // If we apply the look-around, the first capture will be '$</code> to produce $', which is not correct
-    // Therefore, a simple way, split the src at 'code block',
-    // Known bugs:
-    // \`$abcd$\` and \<code>$abcd$\</code>  won't render, actually, I don't hnow what's the espected result.
+    // patch: temporary fix for catastrophic backtracking issue
     var reCode = /(`|<code[^>]*>)\s*(\\.|.)*?(`|<\/code>)/g;
     var codes = [...src.matchAll(reCode)];
     var parts = [];
@@ -90,6 +84,23 @@ function replaceMathString(src) {
     return parts.join("");
 
     function renderInlineMath(plainStr){
+        // temporary fast filter: return directly if no possible math markers
+        if (
+            plainStr.indexOf('$') === -1 &&
+            plainStr.indexOf('\\[') === -1 &&
+            plainStr.indexOf('\\(') === -1
+        ) {
+            return plainStr;
+        }
+
+        // avoid catastrophic backtracking caused by unclosed \[ ... \] or \( ... \)
+        if (
+            (plainStr.indexOf('\\[') !== -1 && plainStr.indexOf('\\]') === -1) ||
+            (plainStr.indexOf('\\(') !== -1 && plainStr.indexOf('\\)') === -1)
+        ) {
+            return plainStr;
+        }
+
         var out = plainStr;
         var pattern = /(\$`)((?:\\.|[\s\S])+?)(`\$)|(\${1,2})((?:\\.|[\s\S])+?)\4|(\\\[)((?:\\.|[\s\S])+?)(\\])|(\\\()((?:\\.|[\s\S])+?)(\\\))/g;
         var mc = null;
